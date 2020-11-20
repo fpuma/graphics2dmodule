@@ -14,6 +14,7 @@ namespace Puma
             base.ConfigureAll(conf, target);
 
             conf.AddProject<Puma.Graphics>( target );
+            conf.AddProject<Puma.GraphicsTest>(target);
         }
     }
 
