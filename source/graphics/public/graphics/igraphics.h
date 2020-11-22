@@ -8,7 +8,7 @@ namespace puma::gfx
     class ITextureManager;
     struct Extent;
 
-    class IGraphics
+    class IGraphics : public NonCopyable
     {
     public:
         virtual ~IGraphics() {}

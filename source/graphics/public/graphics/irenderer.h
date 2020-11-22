@@ -6,14 +6,10 @@ namespace puma::gfx
     struct Extent;
     struct Color;
 
-    class IRenderer
+    class IRenderer : public NonCopyable
     {
     public:
-        IRenderer() = default;
         virtual ~IRenderer() = default;
-
-        IRenderer( const IRenderer& _other ) = delete;
-        IRenderer& operator= ( const IRenderer& _other ) = delete;
 
         virtual bool isValid() const = 0;
         virtual void beginRender() = 0;

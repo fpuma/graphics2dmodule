@@ -24,7 +24,7 @@ namespace puma::gfx
 
     void Graphics::init( const Extent& _extent, const char* _windowName )
     {
-        if ( SDL_Init( SDL_INIT_VIDEO ) < 0 )
+        if ( SDL_InitSubSystem( SDL_INIT_VIDEO ) < 0 )
         {
             std::cout << "Error initializing SDL: " << SDL_GetError() << std::endl;
             return;

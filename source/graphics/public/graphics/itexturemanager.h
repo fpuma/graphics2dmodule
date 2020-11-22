@@ -3,14 +3,10 @@
 
 namespace puma::gfx
 {
-    class ITextureManager
+    class ITextureManager : public NonCopyable
     {
     public:
-        ITextureManager() = default;
         virtual ~ITextureManager() = default;
-
-        ITextureManager( const ITextureManager& ) = delete;
-        ITextureManager& operator=( const ITextureManager& ) = delete;
 
         virtual Texture loadTexture( const char* _path ) = 0;
         virtual FontHandle loadFont( const char* _fontPath ) = 0;
