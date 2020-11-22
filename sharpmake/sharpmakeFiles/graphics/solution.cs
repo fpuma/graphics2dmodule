@@ -15,6 +15,7 @@ namespace Puma
 
             conf.AddProject<Puma.Graphics>( target );
             conf.AddProject<Puma.GraphicsTest>(target);
+            conf.AddProject<Puma.SDLTest>(target);
         }
     }
 
