@@ -1,10 +1,13 @@
 #include <precompiledgraphics.h>
 #include <graphics/igraphics.h>
+#include <graphics/irenderer.h>
+#include <graphics/itexturemanager.h>
+#include <graphics/texture.h>
 #include <graphics/graphicdefinitions.h>
 
 using namespace puma::gfx;
 
-int main()
+int main( int argc, char* argv[] )
 {
     auto graphicsPtr = IGraphics::create();
 
@@ -13,10 +16,22 @@ int main()
 
     bool shouldQuit = false;
 
+    Texture myTexture = graphicsPtr->getTextureManager()->loadTexture( "../asset/programmerdrawing.png" );
+
     while ( !shouldQuit )
     {
         graphicsPtr->update();
+        
+        graphicsPtr->getRenderer()->beginRender();
 
+        graphicsPtr->getRenderer()->renderCircle( 50, 50, 25, { 255,0,0,255 } );
+
+        Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height * 2, 0, 0 };
+        Extent targetExtent = { 300, 200, 200, 200 };
+        graphicsPtr->getRenderer()->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+
+        graphicsPtr->getRenderer()->endRender();
+        
         shouldQuit = graphicsPtr->shouldQuit();
     }
 
