@@ -1,7 +1,7 @@
 #pragma once
 #include <graphics/igraphics.h>
-#include <internal/renderer.h>
-#include <internal/texturemanager.h>
+#include <internal/graphics/renderer.h>
+#include <internal/graphics/texturemanager.h>
 
 #include <memory>
 #include <assert.h>

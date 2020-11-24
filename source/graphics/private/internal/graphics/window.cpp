@@ -1,6 +1,6 @@
 #include <precompiledgraphics.h>
 
-#include <internal/window.h>
+#include <internal/graphics/window.h>
 
 #include <graphics/graphicdefinitions.h>
 

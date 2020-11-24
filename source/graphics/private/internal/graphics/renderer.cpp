@@ -1,8 +1,8 @@
 #include <precompiledgraphics.h>
 
-#include <internal/renderer.h>
+#include <internal/graphics/renderer.h>
           
-#include <internal/window.h>
+#include <internal/graphics/window.h>
 #include <graphics/texture.h>
 #include <graphics/graphicdefinitions.h>
 
