@@ -3,12 +3,14 @@
 #include <graphics/igraphics.h>
 #include <graphics/graphicdefinitions.h>
 
+using namespace puma;
+
 int main()
 {
-    auto graphics = puma::gfx::IGraphics::create();
-    auto ip = puma::IInput::create();
+    auto graphics = gfx::IGraphics::create();
+    auto ip = input::IInput::create();
 
-    puma::gfx::Extent extent = { 100,100,100,100 };
+    gfx::Extent extent = { 100,100,100,100 };
     graphics->init( extent, "InputTest" );
 
     while ( !graphics->shouldQuit() )

@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma
+namespace puma::input
 {
     class IInput
     {

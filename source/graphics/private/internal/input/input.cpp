@@ -14,7 +14,7 @@
 #include <internal/input/inputnames.h>
 #endif
 
-namespace puma
+namespace puma::input
 {
     constexpr int kSdlEventBufferSize = 10;
 
