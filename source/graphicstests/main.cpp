@@ -26,8 +26,8 @@ int main( int argc, char* argv[] )
 
         graphicsPtr->getRenderer()->renderCircle( 50, 50, 25, { 255,0,0,255 } );
 
-        Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height * 2, 0, 0 };
-        Extent targetExtent = { 300, 200, 200, 200 };
+        Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
+        Extent targetExtent = { 200, 200, 200, 200 };
         graphicsPtr->getRenderer()->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
 
         graphicsPtr->getRenderer()->endRender();
