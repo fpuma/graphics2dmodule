@@ -3,17 +3,17 @@ using System.IO;
 namespace Puma
 {
     [Sharpmake.Generate]
-    public class GraphicsSolution : Puma.Common.IMySolution
+    public class Gfx2dAppSolution : Puma.Common.IMySolution
     {
-        public GraphicsSolution()
-            : base("Graphics")
+        public Gfx2dAppSolution()
+            : base("Gfx2dApp")
         {}
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddProject<Puma.Graphics>( target );
+            conf.AddProject<Puma.Gfx2dApp>( target );
             conf.AddProject<Puma.GraphicsTest>(target);
             conf.AddProject<Puma.SDLTest>(target);
             conf.AddProject<Puma.InputTests>(target);

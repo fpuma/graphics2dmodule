@@ -1,10 +1,10 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class Graphics : Puma.Common.IMyLib
+    class Gfx2dApp : Puma.Common.IMyLib
     {
-        public Graphics()
-            : base("Graphics", @"graphics")
+        public Gfx2dApp()
+            : base("Gfx2dApp", @"gfx2dapp")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)

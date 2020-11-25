@@ -13,7 +13,7 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPublicDependency<Puma.Graphics>(target);
+            conf.AddPublicDependency<Puma.Gfx2dApp>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
 
