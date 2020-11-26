@@ -18,6 +18,6 @@ sharpmake/sharpmakeFiles/**/.vs/*
 ##################################################
 
 #EXCEPTIONS
-!extern/*
+!extern/**
 !output/empty
 !projects/empty
