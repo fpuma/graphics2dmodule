@@ -30,7 +30,7 @@ namespace puma::gfx
 
     void Renderer::beginRender()
     {
-        SDL_SetRenderDrawColor( m_sdlRenderer, 0, 0, 0, 255 );
+        SDL_SetRenderDrawColor( m_sdlRenderer, m_bgColor.red, m_bgColor.green, m_bgColor.blue, m_bgColor.alpha );
         SDL_RenderClear( m_sdlRenderer );
     }
 

@@ -1,6 +1,7 @@
 #pragma once
 
 #include <graphics/irenderer.h>
+#include <graphics/graphicdefinitions.h>
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -25,6 +26,8 @@ namespace puma::gfx
         bool isValid() const override { return m_sdlRenderer != nullptr; }
         void renderTexture( const Texture& _texture, const Extent& _textureExtent, const Extent& _targetExtent, float _rotation ) const override;
 
+        void setDefaultBackgroundColor( Color _bgColor ) override { m_bgColor = _bgColor; }
+
         //[fpuma] Improve rendering position of these primitives
         void renderText( const s32 _xPos, const s32 _yPos, const char* _text ) const override;
         void renderPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color );
@@ -39,5 +42,6 @@ namespace puma::gfx
     private:
 
         SDL_Renderer* m_sdlRenderer = nullptr;
+        Color m_bgColor = { 0, 0, 255, 255 };
     };
 }
