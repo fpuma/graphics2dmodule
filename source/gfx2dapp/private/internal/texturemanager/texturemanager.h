@@ -14,8 +14,7 @@ namespace puma::gfx
     class TextureManager final : public ITextureManager
     {
     public:
-        TextureManager( Renderer& _renderer )
-            : m_renderer( _renderer ) {}
+        TextureManager();
         ~TextureManager();
 
         Texture loadTexture( const char* _texturePath ) override;
@@ -31,6 +30,6 @@ namespace puma::gfx
         std::vector<TexturePathPair> m_sdlTextures;
         std::vector<TTF_Font*> m_sdlFonts;
 
-        Renderer& m_renderer;
+        SDL_Renderer* m_sdlRenderer;
     };
 }

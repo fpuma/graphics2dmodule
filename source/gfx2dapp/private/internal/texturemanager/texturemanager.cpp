@@ -15,6 +15,42 @@
 
 namespace puma::gfx
 {
+    std::unique_ptr<ITextureManager> ITextureManager::create()
+    {
+        return std::make_unique<TextureManager>();
+    }
+
+    TextureManager::TextureManager()
+    {
+        SDL_Surface* sdlSurface;
+        u32 rmask, gmask, bmask, amask;
+#if SDL_BYTEORDER == SDL_BIG_ENDIAN
+        rmask = 0xff000000;
+        gmask = 0x00ff0000;
+        bmask = 0x0000ff00;
+        amask = 0x000000ff;
+#else
+        rmask = 0x000000ff;
+        gmask = 0x0000ff00;
+        bmask = 0x00ff0000;
+        amask = 0xff000000;
+#endif
+
+        sdlSurface = SDL_CreateRGBSurface( 0, 256, 256, 32, rmask, gmask, bmask, amask);
+
+        if ( sdlSurface == nullptr )
+        {
+            std::cout << "Could not create surface! SDL Error: " << SDL_GetError() << std::endl;
+        }
+
+        m_sdlRenderer = SDL_CreateSoftwareRenderer( sdlSurface );
+
+        if ( m_sdlRenderer == nullptr )
+        {
+            std::cout << "Could not create renderer! SDL Error: " << SDL_GetError() << std::endl;
+        }
+    }
+
     TextureManager::~TextureManager()
     {
         releaseTextures();
@@ -42,7 +78,7 @@ namespace puma::gfx
         }
         else
         {
-            newTexture = SDL_CreateTextureFromSurface( m_renderer.getSDLRenderer(), loadedSurface );
+            newTexture = SDL_CreateTextureFromSurface( m_sdlRenderer, loadedSurface );
             if ( newTexture == nullptr )
             {
                 std::cout<< "Unable to create texture from " << _texturePath << "! SDL Error: " << SDL_GetError() << std::endl;
@@ -84,7 +120,7 @@ namespace puma::gfx
             std::cout << "Unable to create surface for text: " << _text << "! SDL Error: " << SDL_GetError() << std::endl;
         }
 
-        SDL_Texture* texture = SDL_CreateTextureFromSurface( m_renderer.getSDLRenderer(), surfaceMessage );
+        SDL_Texture* texture = SDL_CreateTextureFromSurface( m_sdlRenderer, surfaceMessage );
 
         if ( nullptr == texture )
         {

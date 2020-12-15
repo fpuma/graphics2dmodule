@@ -6,6 +6,9 @@ namespace puma::gfx
     class ITextureManager : public NonCopyable
     {
     public:
+        
+        static std::unique_ptr<ITextureManager> create();
+
         virtual ~ITextureManager() = default;
 
         virtual Texture loadTexture( const char* _path ) = 0;

@@ -1,24 +1,31 @@
 #include <precompiledgraphics.h>
-#include <application/graphicdefinitions.h>
-#include <application/iapplication.h>
-#include <application/irenderer.h>
+//#include <application/graphicdefinitions.h>
+//#include <application/iapplication.h>
+//#include <application/irenderer.h>
 #include <texturemanager/itexturemanager.h>
 #include <texturemanager/texture.h>
 
 using namespace puma::gfx;
+#include <iostream>
+
 
 int main( int argc, char* argv[] )
 {
-    auto graphicsPtr = IGraphics::create();
+    //auto graphicsPtr = IApplication::create();
+    auto textureManagerPtr = ITextureManager::create();
 
-    Extent extent = { 500,500,100,100 };
+   /* Extent extent = { 500,500,100,100 };
     graphicsPtr->init( extent , "GraphicsTest" );
 
-    bool shouldQuit = false;
+    bool shouldQuit = false;*/
 
-    Texture myTexture = graphicsPtr->getTextureManager()->loadTexture( "../asset/programmerdrawing.png" );
+    Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
 
-    while ( !shouldQuit )
+    assert( myTexture.isValid() );
+
+    std::cout << myTexture.getOriginalSize().width << " " << myTexture.getOriginalSize().height;
+
+    /*while ( !shouldQuit )
     {
         graphicsPtr->update();
         
@@ -33,7 +40,7 @@ int main( int argc, char* argv[] )
         graphicsPtr->getRenderer()->endRender();
         
         shouldQuit = graphicsPtr->shouldQuit();
-    }
+    }*/
 
     
 }
