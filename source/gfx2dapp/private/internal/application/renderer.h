@@ -1,7 +1,7 @@
 #pragma once
 
-#include <graphics/irenderer.h>
-#include <graphics/graphicdefinitions.h>
+#include <application/irenderer.h>
+#include <application/graphicdefinitions.h>
 
 struct SDL_Window;
 struct SDL_Renderer;

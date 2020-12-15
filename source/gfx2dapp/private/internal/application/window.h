@@ -1,5 +1,5 @@
 #pragma once
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
 #include <memory>
 
 struct SDL_Window;

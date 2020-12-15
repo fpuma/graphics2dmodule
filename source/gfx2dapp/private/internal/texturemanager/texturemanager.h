@@ -1,7 +1,7 @@
 #pragma once
-#include <graphics/itexturemanager.h>
+#include <application/graphicdefinitions.h>
 
-#include <graphics/graphicdefinitions.h>
+#include <texturemanager/itexturemanager.h>
 
 #include <SDL_ttf.h>
 

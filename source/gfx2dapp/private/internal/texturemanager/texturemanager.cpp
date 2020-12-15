@@ -1,7 +1,8 @@
 #include <precompiledgraphics.h>
 
-#include <internal/graphics/texturemanager.h>
-#include <internal/graphics/renderer.h>
+#include "texturemanager.h"
+
+#include <internal/application/renderer.h>
 
 #include <iostream>
 #include <SDL_Image.h>

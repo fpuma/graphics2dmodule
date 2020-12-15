@@ -1,10 +1,10 @@
 #include <precompiledgraphics.h>
 
-#include <internal/graphics/renderer.h>
+#include "renderer.h"
           
-#include <internal/graphics/window.h>
-#include <graphics/texture.h>
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
+#include <internal/application/window.h>
+#include <texturemanager/texture.h>
 
 #include <iostream>
 #include <SDL.h>

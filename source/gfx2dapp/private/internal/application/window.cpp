@@ -1,8 +1,8 @@
 #include <precompiledgraphics.h>
 
-#include <internal/graphics/window.h>
+#include <internal/application/window.h>
 
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
 
 #include <iostream>
 #include <SDL.h>

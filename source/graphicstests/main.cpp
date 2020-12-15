@@ -1,9 +1,9 @@
 #include <precompiledgraphics.h>
-#include <graphics/igraphics.h>
-#include <graphics/irenderer.h>
-#include <graphics/itexturemanager.h>
-#include <graphics/texture.h>
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
+#include <application/iapplication.h>
+#include <application/irenderer.h>
+#include <texturemanager/itexturemanager.h>
+#include <texturemanager/texture.h>
 
 using namespace puma::gfx;
 

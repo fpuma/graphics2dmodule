@@ -1,5 +1,5 @@
 #pragma once
-#include <graphics/texture.h>
+#include <texturemanager/texture.h>
 
 namespace puma::gfx
 {
