@@ -17,9 +17,9 @@ namespace puma::app
         TextureManager();
         ~TextureManager();
 
-        Texture loadTexture( const char* _texturePath ) override;
-        FontHandle loadFont( const char* _fontPath );
-        Texture textToTexture( const char* _text, FontHandle _font, Color _color );
+        Texture loadTexture( IRenderer* _renderer, const char* _texturePath ) override;
+        Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color ) override;
+        FontHandle loadFont( const char* _fontPath ) override;
 
         void releaseTextures();
 
@@ -29,7 +29,5 @@ namespace puma::app
 
         std::vector<TexturePathPair> m_sdlTextures;
         std::vector<TTF_Font*> m_sdlFonts;
-
-        SDL_Renderer* m_sdlRenderer;
     };
 }

@@ -21,42 +21,14 @@ namespace puma::app
     }
 
     TextureManager::TextureManager()
-    {
-        SDL_Surface* sdlSurface;
-        u32 rmask, gmask, bmask, amask;
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-        rmask = 0xff000000;
-        gmask = 0x00ff0000;
-        bmask = 0x0000ff00;
-        amask = 0x000000ff;
-#else
-        rmask = 0x000000ff;
-        gmask = 0x0000ff00;
-        bmask = 0x00ff0000;
-        amask = 0xff000000;
-#endif
-
-        sdlSurface = SDL_CreateRGBSurface( 0, 500, 500, 32, rmask, gmask, bmask, amask);
-
-        if ( sdlSurface == nullptr )
-        {
-            std::cout << "Could not create surface! SDL Error: " << SDL_GetError() << std::endl;
-        }
-
-        m_sdlRenderer = SDL_CreateSoftwareRenderer( sdlSurface );
-
-        if ( m_sdlRenderer == nullptr )
-        {
-            std::cout << "Could not create renderer! SDL Error: " << SDL_GetError() << std::endl;
-        }
-    }
+    {}
 
     TextureManager::~TextureManager()
     {
         releaseTextures();
     }
 
-    Texture TextureManager::loadTexture( const char* _texturePath )
+    Texture TextureManager::loadTexture( IRenderer* _renderer, const char* _texturePath )
     {
 #ifdef _DEBUG
         auto it = std::find_if(m_sdlTextures.begin(), m_sdlTextures.end(), [&_texturePath](const TexturePathPair& pair)->bool
@@ -78,7 +50,7 @@ namespace puma::app
         }
         else
         {
-            newTexture = SDL_CreateTextureFromSurface( m_sdlRenderer, loadedSurface );
+            newTexture = SDL_CreateTextureFromSurface( _renderer->getRendererHandle(), loadedSurface );
             if ( newTexture == nullptr )
             {
                 std::cout<< "Unable to create texture from " << _texturePath << "! SDL Error: " << SDL_GetError() << std::endl;
@@ -110,7 +82,7 @@ namespace puma::app
         return result;
     }
 
-    Texture TextureManager::textToTexture( const char* _text, FontHandle _font, Color _color )
+    Texture TextureManager::textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color )
     {
         SDL_Color color = { _color.red, _color.green, _color.blue };
         SDL_Surface* surfaceMessage = TTF_RenderText_Solid( m_sdlFonts[_font], _text, color );
@@ -120,7 +92,7 @@ namespace puma::app
             std::cout << "Unable to create surface for text: " << _text << "! SDL Error: " << SDL_GetError() << std::endl;
         }
 
-        SDL_Texture* texture = SDL_CreateTextureFromSurface( m_sdlRenderer, surfaceMessage );
+        SDL_Texture* texture = SDL_CreateTextureFromSurface( _renderer->getRendererHandle(), surfaceMessage );
 
         if ( nullptr == texture )
         {

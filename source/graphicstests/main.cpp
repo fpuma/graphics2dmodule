@@ -37,7 +37,7 @@ int main( int argc, char* argv[] )
         renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
     }
 
-    Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
+    Texture myTexture = textureManagerPtr->loadTexture( appPtr->getWindow(windowHandle)->getRenderer(), "../asset/programmerdrawing.png" );
     assert( myTexture.isValid() );
 
     std::cout << myTexture.getOriginalSize().width << " " << myTexture.getOriginalSize().height;
