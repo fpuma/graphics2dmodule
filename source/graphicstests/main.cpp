@@ -1,5 +1,5 @@
-#include <precompiledgraphics.h>
-#include <application/graphicdefinitions.h>
+#include <precompiledapplication.h>
+#include <application/commondefinitions.h>
 #include <application/iapplication.h>
 #include <application/irenderer.h>
 #include <application/iwindow.h>

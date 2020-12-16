@@ -1,8 +1,8 @@
-#include <precompiledgraphics.h>
+#include <precompiledapplication.h>
 
 #include "renderer.h"
           
-#include <application/graphicdefinitions.h>
+#include <application/commondefinitions.h>
 #include <internal/application/window.h>
 #include <texturemanager/texture.h>
 

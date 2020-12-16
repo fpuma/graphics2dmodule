@@ -3,7 +3,7 @@ using System.IO;
 [module: Sharpmake.Include(@"..\base\*")]
 
 [module: Sharpmake.Include(@"..\extern\*")]
-[module: Sharpmake.Include(@"..\graphics\*")]
+[module: Sharpmake.Include(@"..\application\*")]
 
 public static class SharpmakeMainClass
 {

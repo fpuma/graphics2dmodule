@@ -1,4 +1,4 @@
-#include <precompiledgraphics.h>
+#include <precompiledapplication.h>
 
 #include <internal/input/input.h>
 #include <internal/input/sdlinputmapping.h>

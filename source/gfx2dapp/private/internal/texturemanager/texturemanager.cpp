@@ -1,4 +1,4 @@
-#include <precompiledgraphics.h>
+#include <precompiledapplication.h>
 
 #include "texturemanager.h"
 

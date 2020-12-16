@@ -1,5 +1,5 @@
 #pragma once
-#include <application/graphicdefinitions.h>
+#include <application/commondefinitions.h>
 
 #include <texturemanager/itexturemanager.h>
 

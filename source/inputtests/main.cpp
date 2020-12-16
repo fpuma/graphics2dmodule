@@ -1,7 +1,7 @@
-#include <precompiledgraphics.h>
+#include <precompiledapplication.h>
 #include <input/iinput.h>
 #include <application/iapplication.h>
-#include <application/graphicdefinitions.h>
+#include <application/commondefinitions.h>
 
 using namespace puma;
 
