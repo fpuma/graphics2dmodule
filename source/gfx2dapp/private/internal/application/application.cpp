@@ -1,14 +1,11 @@
 #include <precompiledapplication.h>
 
-#include <internal/application/application.h>
+#include "application.h"
 
 #include <internal/application/window.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
-#include <iostream>
-#include <assert.h>
-#include <vector>
 
 namespace puma::app
 {

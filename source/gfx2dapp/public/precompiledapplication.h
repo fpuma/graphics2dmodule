@@ -1,8 +1,11 @@
 #pragma once
 
+#include <algorithm>
 #include <assert.h>
+#include <iostream>
 #include <map>
 #include <memory>
+#include <vector>
 
 #include <input/inputdefinitions.h>
 #include <input/inputids.h>

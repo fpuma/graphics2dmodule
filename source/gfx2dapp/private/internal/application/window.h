@@ -1,9 +1,8 @@
 #pragma once
-#include <application/iwindow.h>
-#include <application/commondefinitions.h>
-#include <internal/application/renderer.h>
 
-#include <memory>
+#include <application/commondefinitions.h>
+#include <application/iwindow.h>
+#include <internal/application/renderer.h>
 
 struct SDL_Window;
 struct SDL_Renderer;

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <application/commondefinitions.h>
-#include <optional>
 
 namespace puma::app
 {

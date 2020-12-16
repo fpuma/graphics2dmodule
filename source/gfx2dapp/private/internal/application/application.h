@@ -3,9 +3,6 @@
 #include <internal/application/renderer.h>
 #include <internal/texturemanager/texturemanager.h>
 
-#include <memory>
-#include <assert.h>
-
 namespace puma::app
 {
     class Window;

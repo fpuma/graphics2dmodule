@@ -6,10 +6,8 @@
 #include <internal/application/window.h>
 #include <texturemanager/texture.h>
 
-#include <iostream>
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
-#include <vector>
 
 namespace puma::app
 {

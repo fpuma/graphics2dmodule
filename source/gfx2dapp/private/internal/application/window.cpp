@@ -1,10 +1,9 @@
 #include <precompiledapplication.h>
 
-#include <internal/application/window.h>
+#include "window.h"
 
 #include <application/commondefinitions.h>
 
-#include <iostream>
 #include <SDL.h>
 
 namespace puma::app

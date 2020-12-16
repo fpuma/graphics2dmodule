@@ -1,14 +1,12 @@
 #include <precompiledapplication.h>
 
-#include <internal/input/input.h>
+#include "input.h"
+
 #include <internal/input/sdlinputmapping.h>
 
 #include <SDL.h>
 
-#include <assert.h>
-#include <iostream>
-
-#define PUMA_INPUT_DEBUG
+//#define PUMA_INPUT_DEBUG
 
 #ifdef PUMA_INPUT_DEBUG
 #include <internal/input/inputnames.h>

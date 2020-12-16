@@ -1,11 +1,9 @@
 #pragma once
-#include <application/commondefinitions.h>
 
+#include <application/commondefinitions.h>
 #include <texturemanager/itexturemanager.h>
 
 #include <SDL_ttf.h>
-
-#include <vector>
 
 namespace puma::app
 {

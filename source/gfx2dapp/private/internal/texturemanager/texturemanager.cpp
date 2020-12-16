@@ -4,14 +4,7 @@
 
 #include <internal/application/renderer.h>
 
-#include <iostream>
 #include <SDL_Image.h>
-
-#ifdef _DEBUG
-#include <algorithm>
-#include <assert.h>
-#endif
-
 
 namespace puma::app
 {
