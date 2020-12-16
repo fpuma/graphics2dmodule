@@ -11,18 +11,18 @@
 #include <SDL2_gfxPrimitives.h>
 #include <vector>
 
-namespace puma::gfx
+namespace puma::app
 {
-    void Renderer::init( const Window& _window )
+    Renderer::Renderer( Window& _window )
     {
-        m_sdlRenderer = SDL_CreateRenderer( _window.getSDLWindow(), -1, SDL_RENDERER_ACCELERATED );
+        m_sdlRenderer = SDL_CreateRenderer( _window.getSdlWindow(), -1, SDL_RENDERER_ACCELERATED );
         if ( nullptr == m_sdlRenderer )
         {
             std::cout << "SDL Renderer could not be created. Error: " << SDL_GetError() << std::endl;
         }
     }
 
-    void Renderer::uninit()
+    Renderer::~Renderer()
     {
         SDL_DestroyRenderer( m_sdlRenderer );
         m_sdlRenderer = nullptr;

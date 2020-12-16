@@ -1,7 +1,7 @@
 #pragma once
 #include <texturemanager/texture.h>
 
-namespace puma::gfx
+namespace puma::app
 {
     class ITextureManager : public NonCopyable
     {

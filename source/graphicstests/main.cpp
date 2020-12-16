@@ -1,46 +1,64 @@
 #include <precompiledgraphics.h>
-//#include <application/graphicdefinitions.h>
-//#include <application/iapplication.h>
-//#include <application/irenderer.h>
+#include <application/graphicdefinitions.h>
+#include <application/iapplication.h>
+#include <application/irenderer.h>
+#include <application/iwindow.h>
 #include <texturemanager/itexturemanager.h>
 #include <texturemanager/texture.h>
 
-using namespace puma::gfx;
 #include <iostream>
 
+using namespace puma::app;
 
 int main( int argc, char* argv[] )
 {
-    //auto graphicsPtr = IApplication::create();
+    auto appPtr = IApplication::create();
     auto textureManagerPtr = ITextureManager::create();
 
-   /* Extent extent = { 500,500,100,100 };
-    graphicsPtr->init( extent , "GraphicsTest" );
+    Extent extent = { 500,500,100,100 };
+    Extent extent2 = { 500,500,700,100 };
+    appPtr->init();
 
-    bool shouldQuit = false;*/
+    WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
+    WindowHandle windowHandle2 = appPtr->createWindow( extent, "AppTest2" );
+    assert( appPtr->getWindow( windowHandle )->isValid() );
+
+    IRenderer* renderer = appPtr->getWindow( windowHandle )->getRenderer();
+    assert( renderer->isValid() );
+
+    IRenderer* renderer2 = appPtr->getWindow( windowHandle2 )->getRenderer();
+    assert( renderer2->isValid() );
+
+    renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
+    renderer2->setDefaultBackgroundColor( { 0, 255, 0, 255 } );
 
     Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
-
     assert( myTexture.isValid() );
 
     std::cout << myTexture.getOriginalSize().width << " " << myTexture.getOriginalSize().height;
 
-    /*while ( !shouldQuit )
-    {
-        graphicsPtr->update();
-        
-        graphicsPtr->getRenderer()->beginRender();
+    bool shouldQuit = false;
 
-        graphicsPtr->getRenderer()->renderCircle( 50, 50, 25, { 255,0,0,255 } );
+    while ( !shouldQuit )
+    {
+        appPtr->update();
+        
+        renderer->beginRender();
+        
+
+        renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
 
         Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
         Extent targetExtent = { 200, 200, 200, 200 };
-        graphicsPtr->getRenderer()->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+        renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
 
-        graphicsPtr->getRenderer()->endRender();
+        renderer->endRender();
         
-        shouldQuit = graphicsPtr->shouldQuit();
-    }*/
+        //renderer2->beginRender();
+        //renderer2->endRender();
+
+        shouldQuit = appPtr->shouldQuit();
+    }
 
     
 }

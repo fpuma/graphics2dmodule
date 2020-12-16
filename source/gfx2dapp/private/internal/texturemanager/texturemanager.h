@@ -7,7 +7,7 @@
 
 #include <vector>
 
-namespace puma::gfx
+namespace puma::app
 {
     class Renderer;
 

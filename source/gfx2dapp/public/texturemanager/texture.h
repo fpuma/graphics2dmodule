@@ -3,7 +3,7 @@
 #include <application/graphicdefinitions.h>
 #include <optional>
 
-namespace puma::gfx
+namespace puma::app
 {
     class Texture
     {

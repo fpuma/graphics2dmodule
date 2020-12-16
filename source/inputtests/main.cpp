@@ -3,15 +3,15 @@
 #include <application/iapplication.h>
 #include <application/graphicdefinitions.h>
 
-using namespace puma;
+using namespace puma::app;
 
 int main()
 {
-    auto graphics = gfx::IGraphics::create();
+    auto graphics = IApplication::create();
     auto ip = input::IInput::create();
 
-    gfx::Extent extent = { 100,100,100,100 };
-    graphics->init( extent, "InputTest" );
+    Extent extent = { 100,100,100,100 };
+    graphics->init();
 
     while ( !graphics->shouldQuit() )
     {

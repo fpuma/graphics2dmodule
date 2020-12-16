@@ -6,7 +6,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace puma::gfx
+namespace puma::app
 {
     class Window;
     class Texture;
@@ -15,10 +15,8 @@ namespace puma::gfx
     class Renderer final : public IRenderer
     {
     public:
-        Renderer() {}
-
-        void init( const Window& _window );
-        void uninit();
+        Renderer( Window& _window );
+        ~Renderer();
 
         void beginRender() override;
         void endRender() override;
@@ -37,7 +35,7 @@ namespace puma::gfx
         void renderSegment( const s32 _x1, const s32 _y1, const s32 _x2, const s32 _y2, const Color& _color );
         //-----------------------------------------------------------
 
-        SDL_Renderer* getSDLRenderer() const { return m_sdlRenderer; }
+        RendererHandle getRendererHandle() const { return m_sdlRenderer; }
 
     private:
 

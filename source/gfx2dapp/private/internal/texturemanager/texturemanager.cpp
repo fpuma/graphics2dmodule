@@ -13,7 +13,7 @@
 #endif
 
 
-namespace puma::gfx
+namespace puma::app
 {
     std::unique_ptr<ITextureManager> ITextureManager::create()
     {
@@ -36,7 +36,7 @@ namespace puma::gfx
         amask = 0xff000000;
 #endif
 
-        sdlSurface = SDL_CreateRGBSurface( 0, 256, 256, 32, rmask, gmask, bmask, amask);
+        sdlSurface = SDL_CreateRGBSurface( 0, 500, 500, 32, rmask, gmask, bmask, amask);
 
         if ( sdlSurface == nullptr )
         {

@@ -6,28 +6,26 @@
 #include <memory>
 #include <assert.h>
 
-namespace puma::gfx
+namespace puma::app
 {
     class Window;
     struct Extent;
 
-    class Graphics final : public IGraphics
+    class Application final : public IApplication
     {
     public:
-        Graphics();
-        ~Graphics();
+        Application();
+        ~Application();
 
-        void init( const Extent& _extent, const char* _windowName ) override;
+        void init() override;
         void uninit() override;
         void update() override;
         
-        const Renderer* getRenderer() const override { return m_renderer.get(); }
-        Renderer* getRenderer() override { return m_renderer.get(); }
+        WindowHandle createWindow( const Extent& _extent, const char* _windowName ) override;
 
-        const TextureManager* getTextureManager() const override { return m_textureManager.get(); }
-        TextureManager* getTextureManager() override { return m_textureManager.get(); }
+        IWindow* getWindow( WindowHandle _windowHandle );
+        const IWindow* getWindow( WindowHandle _windowHandle ) const;
 
-        Extent getWindowExtent() const override;
         bool shouldQuit() const override { return m_shouldQuit; }
 
         void consumeSdlEvents() override { m_peekSdlEvents = false; }
@@ -35,11 +33,11 @@ namespace puma::gfx
 
     private:
 
-        std::unique_ptr<Window> m_window = nullptr;
-        std::unique_ptr<Renderer> m_renderer = nullptr;
-        std::unique_ptr<TextureManager> m_textureManager = nullptr;
-        bool m_shouldQuit = false;
+        using WindowPtr = std::unique_ptr<Window>;
 
+        std::map<WindowHandle, WindowPtr> m_windows;
+        
+        bool m_shouldQuit = false;
         bool m_peekSdlEvents = false;
     };
 }

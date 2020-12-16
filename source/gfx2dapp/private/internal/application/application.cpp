@@ -10,19 +10,19 @@
 #include <assert.h>
 #include <vector>
 
-namespace puma::gfx
+namespace puma::app
 {
     constexpr s32 kSdlEventBufferSize = 10;
 
-    Graphics::Graphics() {}
-    Graphics::~Graphics() {}
+    Application::Application() {}
+    Application::~Application() {}
 
-    std::unique_ptr<IGraphics> IGraphics::create()
+    std::unique_ptr<IApplication> IApplication::create()
     {
-        return std::make_unique<Graphics>();
+        return std::make_unique<Application>();
     }
 
-    void Graphics::init( const Extent& _extent, const char* _windowName )
+    void Application::init()
     {
         if ( SDL_InitSubSystem( SDL_INIT_VIDEO ) < 0 )
         {
@@ -34,35 +34,37 @@ namespace puma::gfx
         {
             std::cout << "Error initializing SDL TTF: " << TTF_GetError() << std::endl;
         }
-
-        m_window = std::make_unique<Window>();
-        m_window->init( _extent, _windowName );
-        assert( m_window->isValid() );
-        
-        m_renderer = std::make_unique<Renderer>();
-        m_renderer->init( *m_window );
-        assert( m_renderer->isValid() );
-
-        m_textureManager = std::make_unique<TextureManager>( *m_renderer );
     }
 
-    void Graphics::uninit()
+    WindowHandle Application::createWindow( const Extent& _extent, const char* _windowName )
     {
-        m_textureManager->releaseTextures();
-        m_renderer->uninit();
-        m_window->uninit();
+        auto windowPtr = std::make_unique<Window>( _extent, _windowName );
+        assert( windowPtr->isValid() );
+        
+        WindowHandle windowHandle = windowPtr->getWindowHandle();
+
+        m_windows.insert( std::pair( windowHandle, std::move( windowPtr ) ) );
+
+        return windowHandle;
+    }
+
+    void Application::uninit()
+    {
+        m_windows.clear();
 
         TTF_Quit();
         SDL_QuitSubSystem( SDL_INIT_VIDEO );
     }
 
-    void Graphics::update()
+    void Application::update()
     {
         SDL_Event sdlEvents[kSdlEventBufferSize];
         SDL_PumpEvents();
         SDL_eventaction sdlEventAction = m_peekSdlEvents ? SDL_PEEKEVENT : SDL_GETEVENT;
 
-        s32 eventsRetreived = SDL_PeepEvents( sdlEvents, kSdlEventBufferSize, sdlEventAction, 255, 257 );
+        s32 eventsRetreived = SDL_PeepEvents( sdlEvents, kSdlEventBufferSize, sdlEventAction, SDL_QUIT, SDL_QUIT );
+        eventsRetreived = SDL_PeepEvents( sdlEvents + eventsRetreived, kSdlEventBufferSize - eventsRetreived, sdlEventAction, SDL_DISPLAYEVENT, SDL_WINDOWEVENT );
+
         if (eventsRetreived < 0)
         {
             std::cout << "Error retreiving SDL_QUIT: " << SDL_GetError() << std::endl;
@@ -70,7 +72,8 @@ namespace puma::gfx
         assert( eventsRetreived >= 0 );
         for (s32 eventIndex = 0; eventIndex < eventsRetreived; ++eventIndex)
         {
-			switch (sdlEvents[eventIndex].type)
+            SDL_Event event = sdlEvents[eventIndex];
+			switch (event.type)
 			{
 			case SDL_QUIT:
 			{
@@ -78,14 +81,59 @@ namespace puma::gfx
 				break;
 			}
 
+            case SDL_WINDOWEVENT:
+            {
+                switch ( event.window.event )
+                {
+                case SDL_WINDOWEVENT_CLOSE:
+                {
+                    auto foundIt = m_windows.find( event.window.windowID );
+                    assert( foundIt != m_windows.end() );
+
+                    m_windows.erase( foundIt->first );
+
+                    break;
+                }
+                default: break;
+                }
+            }
+
 			default:
 				break;
 			}
         }
+
+        if ( m_windows.empty() )
+        {
+            m_shouldQuit = true;
+        }
     }
 
-    Extent Graphics::getWindowExtent() const
-    { 
-        return m_window->getExtent(); 
+    IWindow* Application::getWindow( WindowHandle _windowHandle )
+    {
+        auto foundIt = m_windows.find( _windowHandle );
+
+        IWindow* result = nullptr;
+
+        if ( foundIt != m_windows.end() )
+        {
+            result = foundIt->second.get();
+        }
+
+        return result;
+    }
+
+    const IWindow* Application::getWindow( WindowHandle _windowHandle ) const
+    {
+        auto foundIt = m_windows.find( _windowHandle );
+
+        IWindow* result = nullptr;
+
+        if ( foundIt != m_windows.end() )
+        {
+            result = foundIt->second.get();
+        }
+
+        return result;
     }
 }

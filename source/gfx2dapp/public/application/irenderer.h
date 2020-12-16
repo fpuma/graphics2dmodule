@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::gfx
+namespace puma::app
 {
     class Texture;
     struct Extent;
