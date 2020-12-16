@@ -1,7 +1,6 @@
 #pragma once
-struct SDL_Texture;
 
-namespace puma::gfx
+namespace puma::app
 {
     struct Extent
     {
@@ -37,6 +36,4 @@ namespace puma::gfx
         TextureMap lowerLimit{ 0.0f, 0.0f };
     };
 
-    using TextureHandle = SDL_Texture* ;
-    using FontHandle = s32;
 }

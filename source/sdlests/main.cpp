@@ -19,8 +19,11 @@ int main( int argc, char* argv[] )
 {
     SDL_InitSubSystem( SDL_INIT_VIDEO );
 
-    SDL_Window* window = SDL_CreateWindow( "SDL Test", 100, 100, 1000, 1000, SDL_WINDOW_SHOWN );
+    SDL_Window* window = SDL_CreateWindow( "SDL Test", 100, 100, 600, 600, SDL_WINDOW_SHOWN );
+    SDL_Window* window2 = SDL_CreateWindow( "SDL Test", 800, 100, 600, 600, SDL_WINDOW_SHOWN );
+
     SDL_Renderer* renderer = SDL_CreateRenderer( window, -1, SDL_RENDERER_ACCELERATED );
+    SDL_Renderer* renderer2 = SDL_CreateRenderer( window2, -1, SDL_RENDERER_ACCELERATED );
 
     bool quit = false;
 
@@ -42,6 +45,15 @@ int main( int argc, char* argv[] )
                 break;
             }
 
+            case SDL_WINDOWEVENT:
+            {
+                if ( event.window.event == SDL_WINDOWEVENT_CLOSE )
+                {
+                    SDL_HideWindow( SDL_GetWindowFromID( event.window.windowID ) );
+                }
+                break;
+            }
+
             default:
                 break;
             }
@@ -52,7 +64,9 @@ int main( int argc, char* argv[] )
         SDL_SetRenderTarget( renderer, targetTexture );
         //Clear render texture
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
+        SDL_SetRenderDrawColor( renderer2, 0, 255, 0, 255 );
         SDL_RenderClear( renderer );
+        SDL_RenderClear( renderer2 );
 
 
         SDL_Rect sourceRect = { 0, 0, 400, 400 };
@@ -64,6 +78,7 @@ int main( int argc, char* argv[] )
         SDL_RenderCopy( renderer, targetTexture, &rect, &rect );
 
         SDL_RenderPresent( renderer );
+        SDL_RenderPresent( renderer2 );
     }
    
 

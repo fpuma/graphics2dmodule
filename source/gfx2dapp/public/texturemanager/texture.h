@@ -1,9 +1,9 @@
 #pragma once
 
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
 #include <optional>
 
-namespace puma::gfx
+namespace puma::app
 {
     class Texture
     {

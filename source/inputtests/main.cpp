@@ -1,17 +1,17 @@
 #include <precompiledgraphics.h>
 #include <input/iinput.h>
-#include <graphics/igraphics.h>
-#include <graphics/graphicdefinitions.h>
+#include <application/iapplication.h>
+#include <application/graphicdefinitions.h>
 
 using namespace puma;
 
 int main()
 {
-    auto graphics = gfx::IGraphics::create();
+    auto graphics = app::IApplication::create();
     auto ip = input::IInput::create();
 
-    gfx::Extent extent = { 100,100,100,100 };
-    graphics->init( extent, "InputTest" );
+    app::Extent extent = { 100,100,100,100 };
+    graphics->init();
 
     while ( !graphics->shouldQuit() )
     {

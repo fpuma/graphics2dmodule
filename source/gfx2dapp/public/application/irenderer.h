@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::gfx
+namespace puma::app
 {
     class Texture;
     struct Extent;
@@ -16,6 +16,9 @@ namespace puma::gfx
         virtual void endRender() = 0;
 
         virtual void setDefaultBackgroundColor( Color _bgColor ) = 0;
+
+        virtual const RendererHandle getRendererHandle() const = 0;
+        virtual RendererHandle getRendererHandle() = 0;
 
         virtual void renderTexture( const Texture& _texture, const Extent& _textureExtent, const Extent& _targetExtent, float _rotation ) const = 0;
 

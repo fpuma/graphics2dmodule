@@ -1,7 +1,8 @@
 #include <precompiledgraphics.h>
 
-#include <internal/graphics/texturemanager.h>
-#include <internal/graphics/renderer.h>
+#include "texturemanager.h"
+
+#include <internal/application/renderer.h>
 
 #include <iostream>
 #include <SDL_Image.h>
@@ -12,14 +13,22 @@
 #endif
 
 
-namespace puma::gfx
+namespace puma::app
 {
+    std::unique_ptr<ITextureManager> ITextureManager::create()
+    {
+        return std::make_unique<TextureManager>();
+    }
+
+    TextureManager::TextureManager()
+    {}
+
     TextureManager::~TextureManager()
     {
         releaseTextures();
     }
 
-    Texture TextureManager::loadTexture( const char* _texturePath )
+    Texture TextureManager::loadTexture( IRenderer* _renderer, const char* _texturePath )
     {
 #ifdef _DEBUG
         auto it = std::find_if(m_sdlTextures.begin(), m_sdlTextures.end(), [&_texturePath](const TexturePathPair& pair)->bool
@@ -41,7 +50,7 @@ namespace puma::gfx
         }
         else
         {
-            newTexture = SDL_CreateTextureFromSurface( m_renderer.getSDLRenderer(), loadedSurface );
+            newTexture = SDL_CreateTextureFromSurface( _renderer->getRendererHandle(), loadedSurface );
             if ( newTexture == nullptr )
             {
                 std::cout<< "Unable to create texture from " << _texturePath << "! SDL Error: " << SDL_GetError() << std::endl;
@@ -73,7 +82,7 @@ namespace puma::gfx
         return result;
     }
 
-    Texture TextureManager::textToTexture( const char* _text, FontHandle _font, Color _color )
+    Texture TextureManager::textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color )
     {
         SDL_Color color = { _color.red, _color.green, _color.blue };
         SDL_Surface* surfaceMessage = TTF_RenderText_Solid( m_sdlFonts[_font], _text, color );
@@ -83,7 +92,7 @@ namespace puma::gfx
             std::cout << "Unable to create surface for text: " << _text << "! SDL Error: " << SDL_GetError() << std::endl;
         }
 
-        SDL_Texture* texture = SDL_CreateTextureFromSurface( m_renderer.getSDLRenderer(), surfaceMessage );
+        SDL_Texture* texture = SDL_CreateTextureFromSurface( _renderer->getRendererHandle(), surfaceMessage );
 
         if ( nullptr == texture )
         {

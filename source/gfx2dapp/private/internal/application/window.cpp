@@ -1,16 +1,16 @@
 #include <precompiledgraphics.h>
 
-#include <internal/graphics/window.h>
+#include <internal/application/window.h>
 
-#include <graphics/graphicdefinitions.h>
+#include <application/graphicdefinitions.h>
 
 #include <iostream>
 #include <SDL.h>
 
-namespace puma::gfx
+namespace puma::app
 {
     
-    void Window::init( const Extent& _windowExtent, const char* _windowName )
+    Window::Window( const Extent& _windowExtent, const char* _windowName )
     {
         m_extent = _windowExtent;
 
@@ -20,13 +20,19 @@ namespace puma::gfx
         {
             std::cout << "SDL Window could not be created. Error: " << SDL_GetError() << std::endl;
         }
+
+        m_renderer = std::make_unique<Renderer>( *this );
     }
 
-    void Window::uninit()
+    Window::~Window()
     {
         SDL_DestroyWindow( m_sdlWindow );
         m_sdlWindow = nullptr;
     }
 
+    WindowHandle Window::getWindowHandle() const
+    {
+        return SDL_GetWindowID( m_sdlWindow );
+    }
 }
 
