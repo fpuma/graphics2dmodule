@@ -6,6 +6,7 @@
 #include <texturemanager/itexturemanager.h>
 #include <texturemanager/texture.h>
 
+#include <vector>
 #include <iostream>
 
 using namespace puma::app;
@@ -15,22 +16,26 @@ int main( int argc, char* argv[] )
     auto appPtr = IApplication::create();
     auto textureManagerPtr = ITextureManager::create();
 
+    std::vector<WindowHandle> windows;
+
     Extent extent = { 500,500,100,100 };
     Extent extent2 = { 500,500,700,100 };
     appPtr->init();
 
     WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
-    WindowHandle windowHandle2 = appPtr->createWindow( extent, "AppTest2" );
+    WindowHandle windowHandle2 = appPtr->createWindow( extent2, "AppTest2" );
     assert( appPtr->getWindow( windowHandle )->isValid() );
 
-    IRenderer* renderer = appPtr->getWindow( windowHandle )->getRenderer();
-    assert( renderer->isValid() );
+    windows.emplace_back( windowHandle );
+    windows.emplace_back( windowHandle2 );
 
-    IRenderer* renderer2 = appPtr->getWindow( windowHandle2 )->getRenderer();
-    assert( renderer2->isValid() );
+    for ( WindowHandle wh : windows )
+    {
+        IRenderer* renderer = appPtr->getWindow( wh )->getRenderer();
+        assert( renderer->isValid() );
 
-    renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
-    renderer2->setDefaultBackgroundColor( { 0, 255, 0, 255 } );
+        renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
+    }
 
     Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
     assert( myTexture.isValid() );
@@ -43,19 +48,28 @@ int main( int argc, char* argv[] )
     {
         appPtr->update();
         
-        renderer->beginRender();
-        
 
-        renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
+        for ( WindowHandle wh : windows )
+        {
+            IWindow* window = appPtr->getWindow( wh );
 
-        Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
-        Extent targetExtent = { 200, 200, 200, 200 };
-        renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+            if ( window != nullptr )
+            {
+                IRenderer* renderer = window->getRenderer();
+                renderer->beginRender();
 
-        renderer->endRender();
-        
-        //renderer2->beginRender();
-        //renderer2->endRender();
+                if ( wh == windowHandle )
+                {
+                    renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
+
+                    Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
+                    Extent targetExtent = { 200, 200, 200, 200 };
+                    renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+                }
+
+                renderer->endRender();
+            }
+        }
 
         shouldQuit = appPtr->shouldQuit();
     }
