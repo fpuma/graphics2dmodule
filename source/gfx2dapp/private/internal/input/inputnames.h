@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::app::input
+namespace puma::input
 {
     const std::map<InputID, const char*> kInputNames = {
         {InputID::MB_Left           ,"LBM"          },

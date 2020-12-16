@@ -3,7 +3,7 @@
 #include <input/iinput.h>
 #include <input/inputids.h>
 
-namespace puma::app::input
+namespace puma::input
 {
     class Input : public IInput
     {

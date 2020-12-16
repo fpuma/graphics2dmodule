@@ -3,14 +3,14 @@
 #include <application/iapplication.h>
 #include <application/graphicdefinitions.h>
 
-using namespace puma::app;
+using namespace puma;
 
 int main()
 {
-    auto graphics = IApplication::create();
+    auto graphics = app::IApplication::create();
     auto ip = input::IInput::create();
 
-    Extent extent = { 100,100,100,100 };
+    app::Extent extent = { 100,100,100,100 };
     graphics->init();
 
     while ( !graphics->shouldQuit() )
