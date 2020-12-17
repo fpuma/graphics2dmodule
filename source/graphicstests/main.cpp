@@ -59,12 +59,15 @@ int main( int argc, char* argv[] )
                 renderer->beginRender();
 
                 if ( wh == windowHandle )
-                {
-                    renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
-
+                {                   
                     Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
                     Extent targetExtent = { 200, 200, 200, 200 };
                     renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+                }
+
+                if ( wh == windowHandle2 )
+                {
+                    renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
                 }
 
                 renderer->endRender();

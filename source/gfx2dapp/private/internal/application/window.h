@@ -9,7 +9,6 @@ struct SDL_Renderer;
 
 namespace puma::app
 {
-
     class Window : public IWindow
     {
     public:
@@ -23,17 +22,13 @@ namespace puma::app
 
         WindowHandle getWindowHandle() const override;
 
-        bool isValid() const override { return m_sdlWindow != nullptr; }
-
-        const SDL_Window* getSdlWindow() const { return m_sdlWindow; }
-        SDL_Window* getSdlWindow() { return m_sdlWindow; }
+        bool isValid() const override { return m_windowHandle != kInvalidWindowHandle; }
 
     private:
 
         Extent m_extent = {};
-        SDL_Window* m_sdlWindow = nullptr;
-        std::unique_ptr<Renderer> m_renderer;
- 
+        WindowHandle m_windowHandle = kInvalidWindowHandle;
+        std::unique_ptr<Renderer> m_renderer = nullptr;
     };
 }
 

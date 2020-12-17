@@ -2,8 +2,8 @@
 
 namespace puma::app
 {
+    class IRenderer;
     class IWindow;
-    class ITextureManager;
     struct Extent;
 
     class IApplication : public NonCopyable
@@ -20,6 +20,12 @@ namespace puma::app
 
         virtual WindowHandle createWindow( const Extent& _extent, const char* _windowName ) = 0;
         
+        virtual IWindow* getDefaultWindow() = 0;
+        virtual const IWindow* getDefaultWindow() const = 0;
+
+        virtual IRenderer* getDefaultRenderer() = 0;
+        virtual const IRenderer* getDefaultRenderer() const = 0;
+
         virtual IWindow* getWindow( WindowHandle _windowHandle ) = 0;
         virtual const IWindow* getWindow( WindowHandle _windowHandle ) const = 0;
 

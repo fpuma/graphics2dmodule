@@ -13,25 +13,31 @@ namespace puma::app
     {
         m_extent = _windowExtent;
 
-        m_sdlWindow = SDL_CreateWindow( _windowName, _windowExtent.xPos, _windowExtent.yPos, _windowExtent.width, _windowExtent.height, SDL_WINDOW_SHOWN );
+        SDL_Window* sdlWindow = SDL_CreateWindow( _windowName, _windowExtent.xPos, _windowExtent.yPos, _windowExtent.width, _windowExtent.height, SDL_WINDOW_SHOWN );
 
-        if ( nullptr == m_sdlWindow )
+        if ( nullptr == sdlWindow )
         {
             std::cout << "SDL Window could not be created. Error: " << SDL_GetError() << std::endl;
         }
-
-        m_renderer = std::make_unique<Renderer>( *this );
+        else
+        {
+            m_windowHandle = SDL_GetWindowID( sdlWindow );
+            m_renderer = std::make_unique<Renderer>( *this );
+        }
     }
 
     Window::~Window()
     {
-        SDL_DestroyWindow( m_sdlWindow );
-        m_sdlWindow = nullptr;
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        assert( nullptr != sdlWindow );
+        SDL_DestroyWindow( sdlWindow );
+        m_windowHandle = kInvalidWindowHandle;
+        m_renderer.reset();
     }
 
     WindowHandle Window::getWindowHandle() const
     {
-        return SDL_GetWindowID( m_sdlWindow );
+        return m_windowHandle;
     }
 }
 

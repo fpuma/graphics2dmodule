@@ -10,8 +10,9 @@ int main()
     auto graphics = app::IApplication::create();
     auto ip = input::IInput::create();
 
-    app::Extent extent = { 100,100,100,100 };
+    app::Extent extent = { 500,500,100,100 };
     graphics->init();
+    graphics->createWindow( extent, "InputTest" );
 
     while ( !graphics->shouldQuit() )
     {

@@ -42,6 +42,11 @@ namespace puma::app
 
         m_windows.insert( std::pair( windowHandle, std::move( windowPtr ) ) );
 
+        if ( kInvalidWindowHandle == m_defaultWindowHandle )
+        {
+            m_defaultWindowHandle = windowHandle;
+        }
+
         return windowHandle;
     }
 
@@ -64,8 +69,9 @@ namespace puma::app
 
         if (eventsRetreived < 0)
         {
-            std::cout << "Error retreiving SDL_QUIT: " << SDL_GetError() << std::endl;
+            std::cout << "Error retreiving SDL events: " << SDL_GetError() << std::endl;
         }
+
         assert( eventsRetreived >= 0 );
         for (s32 eventIndex = 0; eventIndex < eventsRetreived; ++eventIndex)
         {
@@ -93,6 +99,7 @@ namespace puma::app
                 }
                 default: break;
                 }
+                break;
             }
 
 			default:
@@ -106,31 +113,65 @@ namespace puma::app
         }
     }
 
-    IWindow* Application::getWindow( WindowHandle _windowHandle )
+    namespace
     {
-        auto foundIt = m_windows.find( _windowHandle );
-
-        IWindow* result = nullptr;
-
-        if ( foundIt != m_windows.end() )
+        IWindow* findWindow( const WindowMap& _windowMap, WindowHandle _windowHandle )
         {
-            result = foundIt->second.get();
+            assert( kInvalidWindowHandle != _windowHandle );
+            auto foundIt = _windowMap.find( _windowHandle );
+
+            IWindow* result = nullptr;
+
+            if ( foundIt != _windowMap.end() )
+            {
+                result = foundIt->second.get();
+            }
+
+            return result;
         }
 
-        return result;
+        IRenderer* getWindowRenderer( const WindowMap& _windowMap, WindowHandle _windowHandle )
+        {
+            assert( kInvalidWindowHandle != _windowHandle );
+            IRenderer* result = nullptr;
+            IWindow* defaultWindow = findWindow( _windowMap, _windowHandle );
+
+            if ( nullptr != defaultWindow )
+            {
+                result = defaultWindow->getRenderer();
+            }
+
+            return result;
+        }
+    }
+
+    IWindow* Application::getDefaultWindow()
+    {
+        return findWindow( m_windows, m_defaultWindowHandle );
+    }
+
+    const IWindow* Application::getDefaultWindow() const
+    {
+        return findWindow( m_windows, m_defaultWindowHandle );
+    }
+
+    IRenderer* Application::getDefaultRenderer()
+    {
+        return getWindowRenderer( m_windows, m_defaultWindowHandle );
+    }
+
+    const IRenderer* Application::getDefaultRenderer() const
+    {
+        return getWindowRenderer( m_windows, m_defaultWindowHandle );
+    }
+
+    IWindow* Application::getWindow( WindowHandle _windowHandle )
+    {
+        return findWindow( m_windows, _windowHandle );
     }
 
     const IWindow* Application::getWindow( WindowHandle _windowHandle ) const
     {
-        auto foundIt = m_windows.find( _windowHandle );
-
-        IWindow* result = nullptr;
-
-        if ( foundIt != m_windows.end() )
-        {
-            result = foundIt->second.get();
-        }
-
-        return result;
+        return findWindow( m_windows, _windowHandle );
     }
 }

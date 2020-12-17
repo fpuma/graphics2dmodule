@@ -8,6 +8,9 @@ namespace puma::app
     class Window;
     struct Extent;
 
+    using WindowPtr = std::unique_ptr<Window>;
+    using WindowMap = std::map<WindowHandle, WindowPtr>;
+
     class Application final : public IApplication
     {
     public:
@@ -20,6 +23,12 @@ namespace puma::app
         
         WindowHandle createWindow( const Extent& _extent, const char* _windowName ) override;
 
+        IWindow* getDefaultWindow();
+        const IWindow* getDefaultWindow() const;
+
+        IRenderer* getDefaultRenderer();
+        const IRenderer* getDefaultRenderer() const;
+
         IWindow* getWindow( WindowHandle _windowHandle );
         const IWindow* getWindow( WindowHandle _windowHandle ) const;
 
@@ -30,10 +39,10 @@ namespace puma::app
 
     private:
 
-        using WindowPtr = std::unique_ptr<Window>;
-
-        std::map<WindowHandle, WindowPtr> m_windows;
+        WindowMap m_windows;
         
+        WindowHandle m_defaultWindowHandle = kInvalidWindowHandle;
+
         bool m_shouldQuit = false;
         bool m_peekSdlEvents = false;
     };

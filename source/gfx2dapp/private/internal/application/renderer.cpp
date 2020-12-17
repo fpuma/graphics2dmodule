@@ -13,7 +13,8 @@ namespace puma::app
 {
     Renderer::Renderer( Window& _window )
     {
-        m_sdlRenderer = SDL_CreateRenderer( _window.getSdlWindow(), -1, SDL_RENDERER_ACCELERATED );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowHandle() );
+        m_sdlRenderer = SDL_CreateRenderer( sdlWindow , -1, SDL_RENDERER_ACCELERATED );
         if ( nullptr == m_sdlRenderer )
         {
             std::cout << "SDL Renderer could not be created. Error: " << SDL_GetError() << std::endl;

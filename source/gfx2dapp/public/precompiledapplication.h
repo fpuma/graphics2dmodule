@@ -22,4 +22,6 @@ namespace puma::app
     using WindowHandle = puma::u32;
     using RendererHandle = SDL_Renderer*;
     using FontHandle = puma::s32;
+
+    constexpr WindowHandle kInvalidWindowHandle = 0;
 }

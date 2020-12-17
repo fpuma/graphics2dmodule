@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 
-//#define PUMA_INPUT_DEBUG
+#define PUMA_INPUT_DEBUG
 
 #ifdef PUMA_INPUT_DEBUG
 #include <internal/input/inputnames.h>
@@ -50,7 +50,7 @@ namespace puma::input
 
     void Input::init()
     {
-        if ( SDL_Init( SDL_INIT_EVENTS ) < 0 )
+        if ( SDL_InitSubSystem( SDL_INIT_EVENTS ) < 0 )
         {
             std::cout << "Error initializing SDL: " << SDL_GetError() << std::endl;
             return;
