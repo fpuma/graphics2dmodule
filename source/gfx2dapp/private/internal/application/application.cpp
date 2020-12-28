@@ -42,12 +42,16 @@ namespace puma::app
 
         m_windows.insert( std::pair( windowHandle, std::move( windowPtr ) ) );
 
-        if ( kInvalidWindowHandle == m_defaultWindowHandle )
-        {
-            m_defaultWindowHandle = windowHandle;
-        }
-
         return windowHandle;
+    }
+
+    void Application::removeWindow( WindowHandle _windowHandle )
+    {
+        auto foundIt = m_windows.find( _windowHandle );
+
+        assert( foundIt != m_windows.end() );
+
+        m_windows.erase( foundIt );
     }
 
     void Application::uninit()
@@ -143,26 +147,6 @@ namespace puma::app
 
             return result;
         }
-    }
-
-    IWindow* Application::getDefaultWindow()
-    {
-        return findWindow( m_windows, m_defaultWindowHandle );
-    }
-
-    const IWindow* Application::getDefaultWindow() const
-    {
-        return findWindow( m_windows, m_defaultWindowHandle );
-    }
-
-    IRenderer* Application::getDefaultRenderer()
-    {
-        return getWindowRenderer( m_windows, m_defaultWindowHandle );
-    }
-
-    const IRenderer* Application::getDefaultRenderer() const
-    {
-        return getWindowRenderer( m_windows, m_defaultWindowHandle );
     }
 
     IWindow* Application::getWindow( WindowHandle _windowHandle )

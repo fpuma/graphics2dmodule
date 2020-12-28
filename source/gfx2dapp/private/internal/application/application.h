@@ -22,12 +22,7 @@ namespace puma::app
         void update() override;
         
         WindowHandle createWindow( const Extent& _extent, const char* _windowName ) override;
-
-        IWindow* getDefaultWindow();
-        const IWindow* getDefaultWindow() const;
-
-        IRenderer* getDefaultRenderer();
-        const IRenderer* getDefaultRenderer() const;
+        void removeWindow( WindowHandle _windowHandle ) override;
 
         IWindow* getWindow( WindowHandle _windowHandle );
         const IWindow* getWindow( WindowHandle _windowHandle ) const;
@@ -41,8 +36,6 @@ namespace puma::app
 
         WindowMap m_windows;
         
-        WindowHandle m_defaultWindowHandle = kInvalidWindowHandle;
-
         bool m_shouldQuit = false;
         bool m_peekSdlEvents = false;
     };
