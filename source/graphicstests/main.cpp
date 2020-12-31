@@ -1,8 +1,9 @@
 #include <precompiledapplication.h>
-#include <application/commondefinitions.h>
 #include <application/iapplication.h>
 #include <application/irenderer.h>
 #include <application/iwindow.h>
+#include <utils/graphics/color.h>
+#include <utils/graphics/dimensions.h>
 #include <texturemanager/itexturemanager.h>
 #include <texturemanager/texture.h>
 
@@ -10,6 +11,7 @@
 #include <iostream>
 
 using namespace puma::app;
+using namespace puma;
 
 int main( int argc, char* argv[] )
 {
