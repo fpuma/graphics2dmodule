@@ -1,10 +1,14 @@
 #pragma once
 
+namespace puma
+{
+    struct Color;
+    struct Extent;
+}
+
 namespace puma::app
 {
     class Texture;
-    struct Extent;
-    struct Color;
 
     class IRenderer : public NonCopyable
     {
@@ -15,7 +19,7 @@ namespace puma::app
         virtual void beginRender() = 0;
         virtual void endRender() = 0;
 
-        virtual void setDefaultBackgroundColor( Color _bgColor ) = 0;
+        virtual void setDefaultBackgroundColor( const Color& _bgColor ) = 0;
 
         virtual const RendererHandle getRendererHandle() const = 0;
         virtual RendererHandle getRendererHandle() = 0;

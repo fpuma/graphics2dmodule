@@ -1,6 +1,11 @@
 #pragma once
 #include <texturemanager/texture.h>
 
+namespace puma
+{
+    struct Color;
+}
+
 namespace puma::app
 {
     class IRenderer;
@@ -14,7 +19,7 @@ namespace puma::app
         virtual ~ITextureManager() = default;
 
         virtual Texture loadTexture( IRenderer* _renderer, const char* _path ) = 0;
-        virtual Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color ) = 0;
+        virtual Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, const Color& _color ) = 0;
         virtual FontHandle loadFont( const char* _fontPath ) = 0;
     };
 }

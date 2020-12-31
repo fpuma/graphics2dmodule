@@ -1,6 +1,5 @@
 #pragma once
 
-#include <application/commondefinitions.h>
 #include <texturemanager/itexturemanager.h>
 
 #include <SDL_ttf.h>
@@ -16,7 +15,7 @@ namespace puma::app
         ~TextureManager();
 
         Texture loadTexture( IRenderer* _renderer, const char* _texturePath ) override;
-        Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color ) override;
+        Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, const Color& _color ) override;
         FontHandle loadFont( const char* _fontPath ) override;
 
         void releaseTextures();

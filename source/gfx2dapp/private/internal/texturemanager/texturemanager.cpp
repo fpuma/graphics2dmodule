@@ -3,6 +3,7 @@
 #include "texturemanager.h"
 
 #include <internal/application/renderer.h>
+#include <utils/graphics/dimensions.h>
 
 #include <SDL_Image.h>
 
@@ -75,7 +76,7 @@ namespace puma::app
         return result;
     }
 
-    Texture TextureManager::textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, Color _color )
+    Texture TextureManager::textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, const Color& _color )
     {
         SDL_Color color = { _color.red, _color.green, _color.blue };
         SDL_Surface* surfaceMessage = TTF_RenderText_Solid( m_sdlFonts[_font], _text, color );

@@ -6,7 +6,6 @@
 namespace puma::app
 {
     class Window;
-    struct Extent;
 
     using WindowPtr = std::unique_ptr<Window>;
     using WindowMap = std::map<WindowHandle, WindowPtr>;

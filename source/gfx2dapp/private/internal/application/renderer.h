@@ -1,7 +1,7 @@
 #pragma once
 
-#include <application/commondefinitions.h>
 #include <application/irenderer.h>
+#include <utils/graphics/color.h>
 
 struct SDL_Window;
 struct SDL_Renderer;
@@ -9,8 +9,6 @@ struct SDL_Renderer;
 namespace puma::app
 {
     class Window;
-    class Texture;
-    struct Extent;
 
     class Renderer final : public IRenderer
     {
@@ -23,7 +21,7 @@ namespace puma::app
 
         bool isValid() const override { return m_sdlRenderer != nullptr; }
 
-        void setDefaultBackgroundColor( Color _bgColor ) override { m_bgColor = _bgColor; }
+        void setDefaultBackgroundColor( const Color& _bgColor ) override { m_bgColor = _bgColor; }
 
         const RendererHandle getRendererHandle() const { return m_sdlRenderer; }
         RendererHandle getRendererHandle() { return m_sdlRenderer; }

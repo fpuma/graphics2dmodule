@@ -2,8 +2,6 @@
 
 #include "window.h"
 
-#include <application/commondefinitions.h>
-
 #include <SDL.h>
 
 namespace puma::app

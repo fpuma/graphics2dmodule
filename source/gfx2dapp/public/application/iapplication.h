@@ -1,10 +1,14 @@
 #pragma once
 
+namespace puma
+{
+    struct Extent;
+}
+
 namespace puma::app
 {
     class IRenderer;
     class IWindow;
-    struct Extent;
 
     class IApplication : public NonCopyable
     {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <application/commondefinitions.h>
+#include <utils/graphics/dimensions.h>
 
 namespace puma::app
 {

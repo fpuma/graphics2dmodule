@@ -1,6 +1,5 @@
 #pragma once
 
-#include <application/commondefinitions.h>
 #include <application/iwindow.h>
 #include <internal/application/renderer.h>
 
