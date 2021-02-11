@@ -1,5 +1,6 @@
 #include <SDL.h>
 #include <SDL_image.h>
+#include <iostream>
 
 namespace
 {
@@ -75,7 +76,12 @@ int main( int argc, char* argv[] )
         SDL_SetRenderTarget( renderer, nullptr );
 
         SDL_Rect rect = { 0, 0, 1000, 1000 };
-        SDL_RenderCopy( renderer, targetTexture, &rect, &rect );
+        int errorCode = SDL_RenderCopy( renderer2, targetTexture, &rect, &rect );
+
+        if ( errorCode != 0 )
+        {
+            std::cout << "Unable to render texture. ERROR: " << SDL_GetError() << std::endl;
+        }
 
         SDL_RenderPresent( renderer );
         SDL_RenderPresent( renderer2 );

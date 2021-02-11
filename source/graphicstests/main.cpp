@@ -13,10 +13,32 @@
 using namespace puma::app;
 using namespace puma;
 
+void testTextureManager();
+void testApplication();
+
 int main( int argc, char* argv[] )
 {
+    //testTextureManager();
+    testApplication();
+    return 0;
+}
+
+void testTextureManager()
+{
     auto appPtr = IApplication::create();
-    auto textureManagerPtr = ITextureManager::create();
+    Extent extent = { 500,500,100,100 };
+    WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
+    std::unique_ptr<ITextureManager> textureManagerPtr = ITextureManager::create( appPtr->getWindow( windowHandle )->getRenderer() );
+
+    Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
+    Texture myTexture2 = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
+
+    textureManagerPtr->unloadTexture( myTexture );
+}
+
+void testApplication()
+{
+    auto appPtr = IApplication::create();
 
     std::vector<WindowHandle> windows;
 
@@ -31,6 +53,9 @@ int main( int argc, char* argv[] )
     windows.emplace_back( windowHandle );
     windows.emplace_back( windowHandle2 );
 
+    auto textureManagerPtr = ITextureManager::create( appPtr->getWindow( windowHandle )->getRenderer() );
+    auto textureManagerPtr2 = ITextureManager::create( appPtr->getWindow( windowHandle2 )->getRenderer() );
+
     for ( WindowHandle wh : windows )
     {
         IRenderer* renderer = appPtr->getWindow( wh )->getRenderer();
@@ -39,8 +64,13 @@ int main( int argc, char* argv[] )
         renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
     }
 
-    Texture myTexture = textureManagerPtr->loadTexture( appPtr->getWindow(windowHandle)->getRenderer(), "../asset/programmerdrawing.png" );
+    Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
+    FontHandle myFont = textureManagerPtr2->loadFont( "../asset/Blitztark_v0-Regular.ttf" );
+    Texture myText = textureManagerPtr2->loadText( { "Sup, mah dudes!", "../asset/Blitztark_v0-Regular.ttf", Color::Green() } );
+    Texture myText2 = textureManagerPtr2->loadText( { "Sup, mah dudes!", "../asset/Blitztark_v0-Regular.ttf", Color::Blue() } );
+    assert( myFont != nullptr );
     assert( myTexture.isValid() );
+    assert( myText.isValid() );
 
     std::cout << myTexture.getOriginalSize().width << " " << myTexture.getOriginalSize().height;
 
@@ -49,7 +79,7 @@ int main( int argc, char* argv[] )
     while ( !shouldQuit )
     {
         appPtr->update();
-        
+
 
         for ( WindowHandle wh : windows )
         {
@@ -61,7 +91,7 @@ int main( int argc, char* argv[] )
                 renderer->beginRender();
 
                 if ( wh == windowHandle )
-                {                   
+                {
                     Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
                     Extent targetExtent = { 200, 200, 200, 200 };
                     renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
@@ -69,7 +99,12 @@ int main( int argc, char* argv[] )
 
                 if ( wh == windowHandle2 )
                 {
-                    renderer->renderCircle( 50, 50, 25, { 255,0,0,255 } );
+                    Extent textureExtent = { myText.getOriginalSize().width, myText.getOriginalSize().height, 0, 0 };
+                    Extent targetExtent = { 200, 60, 50, 50 };
+                    renderer->renderTexture( myText, textureExtent, targetExtent, 0.0f );
+                    targetExtent = { 200, 60, 210, 50 };
+                    renderer->renderTexture( myText2, textureExtent, targetExtent, 0.0f );
+                    renderer->renderCircle( 250, 250, 25, { 255,0,0,255 } );
                 }
 
                 renderer->endRender();
@@ -79,5 +114,4 @@ int main( int argc, char* argv[] )
         shouldQuit = appPtr->shouldQuit();
     }
 
-    
 }

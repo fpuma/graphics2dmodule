@@ -14,12 +14,18 @@ namespace puma::app
     {
     public:
         
-        static std::unique_ptr<ITextureManager> create();
+        static std::unique_ptr<ITextureManager> create( IRenderer* _renderer);
 
         virtual ~ITextureManager() = default;
 
-        virtual Texture loadTexture( IRenderer* _renderer, const char* _path ) = 0;
-        virtual Texture textToTexture( IRenderer* _renderer, const char* _text, FontHandle _font, const Color& _color ) = 0;
+        virtual Texture loadTexture( const char* _texturePath ) = 0;
         virtual FontHandle loadFont( const char* _fontPath ) = 0;
+        virtual Texture loadText( const TexturizedTextInfo& _textInfo ) = 0;
+
+        virtual void unloadTexture( const Texture& _texture ) = 0;
+        virtual void unloadFont( FontHandle _fontHandle ) = 0;
+        virtual void unloadText( const Texture& _texture ) = 0;
+
+        virtual void clearTextures() = 0;
     };
 }
