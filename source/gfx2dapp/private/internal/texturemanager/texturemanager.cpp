@@ -4,6 +4,7 @@
 
 #include <internal/application/renderer.h>
 #include <utils/graphics/dimensions.h>
+#include <utils/hash.h>
 
 #include <functional>
 
@@ -94,21 +95,21 @@ namespace puma::app
         }
     }
 
-    template <class T>
-    inline void hash_combine( std::size_t& seed, const T& v )
-    {
-        std::hash<T> hasher;
-        seed ^= hasher( v ) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    }
+    //template <class T>
+    //inline void hash_combine( std::size_t& seed, const T& v )
+    //{
+    //    std::hash<T> hasher;
+    //    seed ^= hasher( v ) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    //}
 
     Texture TextureManager::loadText( const TexturizedTextInfo& _textInfo )
     {
         size_t hashResult = 0;
-        hash_combine( hashResult, _textInfo.fontPath );
-        hash_combine( hashResult, _textInfo.text );
-        hash_combine( hashResult, _textInfo.color.red );
-        hash_combine( hashResult, _textInfo.color.green );
-        hash_combine( hashResult, _textInfo.color.blue );
+        hashCombine( hashResult, _textInfo.fontPath );
+        hashCombine( hashResult, _textInfo.text );
+        hashCombine( hashResult, _textInfo.color.red );
+        hashCombine( hashResult, _textInfo.color.green );
+        hashCombine( hashResult, _textInfo.color.blue );
         TextData textData = { _textInfo, {}, hashResult };
 
         auto itFound = m_texts.find( textData );
