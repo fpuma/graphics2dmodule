@@ -14,11 +14,6 @@
 
 namespace puma::app
 {
-    std::unique_ptr<ITextureManager> ITextureManager::create( IRenderer* _renderer )
-    {
-        return std::make_unique<TextureManager>( _renderer );
-    }
-
     TextureManager::TextureManager( IRenderer* _renderer )
     {
         m_renderer = _renderer;
@@ -94,13 +89,6 @@ namespace puma::app
             return font;
         }
     }
-
-    //template <class T>
-    //inline void hash_combine( std::size_t& seed, const T& v )
-    //{
-    //    std::hash<T> hasher;
-    //    seed ^= hasher( v ) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-    //}
 
     Texture TextureManager::loadText( const TexturizedTextInfo& _textInfo )
     {

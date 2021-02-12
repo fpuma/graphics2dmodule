@@ -14,8 +14,6 @@ namespace puma::app
     {
     public:
         
-        static std::unique_ptr<ITextureManager> create( IRenderer* _renderer);
-
         virtual ~ITextureManager() = default;
 
         virtual Texture loadTexture( const char* _texturePath ) = 0;

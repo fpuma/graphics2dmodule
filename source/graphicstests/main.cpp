@@ -28,7 +28,7 @@ void testTextureManager()
     auto appPtr = IApplication::create();
     Extent extent = { 500,500,100,100 };
     WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
-    std::unique_ptr<ITextureManager> textureManagerPtr = ITextureManager::create( appPtr->getWindow( windowHandle )->getRenderer() );
+    ITextureManager* textureManagerPtr = appPtr->getWindow( windowHandle )->getRenderer()->getTextureManager();
 
     Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
     Texture myTexture2 = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
@@ -53,8 +53,8 @@ void testApplication()
     windows.emplace_back( windowHandle );
     windows.emplace_back( windowHandle2 );
 
-    auto textureManagerPtr = ITextureManager::create( appPtr->getWindow( windowHandle )->getRenderer() );
-    auto textureManagerPtr2 = ITextureManager::create( appPtr->getWindow( windowHandle2 )->getRenderer() );
+    auto textureManagerPtr = appPtr->getWindow( windowHandle )->getRenderer()->getTextureManager() ;
+    auto textureManagerPtr2 = appPtr->getWindow( windowHandle2 )->getRenderer()->getTextureManager();
 
     for ( WindowHandle wh : windows )
     {
@@ -68,7 +68,12 @@ void testApplication()
     FontHandle myFont = textureManagerPtr2->loadFont( "../asset/Blitztark_v0-Regular.ttf" );
     Texture myText = textureManagerPtr2->loadText( { "Sup, mah dudes!", "../asset/Blitztark_v0-Regular.ttf", Color::Green() } );
     Texture myText2 = textureManagerPtr2->loadText( { "Sup, mah dudes!", "../asset/Blitztark_v0-Regular.ttf", Color::Blue() } );
-    assert( myFont != nullptr );
+    
+    if ( myFont == nullptr )
+    {
+        //To prevent warning in release
+        assert( false );
+    }
     assert( myTexture.isValid() );
     assert( myText.isValid() );
 

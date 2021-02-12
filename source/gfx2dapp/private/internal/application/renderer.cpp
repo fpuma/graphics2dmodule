@@ -20,6 +20,8 @@ namespace puma::app
         {
             std::cout << "SDL Renderer could not be created. Error: " << SDL_GetError() << std::endl;
         }
+
+        m_textureManager = std::make_unique<TextureManager>( this );
     }
 
     Renderer::~Renderer()
@@ -62,27 +64,27 @@ namespace puma::app
         stringRGBA( m_sdlRenderer, (s16)_xPos, (s16)_yPos, _text, 255, 0, 255, 255 );
     }
 
-    void Renderer::renderPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color )
+    void Renderer::renderPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const
     {
         polygonRGBA( m_sdlRenderer, _xCoords, _yCoords, vertexCount, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSolidPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color )
+    void Renderer::renderSolidPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const
     {
         filledPolygonRGBA( m_sdlRenderer, _xCoords, _yCoords, vertexCount, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color )
+    void Renderer::renderCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const
     {
         circleRGBA( m_sdlRenderer, (s16)_xCenter, (s16)_yCenter, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSolidCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color )
+    void Renderer::renderSolidCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const
     {
         filledCircleRGBA( m_sdlRenderer, (s16)_xCenter, (s16)_yCenter, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSegment( const s32 _x1, const s32 _y1, const s32 _x2, const s32 _y2, const Color& _color )
+    void Renderer::renderSegment( const s32 _x1, const s32 _y1, const s32 _x2, const s32 _y2, const Color& _color ) const
     {
         lineRGBA( m_sdlRenderer, (s16)_x1, (s16)_y1, (s16)_x2, (s16)_y2, _color.red, _color.green, _color.blue, _color.alpha );
     }
