@@ -45,14 +45,6 @@ namespace Export
                 conf.LibraryFiles.Add(@"sdlgfx_r.lib");
             }
         }
-
-        public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
-        {
-            base.ConfigureAll(conf, target);
-
-            conf.IncludePaths.Add(@"\include");
-            conf.AddPrivateDependency<Export.SDL>(target);
-        }
     }
 
     [Sharpmake.Export]
