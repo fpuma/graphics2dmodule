@@ -6,8 +6,6 @@
 
 namespace puma::app
 {
-    //class Renderer;
-
     class TextureManager final : public ITextureManager
     {
     public:
