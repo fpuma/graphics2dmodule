@@ -2,7 +2,6 @@
 
 #include <algorithm>
 #include <assert.h>
-#include <iostream>
 #include <map>
 #include <memory>
 #include <set>
@@ -10,6 +9,7 @@
 
 #include <utils/numerictypes.h>
 #include <utils/noncopyable.h>
+#include <utils/formatstring.h>
 
 #include <texturemanager/texturedefinitions.h>
 #include <input/inputdefinitions.h>

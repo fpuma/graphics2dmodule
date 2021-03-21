@@ -2,6 +2,8 @@
 #include <application/iapplication.h>
 #include <application/irenderer.h>
 #include <application/iwindow.h>
+#include <logger/logger.h>
+#include <logger/output/consolelogoutput.h>
 #include <utils/graphics/color.h>
 #include <utils/graphics/dimensions.h>
 #include <texturemanager/itexturemanager.h>
@@ -40,11 +42,12 @@ void testApplication()
 {
     auto appPtr = IApplication::create();
 
+    appPtr->getLogger()->addOutput<ConsoleLogOutput>();
+
     std::vector<WindowHandle> windows;
 
     Extent extent = { 500,500,100,100 };
     Extent extent2 = { 500,500,700,100 };
-    appPtr->init();
 
     WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
     WindowHandle windowHandle2 = appPtr->createWindow( extent2, "AppTest2" );

@@ -2,6 +2,8 @@
 
 #include "window.h"
 
+#include <internal/applogger/applogger.h>
+
 #include <SDL.h>
 
 namespace puma::app
@@ -15,11 +17,12 @@ namespace puma::app
 
         if ( nullptr == sdlWindow )
         {
-            std::cout << "SDL Window could not be created. Error: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "SDL Window could not be created. Error: %s", SDL_GetError() ).c_str() );
         }
         else
         {
             m_windowHandle = SDL_GetWindowID( sdlWindow );
+            gAppLogger->info( formatString( "SDL Window: %d was created.", m_windowHandle ).c_str() );
             m_renderer = std::make_unique<Renderer>( *this );
         }
     }

@@ -3,6 +3,8 @@
 #include "texturemanager.h"
 
 #include <internal/application/renderer.h>
+#include <internal/applogger/applogger.h>
+
 #include <utils/graphics/dimensions.h>
 #include <utils/hash.h>
 
@@ -43,14 +45,14 @@ namespace puma::app
             SDL_Surface* loadedSurface = IMG_Load( _texturePath );
             if ( loadedSurface == nullptr )
             {
-                std::cout << "Unable to load image " << _texturePath << "! SDL_image Error: " << IMG_GetError() << std::endl;
+                gAppLogger->error(formatString( "Unable to load image <%s>! SDL_image Error: %s", _texturePath, IMG_GetError() ).c_str());
             }
             else
             {
                 newTexture = SDL_CreateTextureFromSurface( (SDL_Renderer*)m_renderer->getRendererHandle(), loadedSurface );
                 if ( newTexture == nullptr )
                 {
-                    std::cout << "Unable to create texture from " << _texturePath << "! SDL Error: " << SDL_GetError() << std::endl;
+                    gAppLogger->error( formatString( "Unable to create texture from <%s>! SDL Error: %s", _texturePath, SDL_GetError() ).c_str() );
                 }
 
                 SDL_FreeSurface( loadedSurface );
@@ -80,7 +82,7 @@ namespace puma::app
             TTF_Font* font = TTF_OpenFont( _fontPath, 72 );
             if ( nullptr == font )
             {
-                std::cout << "Unable to create font from " << _fontPath << "! TTF Error: " << TTF_GetError() << std::endl;
+                gAppLogger->error( formatString( "Unable to create font from <%s>! TTF Error: ", _fontPath, TTF_GetError() ).c_str() );
             }
 
             fontData.font = font;
@@ -169,14 +171,14 @@ namespace puma::app
         
         if ( nullptr == surfaceMessage )
         {
-            std::cout << "Unable to create surface for text: " << _text << "! SDL Error: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "Unable to create surface for text: %s! SDL Error: ", _text, SDL_GetError() ).c_str() );
         }
 
         SDL_Texture* texture = SDL_CreateTextureFromSurface( (SDL_Renderer*)m_renderer->getRendererHandle(), surfaceMessage );
 
         if ( nullptr == texture )
         {
-            std::cout << "Unable to create text texture: " << _text << "! SDL Error: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "Unable to create text texture: %s! SDL Error: %s", _text, SDL_GetError() ).c_str() );
         }
         Rect originalSize = {};
         SDL_QueryTexture( texture, nullptr, nullptr, &originalSize.width, &originalSize.height );

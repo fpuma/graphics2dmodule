@@ -11,25 +11,42 @@ namespace puma::app
 {
     constexpr s32 kSdlEventBufferSize = 10;
 
-    Application::Application() {}
-    Application::~Application() {}
-
     std::unique_ptr<IApplication> IApplication::create()
     {
         return std::make_unique<Application>();
     }
 
+    Application::Application()
+    {
+        init();
+    }
+
+    Application::~Application()
+    {
+        uninit();
+    }
+
     void Application::init()
     {
+        DefaultInstance<AppLogger, Application>::setInstance( &m_appLogger );
+
         if ( SDL_InitSubSystem( SDL_INIT_VIDEO ) < 0 )
         {
-            std::cout << "Error initializing SDL: " << SDL_GetError() << std::endl;
+            m_appLogger.error( formatString( "Error initializing SDL: %s", SDL_GetError() ).c_str() );
             return;
+        }
+        else
+        {
+            m_appLogger.info( formatString( "SDL initialized" ).c_str() );
         }
 
         if ( TTF_Init() == -1 )
         {
-            std::cout << "Error initializing SDL TTF: " << TTF_GetError() << std::endl;
+            m_appLogger.error( formatString( "Error initializing SDL TTF: %s", TTF_GetError() ).c_str() );
+        }
+        else
+        {
+            m_appLogger.info( formatString( "SDL TTF initialized" ).c_str() );
         }
     }
 
@@ -73,7 +90,7 @@ namespace puma::app
 
         if (eventsRetreived < 0)
         {
-            std::cout << "Error retreiving SDL events: " << SDL_GetError() << std::endl;
+            m_appLogger.error( formatString( "Error retreiving SDL events: %s", SDL_GetError() ).c_str() );
         }
 
         assert( eventsRetreived >= 0 );

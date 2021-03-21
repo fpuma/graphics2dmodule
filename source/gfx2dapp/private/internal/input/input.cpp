@@ -3,14 +3,9 @@
 #include "input.h"
 
 #include <internal/input/sdlinputmapping.h>
+#include <internal/applogger/applogger.h>
 
 #include <SDL.h>
-
-#define PUMA_INPUT_DEBUG
-
-#ifdef PUMA_INPUT_DEBUG
-#include <internal/input/inputnames.h>
-#endif
 
 namespace puma::input
 {
@@ -23,15 +18,6 @@ namespace puma::input
 
     namespace
     {
-#ifdef PUMA_INPUT_DEBUG
-        void printKeyName( InputID _inputId, bool _keyPressed )
-        {
-            const char* action = _keyPressed ? "Key pressed: " : "Key released: ";
-            auto itInputName = kInputNames.find( _inputId );
-            assert( kInputNames.end() != itInputName );
-            std::cout << action << itInputName->second << std::endl;
-        }
-#endif
         InputID resolveInputID( SDL_Keycode _sdlKeyCode )
         {
             auto itInputId = kSdlInputMapping.find( _sdlKeyCode );
@@ -42,18 +28,32 @@ namespace puma::input
             }
             else
             {
-                std::cout << "Error: Key not recognized!" << _sdlKeyCode << std::endl;
+                gAppLogger->error( formatString( "Error: Key not recognized! %d", _sdlKeyCode ).c_str() ); 
             }
             return result;
         }
+    }
+
+    Input::Input()
+    {
+        init();
+    }
+
+    Input::~Input()
+    {
+        uninit();
     }
 
     void Input::init()
     {
         if ( SDL_InitSubSystem( SDL_INIT_EVENTS ) < 0 )
         {
-            std::cout << "Error initializing SDL: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "Error initializing SDL Events: %s", SDL_GetError() ).c_str() );
             return;
+        }
+        else
+        {
+            gAppLogger->info( "SDL Events subsystem initialized correctly." );
         }
     }
 
@@ -71,7 +71,7 @@ namespace puma::input
         int eventsRetreived = SDL_PeepEvents( sdlEvents, kSdlEventBufferSize, sdlEventAction, SDL_KEYDOWN, SDL_KEYUP );
         if ( eventsRetreived < 0 )
         {
-            std::cout << "Error retreiving SDL_QUIT: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "Error retreiving SDL_QUIT: %s", SDL_GetError() ).c_str() );
         }
         assert( eventsRetreived >= 0 );
         for ( int eventIndex = 0; eventIndex < eventsRetreived; ++eventIndex )
@@ -86,9 +86,6 @@ namespace puma::input
                 if ( inputId < InputID::TotalKeys )
                 {
                     m_inputState[(int)inputId] = true;
-#ifdef PUMA_INPUT_DEBUG
-                    printKeyName( inputId, true );
-#endif
                 }
                 break;
             }
@@ -99,9 +96,6 @@ namespace puma::input
                 if ( inputId < InputID::TotalKeys )
                 {
                     m_inputState[(int)inputId] = false;
-#ifdef PUMA_INPUT_DEBUG
-                    printKeyName( inputId, false );
-#endif
                 }
                 break;
             }

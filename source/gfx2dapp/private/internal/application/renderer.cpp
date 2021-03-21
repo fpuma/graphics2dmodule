@@ -3,6 +3,7 @@
 #include "renderer.h"
           
 #include <internal/application/window.h>
+#include <internal/applogger/applogger.h>
 #include <texturemanager/texture.h>
 
 #include <utils/graphics/dimensions.h>
@@ -18,7 +19,11 @@ namespace puma::app
         m_sdlRenderer = SDL_CreateRenderer( sdlWindow , -1, SDL_RENDERER_ACCELERATED );
         if ( nullptr == m_sdlRenderer )
         {
-            std::cout << "SDL Renderer could not be created. Error: " << SDL_GetError() << std::endl;
+            gAppLogger->error( formatString( "SDL Renderer could not be created. Error: %s", SDL_GetError() ).c_str() );
+        }
+        else
+        {
+            gAppLogger->info( formatString( "SDL Renderer was created for window: %d", _window.getWindowHandle() ).c_str() );
         }
 
         m_textureManager = std::make_unique<TextureManager>( this );

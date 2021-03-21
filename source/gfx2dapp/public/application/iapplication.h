@@ -2,6 +2,7 @@
 
 namespace puma
 {
+    class Logger;
     struct Extent;
 }
 
@@ -32,6 +33,8 @@ namespace puma::app
 
         virtual void consumeSdlEvents() = 0;
         virtual void peekSdlEvents() = 0;
+
+        virtual Logger* getLogger() = 0;
 
     };
 }

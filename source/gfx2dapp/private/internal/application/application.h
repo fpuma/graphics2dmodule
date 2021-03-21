@@ -2,6 +2,7 @@
 #include <application/iapplication.h>
 #include <internal/application/renderer.h>
 #include <internal/texturemanager/texturemanager.h>
+#include <internal/applogger/applogger.h>
 
 namespace puma::app
 {
@@ -31,11 +32,15 @@ namespace puma::app
         void consumeSdlEvents() override { m_peekSdlEvents = false; }
         void peekSdlEvents() override { m_peekSdlEvents = true; }
 
+        Logger* getLogger() override { return m_appLogger.getLogger(); }
+
     private:
 
         WindowMap m_windows;
         
         bool m_shouldQuit = false;
         bool m_peekSdlEvents = false;
+
+        AppLogger m_appLogger;
     };
 }
