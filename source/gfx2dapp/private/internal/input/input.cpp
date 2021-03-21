@@ -34,16 +34,6 @@ namespace puma::input
         }
     }
 
-    Input::Input()
-    {
-        init();
-    }
-
-    Input::~Input()
-    {
-        uninit();
-    }
-
     void Input::init()
     {
         if ( SDL_InitSubSystem( SDL_INIT_EVENTS ) < 0 )

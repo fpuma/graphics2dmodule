@@ -14,8 +14,6 @@ namespace puma::app
     class Application final : public IApplication
     {
     public:
-        Application();
-        ~Application();
 
         void init() override;
         void uninit() override;

@@ -9,9 +9,6 @@ namespace puma::input
     {
     public:
 
-        Input();
-        ~Input();
-
         void init() override;
         void uninit() override;
 

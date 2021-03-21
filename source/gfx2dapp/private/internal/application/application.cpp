@@ -16,16 +16,6 @@ namespace puma::app
         return std::make_unique<Application>();
     }
 
-    Application::Application()
-    {
-        init();
-    }
-
-    Application::~Application()
-    {
-        uninit();
-    }
-
     void Application::init()
     {
         DefaultInstance<AppLogger, Application>::setInstance( &m_appLogger );
