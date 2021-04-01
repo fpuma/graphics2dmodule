@@ -41,6 +41,8 @@ void testTextureManager()
 void testApplication()
 {
     auto appPtr = IApplication::create();
+    
+    appPtr->init();
 
     appPtr->getLogger()->addOutput<ConsoleLogOutput>();
 
@@ -126,5 +128,5 @@ void testApplication()
 
         shouldQuit = appPtr->shouldQuit();
     }
-
+    appPtr->uninit();
 }

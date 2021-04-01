@@ -9,18 +9,21 @@ using namespace puma;
 
 int main()
 {
-    auto graphics = app::IApplication::create();
-    graphics->getLogger()->addOutput<ConsoleLogOutput>();
+    auto appPtr = app::IApplication::create();
+    appPtr->init();
+    appPtr->getLogger()->addOutput<ConsoleLogOutput>();
     auto ip = app::IInput::create();
 
     Extent extent = { 500,500,100,100 };
-    graphics->createWindow( extent, "InputTest" );
+    appPtr->createWindow( extent, "InputTest" );
 
-    while ( !graphics->shouldQuit() )
+    while ( !appPtr->shouldQuit() )
     {
         ip->update();
-        graphics->update();
+        appPtr->update();
     };
+
+    appPtr->uninit();
 
     return 0;
 }

@@ -28,7 +28,7 @@ int main( int argc, char* argv[] )
 
     bool quit = false;
 
-    SDL_Texture* targetTexture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1000, 1000 );
+    SDL_Texture* targetTexture = SDL_CreateTexture(renderer2, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 1000, 1000 );
 
     SDL_Texture* texture = getTexture( renderer, "../asset/programmerdrawing.png" );
 
@@ -62,7 +62,7 @@ int main( int argc, char* argv[] )
 
 
         //Set render texture
-        SDL_SetRenderTarget( renderer, targetTexture );
+        SDL_SetRenderTarget( renderer2, targetTexture );
         //Clear render texture
         SDL_SetRenderDrawColor( renderer, 0, 0, 0, 255 );
         SDL_SetRenderDrawColor( renderer2, 0, 255, 0, 255 );
