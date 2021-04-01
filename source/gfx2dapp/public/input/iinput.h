@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::input
+namespace puma::app
 {
     class IInput
     {
@@ -16,6 +16,8 @@ namespace puma::input
         virtual void update() = 0;
 
         virtual bool getKeyState( InputID _inputId ) = 0;
+        virtual bool keyPressed( InputID _inputId ) = 0;
+        virtual bool keyReleased( InputID _inputId ) = 0;
 
         virtual MousePosition getMousePosition() = 0;
 

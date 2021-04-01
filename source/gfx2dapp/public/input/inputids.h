@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::input
+namespace puma::app
 {
     enum class InputID
     {

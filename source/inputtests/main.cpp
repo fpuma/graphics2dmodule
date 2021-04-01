@@ -11,7 +11,7 @@ int main()
 {
     auto graphics = app::IApplication::create();
     graphics->getLogger()->addOutput<ConsoleLogOutput>();
-    auto ip = input::IInput::create();
+    auto ip = app::IInput::create();
 
     Extent extent = { 500,500,100,100 };
     graphics->createWindow( extent, "InputTest" );

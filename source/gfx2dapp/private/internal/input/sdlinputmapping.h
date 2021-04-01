@@ -2,7 +2,7 @@
 
 #include <SDL.h>
 
-namespace puma::input
+namespace puma::app
 {
 
     const std::map<int, InputID> kSdlInputMapping = {

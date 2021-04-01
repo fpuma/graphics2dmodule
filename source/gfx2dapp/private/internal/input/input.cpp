@@ -7,7 +7,7 @@
 
 #include <SDL.h>
 
-namespace puma::input
+namespace puma::app
 {
     constexpr int kSdlEventBufferSize = 10;
 
@@ -54,6 +54,8 @@ namespace puma::input
 
     void Input::update()
     {
+        clearPreviousStates();
+
         SDL_Event sdlEvents[kSdlEventBufferSize];
         SDL_PumpEvents();
         SDL_eventaction sdlEventAction = m_peekSdlEvents ? SDL_PEEKEVENT : SDL_GETEVENT;
@@ -75,7 +77,16 @@ namespace puma::input
                 InputID inputId = resolveInputID( currentEvent.key.keysym.sym );
                 if ( inputId < InputID::TotalKeys )
                 {
-                    m_inputState[(int)inputId] = true;
+                    if ( m_inputState[(int)inputId] & CurrentStateBit )
+                    {
+                        m_inputState[(int)inputId] &= ~PressedStateBit;
+                    }
+                    else
+                    {
+                        m_inputState[(int)inputId] |= PressedStateBit;
+                    }
+
+                    m_inputState[(int)inputId] |= CurrentStateBit;
                 }
                 break;
             }
@@ -85,7 +96,16 @@ namespace puma::input
                 InputID inputId = resolveInputID( currentEvent.key.keysym.sym );
                 if ( inputId < InputID::TotalKeys )
                 {
-                    m_inputState[(int)inputId] = false;
+                    if ( m_inputState[(int)inputId] & CurrentStateBit )
+                    {
+                        m_inputState[(int)inputId] |= ReleasedStateBit;
+                    }
+                    else
+                    {
+                        m_inputState[(int)inputId] &= ~ReleasedStateBit;
+                    }
+
+                    m_inputState[(int)inputId] &= ~CurrentStateBit;
                 }
                 break;
             }
@@ -98,6 +118,15 @@ namespace puma::input
             default: 
                 break;
             }
+        }
+    }
+
+    void Input::clearPreviousStates()
+    {
+        for ( StateMask& stateMask : m_inputState )
+        {
+            stateMask &= ~ReleasedStateBit;
+            stateMask &= ~PressedStateBit;
         }
     }
 }
