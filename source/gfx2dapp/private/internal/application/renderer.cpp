@@ -11,6 +11,8 @@
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
 
+#include <iterator>
+
 namespace puma::app
 {
     Renderer::Renderer( Window& _window )
@@ -64,33 +66,65 @@ namespace puma::app
         SDL_RenderCopyEx( m_sdlRenderer, _texture.getHandle(), &textureRect, &targetRect, _rotation, nullptr, SDL_FLIP_NONE );
     }
 
-    void Renderer::renderText( const s32 _xPos, const s32 _yPos, const char* _text ) const
+    void Renderer::renderText( const ScreenPos& _pos, const Color& _color, const char* _text ) const
     {
-        stringRGBA( m_sdlRenderer, (s16)_xPos, (s16)_yPos, _text, 255, 0, 255, 255 );
+        stringRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, _text, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const
+    namespace
     {
-        polygonRGBA( m_sdlRenderer, _xCoords, _yCoords, vertexCount, _color.red, _color.green, _color.blue, _color.alpha );
+        void splitCoordsContainers( const std::vector<ScreenPos>& _vertices, std::vector<s16>& _outXCoords, std::vector<s16>& _outYCoords )
+        {
+            _outXCoords.clear();
+            _outYCoords.clear();
+
+            std::transform( _vertices.begin(), _vertices.end(), std::back_inserter( _outXCoords ), []( const ScreenPos& screenPos )
+            {
+                return (s16)screenPos.xCoord;
+            } );
+
+            std::transform( _vertices.begin(), _vertices.end(), std::back_inserter( _outYCoords ), []( const ScreenPos& screenPos )
+            {
+                return (s16)screenPos.yCoord;
+            } );
+
+            assert( _outXCoords.size() == _vertices.size() );
+            assert( _outYCoords.size() == _vertices.size() );
+        }
     }
 
-    void Renderer::renderSolidPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const
+    void Renderer::renderPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
     {
-        filledPolygonRGBA( m_sdlRenderer, _xCoords, _yCoords, vertexCount, _color.red, _color.green, _color.blue, _color.alpha );
+        std::vector<s16> xCoords;
+        std::vector<s16> yCoords;
+
+        splitCoordsContainers( _vertices, xCoords, yCoords );
+
+        polygonRGBA( m_sdlRenderer, xCoords.data(), yCoords.data(), (s32)_vertices.size(), _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const
+    void Renderer::renderSolidPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
     {
-        circleRGBA( m_sdlRenderer, (s16)_xCenter, (s16)_yCenter, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
+        std::vector<s16> xCoords;
+        std::vector<s16> yCoords;
+
+        splitCoordsContainers( _vertices, xCoords, yCoords );
+
+        filledPolygonRGBA( m_sdlRenderer, xCoords.data(), yCoords.data(), (s32)_vertices.size(), _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSolidCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const
+    void Renderer::renderCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
     {
-        filledCircleRGBA( m_sdlRenderer, (s16)_xCenter, (s16)_yCenter, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
+        circleRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSegment( const s32 _x1, const s32 _y1, const s32 _x2, const s32 _y2, const Color& _color ) const
+    void Renderer::renderSolidCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
     {
-        lineRGBA( m_sdlRenderer, (s16)_x1, (s16)_y1, (s16)_x2, (s16)_y2, _color.red, _color.green, _color.blue, _color.alpha );
+        filledCircleRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
+    }
+
+    void Renderer::renderSegment( const ScreenPos& _pos0, const ScreenPos& _pos1, const Color& _color ) const
+    {
+        lineRGBA( m_sdlRenderer, (s16)_pos0.xCoord, (s16)_pos0.yCoord, (s16)_pos1.xCoord, (s16)_pos1.yCoord, _color.red, _color.green, _color.blue, _color.alpha );
     }
 }

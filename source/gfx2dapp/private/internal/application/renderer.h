@@ -31,14 +31,15 @@ namespace puma::app
 
         void renderTexture( const Texture& _texture, const Extent& _textureExtent, const Extent& _targetExtent, float _rotation ) const override;
 
-        //[fpuma] Improve rendering position of these primitives
-        void renderText( const s32 _xPos, const s32 _yPos, const char* _text ) const override;
-        void renderPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const override;
-        void renderSolidPolygon( const s16* _xCoords, const s16* _yCoords, s32 vertexCount, const Color& _color ) const override;
-        void renderCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const override;
-        void renderSolidCircle( const s32 _xCenter, const s32 _yCenter, s32 _radius, const Color& _color ) const override;
-        void renderSegment( const s32 _x1, const s32 _y1, const s32 _x2, const s32 _y2, const Color& _color ) const override;
-        //-----------------------------------------------------------
+        void renderText( const ScreenPos& _pos, const Color& _color, const char* _text ) const override;
+        
+        void renderPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const override;
+        void renderSolidPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const override;
+        
+        void renderCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const override;
+        void renderSolidCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const override;
+        
+        void renderSegment( const ScreenPos& _pos0, const ScreenPos& _pos1, const Color& _color ) const override;
 
     private:
 

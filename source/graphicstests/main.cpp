@@ -119,7 +119,7 @@ void testApplication()
                     float text2AspectRatio = (float)myText2.getOriginalSize().width / (float)myText2.getOriginalSize().height;
                     targetExtent = { (s32)(text2AspectRatio*60), 60, 50, 125 };
                     renderer->renderTexture( myText2, textureExtent2, targetExtent, 0.0f );
-                    renderer->renderCircle( 250, 250, 25, { 255,0,0,255 } );
+                    renderer->renderCircle( ScreenPos{250,250}, 25, Color::White());
                 }
 
                 renderer->endRender();
