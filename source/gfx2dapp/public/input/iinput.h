@@ -15,9 +15,9 @@ namespace puma::app
 
         virtual void update() = 0;
 
-        virtual bool getKeyState( InputID _inputId ) = 0;
-        virtual bool keyPressed( InputID _inputId ) = 0;
-        virtual bool keyReleased( InputID _inputId ) = 0;
+        virtual bool getKeyState( InputId _inputId ) = 0;
+        virtual bool keyPressed( InputId _inputId ) = 0;
+        virtual bool keyReleased( InputId _inputId ) = 0;
 
         virtual MousePosition getMousePosition() = 0;
 

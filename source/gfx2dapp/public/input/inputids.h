@@ -2,14 +2,22 @@
 
 namespace puma::app
 {
-    enum class InputID
+
+    using InputId = u32;
+    constexpr InputId kInvalidInputId = kMaxU32;
+    
+    enum class MouseKey : InputId
     {
         MB_Left,
         MB_Middle,
         MB_Right,
         MB_X1,
         MB_X2,
+        TotalKeys,
+    };
 
+    enum class KeyboardKey : InputId
+    {
         KB_RETURN,
         KB_ESCAPE,
         KB_BACKSPACE,
@@ -143,6 +151,11 @@ namespace puma::app
         KB_RGUI, //Right windows key
 
 
+        TotalKeys,
+    };
+
+    enum ControllerKey : InputId
+    {
         TotalKeys,
     };
 }
