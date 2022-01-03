@@ -24,11 +24,11 @@ int main()
         ip->update();
         appPtr->update();
 
-        if ( ip->keyPressed( app::InputID::KB_D ) )
+        if ( ip->keyPressed( app::KeyboardKey::KB_D ) )
         {
             std::cout << "Pressed" << std::endl;
         }
-        if ( ip->keyReleased( app::InputID::KB_D ) )
+        if ( ip->keyReleased( app::KeyboardKey::KB_D ) )
         {
             std::cout << "Released" << std::endl;
         }

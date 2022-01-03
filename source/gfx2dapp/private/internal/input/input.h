@@ -4,6 +4,7 @@
 #include <input/inputids.h>
 
 #include <internal/input/devices/mouse.h>
+#include <internal/input/devices/keyboard.h>
 
 namespace puma::app
 {
@@ -16,23 +17,24 @@ namespace puma::app
 
         void update() override;
 
-        bool getKeyState( InputId _inputId ) override { assert( _inputId != kInvalidInputId ); return m_inputState[(int)_inputId] & CurrentStateBit; }
-        bool keyPressed( InputId _inputId )  override { assert( _inputId != kInvalidInputId ); return m_inputState[(int)_inputId] & PressedStateBit; }
-        bool keyReleased( InputId _inputId ) override { assert( _inputId != kInvalidInputId ); return m_inputState[(int)_inputId] & ReleasedStateBit; }
+        bool keyState( MouseKey _key ) const override { return m_mouseDevice.keyState( static_cast<InputId>(_key) ); }
+        bool keyState( KeyboardKey _key ) const override { return m_keyboardDevice.keyState( static_cast<InputId>(_key) ); }
 
-        //MousePosition getMousePosition() override { return m_mousePosition; }
+        bool keyPressed( MouseKey _key ) const override { return m_mouseDevice.keyPressed( static_cast<InputId>(_key) ); }
+        bool keyPressed( KeyboardKey _key ) const override { return m_keyboardDevice.keyPressed( static_cast<InputId>(_key) ); }
+
+        bool keyReleased( MouseKey _key ) const override { return m_mouseDevice.keyReleased( static_cast<InputId>(_key) ); }
+        bool keyReleased( KeyboardKey _key ) const override { return m_keyboardDevice.keyReleased( static_cast<InputId>(_key) ); }
 
         void consumeSdlEvents() override { m_peekSdlEvents = false; }
         void peekSdlEvents() override { m_peekSdlEvents = true; }
 
     private:
 
-        void clearPreviousStates();
-        void updateInputState(InputId _inputId, InputButtonEvent _buttonEvent);
-
-        
+        void clearPreviousStates();        
 
         Mouse m_mouseDevice;
+        Keyboard m_keyboardDevice;
 
         bool m_peekSdlEvents = false;
     };
