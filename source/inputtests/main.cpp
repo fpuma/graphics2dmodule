@@ -17,10 +17,21 @@ int main()
     Extent extent = { 500,500,100,100 };
     appPtr->createWindow( extent, "InputTest" );
 
+    ip->init();
+
     while ( !appPtr->shouldQuit() )
     {
         ip->update();
         appPtr->update();
+
+        if ( ip->keyPressed( app::KeyboardKey::KB_D ) )
+        {
+            std::cout << "Pressed" << std::endl;
+        }
+        if ( ip->keyReleased( app::KeyboardKey::KB_D ) )
+        {
+            std::cout << "Released" << std::endl;
+        }
     };
 
     appPtr->uninit();

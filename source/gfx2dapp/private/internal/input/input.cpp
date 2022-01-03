@@ -7,6 +7,9 @@
 
 #include <SDL.h>
 
+#include <iostream>
+#include "inputnames.h"
+
 namespace puma::app
 {
     constexpr int kSdlEventBufferSize = 10;
@@ -18,17 +21,17 @@ namespace puma::app
 
     namespace
     {
-        InputID resolveInputID( SDL_Keycode _sdlKeyCode )
+        const char* resolveInputName( const InputNameMapping& _inputNames, InputId _inputId )
         {
-            auto itInputId = kSdlInputMapping.find( _sdlKeyCode );
-            InputID result = InputID::TotalKeys;
-            if ( kSdlInputMapping.end() != itInputId )
+            auto itInputId = _inputNames.find( _inputId );
+            const char* result = nullptr;
+            if ( _inputNames.end() != itInputId )
             {
                 result = itInputId->second;
             }
             else
             {
-                gAppLogger->error( formatString( "Error: Key not recognized! %d", _sdlKeyCode ).c_str() ); 
+                gAppLogger->error( formatString( "Error: InputID with no name! %d", _inputId ).c_str() );
             }
             return result;
         }
@@ -41,14 +44,32 @@ namespace puma::app
             gAppLogger->error( formatString( "Error initializing SDL Events: %s", SDL_GetError() ).c_str() );
             return;
         }
-        else
+        
+        if ( SDL_InitSubSystem( SDL_INIT_JOYSTICK ) < 0 )
         {
-            gAppLogger->info( "SDL Events subsystem initialized correctly." );
+            gAppLogger->error( formatString( "Error initializing SDL Joystick: %s", SDL_GetError() ).c_str() );
+        }
+
+        gAppLogger->info( "SDL Events subsystem initialized correctly." );
+        gAppLogger->info( formatString( "Controllers count: %d", SDL_NumJoysticks() ).c_str() );
+        for ( s32 index = 0; index < SDL_NumJoysticks(); ++index )
+        {
+            SDL_JoystickOpen( index );
+            SDL_JoystickID joystickId = SDL_JoystickGetDeviceInstanceID( index );
+            SDL_Joystick* joystick = SDL_JoystickFromInstanceID( joystickId );
+            gAppLogger->info( formatString( "Controller<%d>: %s", joystickId, SDL_JoystickName( joystick ) ).c_str() );
         }
     }
 
     void Input::uninit()
     {
+        for ( s32 index = 0; index < SDL_NumJoysticks(); ++index )
+        {
+            SDL_JoystickID joystickId = SDL_JoystickGetDeviceInstanceID( index );
+            SDL_Joystick* joystick = SDL_JoystickFromInstanceID( joystickId );
+            SDL_JoystickClose( joystick );
+        }
+        SDL_QuitSubSystem( SDL_INIT_JOYSTICK );
         SDL_QuitSubSystem( SDL_INIT_EVENTS );
     }
 
@@ -60,7 +81,7 @@ namespace puma::app
         SDL_PumpEvents();
         SDL_eventaction sdlEventAction = m_peekSdlEvents ? SDL_PEEKEVENT : SDL_GETEVENT;
 
-        int eventsRetreived = SDL_PeepEvents( sdlEvents, kSdlEventBufferSize, sdlEventAction, SDL_KEYDOWN, SDL_KEYUP );
+        int eventsRetreived = SDL_PeepEvents( sdlEvents, kSdlEventBufferSize, sdlEventAction, SDL_KEYDOWN, /*SDL_KEYUP*/SDL_CONTROLLERDEVICEREMAPPED );
         if ( eventsRetreived < 0 )
         {
             gAppLogger->error( formatString( "Error retreiving SDL_QUIT: %s", SDL_GetError() ).c_str() );
@@ -71,48 +92,35 @@ namespace puma::app
             SDL_Event currentEvent = sdlEvents[eventIndex];
             switch ( currentEvent.type )
             {
-            case SDL_MOUSEBUTTONDOWN:
             case SDL_KEYDOWN:
             {
-                InputID inputId = resolveInputID( currentEvent.key.keysym.sym );
-                if ( inputId < InputID::TotalKeys )
-                {
-                    if ( m_inputState[(int)inputId] & CurrentStateBit )
-                    {
-                        m_inputState[(int)inputId] &= ~PressedStateBit;
-                    }
-                    else
-                    {
-                        m_inputState[(int)inputId] |= PressedStateBit;
-                    }
-
-                    m_inputState[(int)inputId] |= CurrentStateBit;
-                }
+                m_keyboardDevice.updateStates( currentEvent.key.keysym.sym, InputButtonEvent::Down );
                 break;
             }
-            case SDL_MOUSEBUTTONUP:
             case SDL_KEYUP:
             {
-                InputID inputId = resolveInputID( currentEvent.key.keysym.sym );
-                if ( inputId < InputID::TotalKeys )
-                {
-                    if ( m_inputState[(int)inputId] & CurrentStateBit )
-                    {
-                        m_inputState[(int)inputId] |= ReleasedStateBit;
-                    }
-                    else
-                    {
-                        m_inputState[(int)inputId] &= ~ReleasedStateBit;
-                    }
-
-                    m_inputState[(int)inputId] &= ~CurrentStateBit;
-                }
+                m_keyboardDevice.updateStates( currentEvent.key.keysym.sym, InputButtonEvent::Up );
                 break;
             }
             case SDL_MOUSEMOTION:
             {
-                m_mousePosition.x = static_cast<int>(currentEvent.motion.x);
-                m_mousePosition.y = static_cast<int>(currentEvent.motion.y);
+                m_mouseDevice.setMousePosition( { static_cast<int>(currentEvent.motion.x), static_cast<int>(currentEvent.motion.y) } );
+                break;
+            }
+            case SDL_MOUSEBUTTONDOWN:
+            {
+                m_mouseDevice.updateStates( currentEvent.button.button, InputButtonEvent::Down );
+                break;
+            }
+            case SDL_MOUSEBUTTONUP:
+            {
+                m_mouseDevice.updateStates( currentEvent.button.button, InputButtonEvent::Up );
+                break;
+            }
+            
+            case SDL_JOYBUTTONDOWN:
+            {
+                gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
                 break;
             }
             default: 
@@ -123,10 +131,7 @@ namespace puma::app
 
     void Input::clearPreviousStates()
     {
-        for ( StateMask& stateMask : m_inputState )
-        {
-            stateMask &= ~ReleasedStateBit;
-            stateMask &= ~PressedStateBit;
-        }
+        m_mouseDevice.clearStates();
+        m_keyboardDevice.clearStates();
     }
 }
