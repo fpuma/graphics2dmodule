@@ -5,6 +5,9 @@
 #include <logger/logger.h>
 #include <logger/output/consolelogoutput.h>
 
+#include <input/devices/ikeyboard.h>
+#include <input/devices/imouse.h>
+
 using namespace puma;
 
 int main()
@@ -24,11 +27,11 @@ int main()
         ip->update();
         appPtr->update();
 
-        if ( ip->keyPressed( app::KeyboardKey::KB_D ) )
+        if ( ip->getKeyboard().keyPressed( app::KeyboardKey::KB_D ) )
         {
             std::cout << "Pressed" << std::endl;
         }
-        if ( ip->keyReleased( app::KeyboardKey::KB_D ) )
+        if ( ip->getKeyboard().keyReleased( app::KeyboardKey::KB_D ) )
         {
             std::cout << "Released" << std::endl;
         }

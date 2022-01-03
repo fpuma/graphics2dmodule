@@ -29,28 +29,7 @@ namespace puma::app
     class DeviceKeyStates
     {
     public:
-
-        bool keyState( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & CurrentStateBit; 
-        }
         
-        bool keyPressed( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & PressedStateBit; 
-        }
-        
-        bool keyReleased( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & ReleasedStateBit; 
-        }
-
         void clearStates()
         {
             for ( StateMask& stateMask : m_keyStates )
@@ -61,6 +40,27 @@ namespace puma::app
         }
 
     protected:
+
+        bool inputState( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & CurrentStateBit; 
+        }
+        
+        bool inputPressed( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & PressedStateBit; 
+        }
+        
+        bool inputReleased( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & ReleasedStateBit; 
+        }
 
         void internalUpdateKeyStates( const SDLInputMapping& _inputMapping, s32 _sdlInputId, InputButtonEvent _buttonEvent )
         {

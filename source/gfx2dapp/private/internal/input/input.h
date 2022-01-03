@@ -17,14 +17,8 @@ namespace puma::app
 
         void update() override;
 
-        bool keyState( MouseKey _key ) const override { return m_mouseDevice.keyState( static_cast<InputId>(_key) ); }
-        bool keyState( KeyboardKey _key ) const override { return m_keyboardDevice.keyState( static_cast<InputId>(_key) ); }
-
-        bool keyPressed( MouseKey _key ) const override { return m_mouseDevice.keyPressed( static_cast<InputId>(_key) ); }
-        bool keyPressed( KeyboardKey _key ) const override { return m_keyboardDevice.keyPressed( static_cast<InputId>(_key) ); }
-
-        bool keyReleased( MouseKey _key ) const override { return m_mouseDevice.keyReleased( static_cast<InputId>(_key) ); }
-        bool keyReleased( KeyboardKey _key ) const override { return m_keyboardDevice.keyReleased( static_cast<InputId>(_key) ); }
+        const IMouse& getMouse() const { return m_mouseDevice; }
+        const IKeyboard& getKeyboard() const { return m_keyboardDevice; }
 
         void consumeSdlEvents() override { m_peekSdlEvents = false; }
         void peekSdlEvents() override { m_peekSdlEvents = true; }

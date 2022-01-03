@@ -3,8 +3,8 @@
 namespace puma::app
 {
 
-    class Mouse;
-    class Keyboard;
+    class IMouse;
+    class IKeyboard;
 
     class IInput
     {
@@ -19,14 +19,8 @@ namespace puma::app
 
         virtual void update() = 0;
 
-        virtual bool keyState( MouseKey _key ) const = 0;
-        virtual bool keyState( KeyboardKey _key ) const = 0;
-
-        virtual bool keyPressed( MouseKey _key ) const = 0;
-        virtual bool keyPressed( KeyboardKey _key ) const = 0;
-
-        virtual bool keyReleased( MouseKey _key ) const = 0;
-        virtual bool keyReleased( KeyboardKey _key ) const = 0;
+        virtual const IMouse& getMouse() const = 0;
+        virtual const IKeyboard& getKeyboard() const = 0;
 
         virtual void consumeSdlEvents() = 0;
         virtual void peekSdlEvents() = 0;
