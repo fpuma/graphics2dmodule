@@ -135,6 +135,20 @@ namespace puma::app
         {static_cast<InputId>(KeyboardKey::KB_RGUI           ),"RGUI"         },
     };
 
+    constexpr std::initializer_list<InputNameMapping::value_type> kControllerKeyNamesInitList = {
+        {static_cast<InputId>(ControllerKey::CB_A)      ,"A Button"          },
+        {static_cast<InputId>(ControllerKey::CB_B)      ,"B Button"          },
+        {static_cast<InputId>(ControllerKey::CB_X)      ,"X Button"          },
+        {static_cast<InputId>(ControllerKey::CB_Y)      ,"Y Button"          },
+        {static_cast<InputId>(ControllerKey::CB_LB)     ,"Left Bumper"       },
+        {static_cast<InputId>(ControllerKey::CB_RB)     ,"Right Bumper"      },
+        {static_cast<InputId>(ControllerKey::CB_SELECT) ,"Select Button"     },
+        {static_cast<InputId>(ControllerKey::CB_START)  ,"Start Button"      },
+        {static_cast<InputId>(ControllerKey::CB_LSTICK) ,"Left Stick"        },
+        {static_cast<InputId>(ControllerKey::CB_RSTICK) ,"Right Stick"       },
+    };
+
     InputNameMapping kMouseKeyNames = kMouseKeyNamesInitList;
     InputNameMapping kKeyboardKeyNames = kKeyboardKeyNamesInitList;
+    InputNameMapping kControllerKeyNames = kControllerKeyNamesInitList;
 }

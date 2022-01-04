@@ -154,8 +154,18 @@ namespace puma::app
         TotalKeys,
     };
 
-    enum ControllerKey : InputId
+    enum class ControllerKey : InputId
     {
+        CB_A,
+        CB_B,
+        CB_X,
+        CB_Y,
+        CB_LB,
+        CB_RB,
+        CB_SELECT,
+        CB_START,
+        CB_LSTICK,
+        CB_RSTICK,
         TotalKeys,
     };
 }

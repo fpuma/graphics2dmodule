@@ -7,6 +7,7 @@
 
 #include <input/devices/ikeyboard.h>
 #include <input/devices/imouse.h>
+#include <input/devices/icontroller.h>
 
 using namespace puma;
 
@@ -29,12 +30,22 @@ int main()
 
         if ( ip->getKeyboard().keyPressed( app::KeyboardKey::KB_D ) )
         {
-            std::cout << "Pressed" << std::endl;
+            std::cout << "KB D Pressed" << std::endl;
         }
         if ( ip->getKeyboard().keyReleased( app::KeyboardKey::KB_D ) )
         {
-            std::cout << "Released" << std::endl;
+            std::cout << "KB D Released" << std::endl;
         }
+
+        if ( ip->getController().keyPressed( app::ControllerKey::CB_B ) )
+        {
+            std::cout << "CB B Pressed" << std::endl;
+        }
+        if ( ip->getController().keyReleased( app::ControllerKey::CB_B ) )
+        {
+            std::cout << "CB B Released" << std::endl;
+        }
+
     };
 
     appPtr->uninit();

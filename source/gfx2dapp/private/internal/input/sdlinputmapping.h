@@ -137,6 +137,21 @@ namespace puma::app
         {SDLK_RGUI          , static_cast<InputId>( KeyboardKey::KB_RGUI           )},
     };
 
+    constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlControllerMappingInitList = {
+        {0  , static_cast<InputId>(ControllerKey::CB_A)},
+        {1  , static_cast<InputId>(ControllerKey::CB_B)},
+        {2  , static_cast<InputId>(ControllerKey::CB_X)},
+        {3  , static_cast<InputId>(ControllerKey::CB_Y)},
+        {4  , static_cast<InputId>(ControllerKey::CB_LB)},
+        {5  , static_cast<InputId>(ControllerKey::CB_RB)},
+        {6  , static_cast<InputId>(ControllerKey::CB_SELECT)},
+        {7  , static_cast<InputId>(ControllerKey::CB_START)},
+        {8  , static_cast<InputId>(ControllerKey::CB_LSTICK)},
+        {9  , static_cast<InputId>(ControllerKey::CB_RSTICK)},
+    };
+
     const SDLInputMapping kSdlMouseMapping = kSdlMouseMappingInitList;
     const SDLInputMapping kSdlKeyboardMapping = kSdlKeyboardMappingInitList;
+    const SDLInputMapping kSdlControllerMapping = kSdlControllerMappingInitList;
+
 }

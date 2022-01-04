@@ -117,10 +117,16 @@ namespace puma::app
                 m_mouseDevice.updateStates( currentEvent.button.button, InputButtonEvent::Up );
                 break;
             }
-            
             case SDL_JOYBUTTONDOWN:
             {
-                gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
+                m_controllerDevice.updateStates( currentEvent.jbutton.button, InputButtonEvent::Down );
+                //gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
+                break;
+            }
+            case SDL_JOYBUTTONUP:
+            {
+                m_controllerDevice.updateStates( currentEvent.jbutton.button, InputButtonEvent::Up );
+                //gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
                 break;
             }
             default: 
@@ -133,5 +139,6 @@ namespace puma::app
     {
         m_mouseDevice.clearStates();
         m_keyboardDevice.clearStates();
+        m_controllerDevice.clearStates();
     }
 }

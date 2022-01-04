@@ -10,9 +10,9 @@ namespace puma::app
     {
     public:
 
-        bool buttonState( MouseKey _mouseKey ) const { return inputState( static_cast<InputId>(_mouseKey) ); }
-        bool buttonPressed( MouseKey _mouseKey ) const { return inputPressed( static_cast<InputId>(_mouseKey) ); }
-        bool buttonReleased( MouseKey _mouseKey ) const { return inputReleased( static_cast<InputId>(_mouseKey) ); }
+        bool buttonState( MouseKey _mouseKey ) const override { return inputState( static_cast<InputId>(_mouseKey) ); }
+        bool buttonPressed( MouseKey _mouseKey ) const override { return inputPressed( static_cast<InputId>(_mouseKey) ); }
+        bool buttonReleased( MouseKey _mouseKey ) const override { return inputReleased( static_cast<InputId>(_mouseKey) ); }
 
         MousePosition getMousePosition() const override { return m_mousePosition; }
 

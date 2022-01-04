@@ -5,6 +5,7 @@ namespace puma::app
 
     class IMouse;
     class IKeyboard;
+    class IController;
 
     class IInput
     {
@@ -21,6 +22,7 @@ namespace puma::app
 
         virtual const IMouse& getMouse() const = 0;
         virtual const IKeyboard& getKeyboard() const = 0;
+        virtual const IController& getController() const = 0;
 
         virtual void consumeSdlEvents() = 0;
         virtual void peekSdlEvents() = 0;

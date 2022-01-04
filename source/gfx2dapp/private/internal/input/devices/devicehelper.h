@@ -9,6 +9,7 @@ namespace puma::app
 
     using MouseKeyStates = std::array<StateMask, static_cast<InputId>(MouseKey::TotalKeys)>;
     using KeyboardKeyStates = std::array<StateMask, static_cast<InputId>(KeyboardKey::TotalKeys)>;
+    using ControllerKeyStates = std::array<StateMask, static_cast<InputId>(ControllerKey::TotalKeys)>;
 
     enum class InputButtonEvent
     {
