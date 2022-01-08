@@ -28,6 +28,7 @@ namespace puma::app
     private:
 
         void clearPreviousStates();        
+        void updateDPad(u32 input);
 
         Mouse m_mouseDevice;
         Keyboard m_keyboardDevice;

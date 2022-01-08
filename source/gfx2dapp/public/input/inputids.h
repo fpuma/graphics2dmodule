@@ -156,6 +156,10 @@ namespace puma::app
 
     enum class ControllerKey : InputId
     {
+        CB_DPAD_UP,
+        CB_DPAD_RIGHT,
+        CB_DPAD_DOWN,
+        CB_DPAD_LEFT,
         CB_A,
         CB_B,
         CB_X,

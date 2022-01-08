@@ -10,10 +10,21 @@
 #include <input/devices/icontroller.h>
 
 using namespace puma;
+using namespace puma::app;
+
+#define PRINT_WHEN_USED_CONTROLLER(KEY) if ( ip->getController().keyPressed( KEY ) ) \
+{\
+    std::cout << #KEY << " PRESSED" << std::endl;\
+}\
+if ( ip->getController().keyReleased( KEY ) )\
+{\
+    std::cout << #KEY << " RELEASED" << std::endl;\
+}
+
 
 int main()
 {
-    auto appPtr = app::IApplication::create();
+    auto appPtr = IApplication::create();
     appPtr->init();
     appPtr->getLogger()->addOutput<ConsoleLogOutput>();
     auto ip = app::IInput::create();
@@ -37,15 +48,20 @@ int main()
             std::cout << "KB D Released" << std::endl;
         }
 
-        if ( ip->getController().keyPressed( app::ControllerKey::CB_B ) )
-        {
-            std::cout << "CB B Pressed" << std::endl;
-        }
-        if ( ip->getController().keyReleased( app::ControllerKey::CB_B ) )
-        {
-            std::cout << "CB B Released" << std::endl;
-        }
-
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_UP );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_RIGHT );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_DOWN );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_LEFT );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_A );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_B );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_X );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_Y );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_LB );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_RB );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_SELECT );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_START );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_LSTICK );
+        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_RSTICK );
     };
 
     appPtr->uninit();

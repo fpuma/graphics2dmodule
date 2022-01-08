@@ -119,14 +119,27 @@ namespace puma::app
             }
             case SDL_JOYBUTTONDOWN:
             {
-                m_controllerDevice.updateStates( currentEvent.jbutton.button, InputButtonEvent::Down );
-                //gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
+                m_controllerDevice.updateStates( SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Down );
                 break;
             }
             case SDL_JOYBUTTONUP:
             {
-                m_controllerDevice.updateStates( currentEvent.jbutton.button, InputButtonEvent::Up );
-                //gAppLogger->info( formatString( "%d", currentEvent.jbutton.button ).c_str() );
+                m_controllerDevice.updateStates( SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Up );
+                break;
+            }
+            //case SDL_JOYAXISMOTION:
+            //{
+            //    gAppLogger->info( formatString( "Controller: %d | Axis: %d | Value: %d", currentEvent.jaxis.which, currentEvent.jaxis.axis, currentEvent.jaxis.value ).c_str() );
+            //    break;
+            //}
+            //case SDL_JOYBALLMOTION:
+            //{
+            //    gAppLogger->info( formatString( "Controller: %d | Ball: %d | X: %d, Y: %d", currentEvent.jball.which, currentEvent.jball.ball, currentEvent.jball.xrel, currentEvent.jball.yrel ).c_str() );
+            //    break;
+            //}
+            case SDL_JOYHATMOTION:
+            {
+                updateDPad( currentEvent.jhat.value );
                 break;
             }
             default: 
@@ -140,5 +153,52 @@ namespace puma::app
         m_mouseDevice.clearStates();
         m_keyboardDevice.clearStates();
         m_controllerDevice.clearStates();
+    }
+
+    void Input::updateDPad( u32 input )
+    {
+        if ( input == SDL_HAT_CENTERED )
+        {
+            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Up );
+            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Up );
+            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Up );
+            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Up );
+        }
+        
+        if ( input & SDL_HAT_UP )
+        {
+            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Down );
+        }
+        else
+        {
+            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Up );
+        }
+        
+        if ( input & SDL_HAT_DOWN )
+        {
+            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Down );
+        }
+        else
+        {
+            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Up );
+        }
+        
+        if ( input & SDL_HAT_LEFT )
+        {
+            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Down );
+        }
+        else
+        {
+            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Up );
+        }
+        
+        if ( input & SDL_HAT_RIGHT )
+        {
+            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Down );
+        }
+        else
+        {
+            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Up );
+        }
     }
 }
