@@ -127,11 +127,45 @@ namespace puma::app
                 m_controllerDevice.updateStates( SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Up );
                 break;
             }
-            //case SDL_JOYAXISMOTION:
-            //{
-            //    gAppLogger->info( formatString( "Controller: %d | Axis: %d | Value: %d", currentEvent.jaxis.which, currentEvent.jaxis.axis, currentEvent.jaxis.value ).c_str() );
-            //    break;
-            //}
+            case SDL_JOYAXISMOTION:
+            {
+                switch ( currentEvent.jaxis.axis )
+                {
+                case 0:
+                {
+                    m_controllerDevice.setLeftJoystickX( currentEvent.jaxis.value );
+                    break;
+                }
+                case 1:
+                {
+                    m_controllerDevice.setLeftJoystickY( currentEvent.jaxis.value );
+                    break;
+                }
+                case 2:
+                {
+                    m_controllerDevice.setLeftTrigger( currentEvent.jaxis.value );
+                    break;
+                }
+                case 3:
+                {
+                    m_controllerDevice.setRightJoystickX( currentEvent.jaxis.value );
+                    break;
+                }
+                case 4:
+                {
+                    m_controllerDevice.setRightJoystickY( currentEvent.jaxis.value );
+                    break;
+                }
+                case 5:
+                {
+                    m_controllerDevice.setRightTrigger( currentEvent.jaxis.value );
+                    break;
+                }
+                default:
+                    break;
+                }
+                break;
+            }
             //case SDL_JOYBALLMOTION:
             //{
             //    gAppLogger->info( formatString( "Controller: %d | Ball: %d | X: %d, Y: %d", currentEvent.jball.which, currentEvent.jball.ball, currentEvent.jball.xrel, currentEvent.jball.yrel ).c_str() );

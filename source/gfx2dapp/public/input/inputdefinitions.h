@@ -7,4 +7,10 @@ namespace puma::app
         int x = 0;
         int y = 0;
     };
+
+    struct JoystickPosition
+    {
+        float x = 0.0f;
+        float y = 0.0f;
+    };
 }

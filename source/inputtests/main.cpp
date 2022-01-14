@@ -1,5 +1,7 @@
 #include <precompiledapplication.h>
 #include <application/iapplication.h>
+#include <application/iwindow.h>
+#include <application/irenderer.h>
 #include <input/iinput.h>
 #include <utils/graphics/dimensions.h>
 #include <logger/logger.h>
@@ -8,6 +10,8 @@
 #include <input/devices/ikeyboard.h>
 #include <input/devices/imouse.h>
 #include <input/devices/icontroller.h>
+
+#include <utils/formatstring.h>
 
 using namespace puma;
 using namespace puma::app;
@@ -30,23 +34,18 @@ int main()
     auto ip = app::IInput::create();
 
     Extent extent = { 500,500,100,100 };
-    appPtr->createWindow( extent, "InputTest" );
+    WindowHandle window = appPtr->createWindow( extent, "InputTest" );
 
     ip->init();
+
+    IWindow* windowPtr = appPtr->getWindow( window );
+    IRenderer* rendererPtr = windowPtr->getRenderer();
+    rendererPtr->setDefaultBackgroundColor( Color::Black() );
 
     while ( !appPtr->shouldQuit() )
     {
         ip->update();
         appPtr->update();
-
-        if ( ip->getKeyboard().keyPressed( app::KeyboardKey::KB_D ) )
-        {
-            std::cout << "KB D Pressed" << std::endl;
-        }
-        if ( ip->getKeyboard().keyReleased( app::KeyboardKey::KB_D ) )
-        {
-            std::cout << "KB D Released" << std::endl;
-        }
 
         PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_UP );
         PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_RIGHT );
@@ -62,6 +61,22 @@ int main()
         PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_START );
         PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_LSTICK );
         PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_RSTICK );
+
+        rendererPtr->beginRender();
+        rendererPtr->renderText( { 0, 0 },
+            Color::White(),
+            formatString( "%.4f | %.4f", ip->getController().getLeftJoystickPosition().x, ip->getController().getLeftJoystickPosition().y ).c_str() );
+        rendererPtr->renderText( { 0, 15 },
+            Color::White(),
+            formatString( "%.4f | %.4f", ip->getController().getRightJoystickPosition().x, ip->getController().getRightJoystickPosition().y ).c_str() );
+        rendererPtr->renderText( { 0, 30 },
+            Color::White(),
+            formatString( "%.4f", ip->getController().getLeftTrigger() ).c_str() );
+        rendererPtr->renderText( { 0, 45 },
+            Color::White(),
+            formatString( "%.4f", ip->getController().getRightTrigger() ).c_str() );
+        rendererPtr->endRender();
+        
     };
 
     appPtr->uninit();
