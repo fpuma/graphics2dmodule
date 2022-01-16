@@ -20,10 +20,10 @@ namespace puma::app
         }
     }
 
-    void Controller::updateStates( s32 _sdlInputId, InputButtonEvent _buttonEvent )
-    {
-        internalUpdateKeyStates( kSdlControllerMapping, _sdlInputId, _buttonEvent );
-    }
+    Controller::Controller( s32 _sdlId, ControllerId _controllerId )
+        : m_controllerId( _controllerId )
+        , m_sdlId( _sdlId )
+    {}
 
     void Controller::setRightJoystickX( s32 _value )
     {

@@ -6,11 +6,11 @@ namespace puma::app
 {
     using SDLInputMapping = std::map<s32, InputId>;
     constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlMouseMappingInitList = {
-        {SDL_BUTTON_LEFT    , static_cast<InputId>( MouseKey::MB_Left           )},
-        {SDL_BUTTON_MIDDLE  , static_cast<InputId>( MouseKey::MB_Middle         )},
-        {SDL_BUTTON_RIGHT   , static_cast<InputId>( MouseKey::MB_Right          )},
-        {SDL_BUTTON_X1      , static_cast<InputId>( MouseKey::MB_X1             )},
-        {SDL_BUTTON_X2      , static_cast<InputId>( MouseKey::MB_X2             )},
+        {SDL_BUTTON_LEFT    , static_cast<InputId>( MouseButton::MB_Left           )},
+        {SDL_BUTTON_MIDDLE  , static_cast<InputId>( MouseButton::MB_Middle         )},
+        {SDL_BUTTON_RIGHT   , static_cast<InputId>( MouseButton::MB_Right          )},
+        {SDL_BUTTON_X1      , static_cast<InputId>( MouseButton::MB_X1             )},
+        {SDL_BUTTON_X2      , static_cast<InputId>( MouseButton::MB_X2             )},
     };
 
     constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlKeyboardMappingInitList = {
@@ -150,20 +150,20 @@ namespace puma::app
 #define SDL_TO_PUMA(X) X << 4
 
     constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlControllerMappingInitList = {
-        {SDL_HAT_UP          , static_cast<InputId>(ControllerKey::CB_DPAD_UP)},
-        {SDL_HAT_RIGHT       , static_cast<InputId>(ControllerKey::CB_DPAD_RIGHT)},
-        {SDL_HAT_DOWN        , static_cast<InputId>(ControllerKey::CB_DPAD_DOWN)},
-        {SDL_HAT_LEFT        , static_cast<InputId>(ControllerKey::CB_DPAD_LEFT)},
-        {PUMA_SDL_JOY_A      , static_cast<InputId>(ControllerKey::CB_A)},
-        {PUMA_SDL_JOY_B      , static_cast<InputId>(ControllerKey::CB_B)},
-        {PUMA_SDL_JOY_X      , static_cast<InputId>(ControllerKey::CB_X)},
-        {PUMA_SDL_JOY_Y      , static_cast<InputId>(ControllerKey::CB_Y)},
-        {PUMA_SDL_JOY_LB     , static_cast<InputId>(ControllerKey::CB_LB)},
-        {PUMA_SDL_JOY_RB     , static_cast<InputId>(ControllerKey::CB_RB)},
-        {PUMA_SDL_JOY_SELECT , static_cast<InputId>(ControllerKey::CB_SELECT)},
-        {PUMA_SDL_JOY_START  , static_cast<InputId>(ControllerKey::CB_START)},
-        {PUMA_SDL_JOY_LSTICK , static_cast<InputId>(ControllerKey::CB_LSTICK)},
-        {PUMA_SDL_JOY_RSTICK , static_cast<InputId>(ControllerKey::CB_RSTICK)},
+        {SDL_HAT_UP          , static_cast<InputId>(ControllerButton::CB_DPAD_UP)},
+        {SDL_HAT_RIGHT       , static_cast<InputId>(ControllerButton::CB_DPAD_RIGHT)},
+        {SDL_HAT_DOWN        , static_cast<InputId>(ControllerButton::CB_DPAD_DOWN)},
+        {SDL_HAT_LEFT        , static_cast<InputId>(ControllerButton::CB_DPAD_LEFT)},
+        {PUMA_SDL_JOY_A      , static_cast<InputId>(ControllerButton::CB_A)},
+        {PUMA_SDL_JOY_B      , static_cast<InputId>(ControllerButton::CB_B)},
+        {PUMA_SDL_JOY_X      , static_cast<InputId>(ControllerButton::CB_X)},
+        {PUMA_SDL_JOY_Y      , static_cast<InputId>(ControllerButton::CB_Y)},
+        {PUMA_SDL_JOY_LB     , static_cast<InputId>(ControllerButton::CB_LB)},
+        {PUMA_SDL_JOY_RB     , static_cast<InputId>(ControllerButton::CB_RB)},
+        {PUMA_SDL_JOY_SELECT , static_cast<InputId>(ControllerButton::CB_SELECT)},
+        {PUMA_SDL_JOY_START  , static_cast<InputId>(ControllerButton::CB_START)},
+        {PUMA_SDL_JOY_LSTICK , static_cast<InputId>(ControllerButton::CB_LSTICK)},
+        {PUMA_SDL_JOY_RSTICK , static_cast<InputId>(ControllerButton::CB_RSTICK)},
     };
 
     const SDLInputMapping kSdlMouseMapping = kSdlMouseMappingInitList;

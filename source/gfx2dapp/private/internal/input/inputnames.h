@@ -4,11 +4,11 @@ namespace puma::app
 {
     using InputNameMapping = std::map<InputId, const char*>;
     constexpr std::initializer_list<InputNameMapping::value_type> kMouseKeyNamesInitList = {
-        {static_cast<InputId>(MouseKey::MB_Left)           ,"LBM"          },
-        {static_cast<InputId>(MouseKey::MB_Middle)         ,"MMB"          },
-        {static_cast<InputId>(MouseKey::MB_Right)          ,"RMB"          },
-        {static_cast<InputId>(MouseKey::MB_X1)             ,"MB4"          },
-        {static_cast<InputId>(MouseKey::MB_X2)             ,"MB5"          },
+        {static_cast<InputId>(MouseButton::MB_Left)           ,"LBM"          },
+        {static_cast<InputId>(MouseButton::MB_Middle)         ,"MMB"          },
+        {static_cast<InputId>(MouseButton::MB_Right)          ,"RMB"          },
+        {static_cast<InputId>(MouseButton::MB_X1)             ,"MB4"          },
+        {static_cast<InputId>(MouseButton::MB_X2)             ,"MB5"          },
     };
 
     constexpr std::initializer_list<InputNameMapping::value_type> kKeyboardKeyNamesInitList = {
@@ -136,16 +136,20 @@ namespace puma::app
     };
 
     constexpr std::initializer_list<InputNameMapping::value_type> kControllerKeyNamesInitList = {
-        {static_cast<InputId>(ControllerKey::CB_A)      ,"A Button"          },
-        {static_cast<InputId>(ControllerKey::CB_B)      ,"B Button"          },
-        {static_cast<InputId>(ControllerKey::CB_X)      ,"X Button"          },
-        {static_cast<InputId>(ControllerKey::CB_Y)      ,"Y Button"          },
-        {static_cast<InputId>(ControllerKey::CB_LB)     ,"Left Bumper"       },
-        {static_cast<InputId>(ControllerKey::CB_RB)     ,"Right Bumper"      },
-        {static_cast<InputId>(ControllerKey::CB_SELECT) ,"Select Button"     },
-        {static_cast<InputId>(ControllerKey::CB_START)  ,"Start Button"      },
-        {static_cast<InputId>(ControllerKey::CB_LSTICK) ,"Left Stick"        },
-        {static_cast<InputId>(ControllerKey::CB_RSTICK) ,"Right Stick"       },
+        {static_cast<InputId>(ControllerButton::CB_DPAD_UP)     ,"DPad Up"          },
+        {static_cast<InputId>(ControllerButton::CB_DPAD_RIGHT)  ,"DPad Right"          },
+        {static_cast<InputId>(ControllerButton::CB_DPAD_DOWN)   ,"DPad Down"          },
+        {static_cast<InputId>(ControllerButton::CB_DPAD_LEFT)   ,"DPad Left"          },
+        {static_cast<InputId>(ControllerButton::CB_A)           ,"A Button"          },
+        {static_cast<InputId>(ControllerButton::CB_B)           ,"B Button"          },
+        {static_cast<InputId>(ControllerButton::CB_X)           ,"X Button"          },
+        {static_cast<InputId>(ControllerButton::CB_Y)           ,"Y Button"          },
+        {static_cast<InputId>(ControllerButton::CB_LB)          ,"Left Bumper"       },
+        {static_cast<InputId>(ControllerButton::CB_RB)          ,"Right Bumper"      },
+        {static_cast<InputId>(ControllerButton::CB_SELECT)      ,"Select Button"     },
+        {static_cast<InputId>(ControllerButton::CB_START)       ,"Start Button"      },
+        {static_cast<InputId>(ControllerButton::CB_LSTICK)      ,"Left Stick"        },
+        {static_cast<InputId>(ControllerButton::CB_RSTICK)      ,"Right Stick"       },
     };
 
     InputNameMapping kMouseKeyNames = kMouseKeyNamesInitList;

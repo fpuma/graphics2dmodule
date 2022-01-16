@@ -19,6 +19,54 @@ namespace puma::app
         return std::make_unique<Input>();
     }
 
+    const char* IInput::getInputName( KeyboardKey _key )
+    {
+        const char* result = nullptr;
+        if ( KeyboardKey::TotalKeys != _key )
+        {
+            auto itFoundName = kKeyboardKeyNames.find( static_cast<InputId>(_key) );
+
+            if ( itFoundName != kKeyboardKeyNames.end() )
+            {
+                result = itFoundName->second;
+            }
+        }
+
+        return result;
+    }
+
+    const char* IInput::getInputName( MouseButton _button )
+    {
+        const char* result = nullptr;
+        if ( MouseButton::TotalButtons != _button )
+        {
+            auto itFoundName = kMouseKeyNames.find( static_cast<InputId>(_button) );
+
+            if ( itFoundName != kMouseKeyNames.end() )
+            {
+                result = itFoundName->second;
+            }
+        }
+
+        return result;
+    }
+
+    const char* IInput::getInputName( ControllerButton _button )
+    {
+        const char* result = nullptr;
+        if ( ControllerButton::TotalButtons != _button )
+        {
+            auto itFoundName = kControllerKeyNames.find( static_cast<InputId>(_button) );
+
+            if ( itFoundName != kControllerKeyNames.end() )
+            {
+                result = itFoundName->second;
+            }
+        }
+
+        return result;
+    }
+
     namespace
     {
         const char* resolveInputName( const InputNameMapping& _inputNames, InputId _inputId )
@@ -94,37 +142,43 @@ namespace puma::app
             {
             case SDL_KEYDOWN:
             {
-                m_keyboardDevice.updateStates( currentEvent.key.keysym.sym, InputButtonEvent::Down );
+                updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Down );
                 break;
             }
             case SDL_KEYUP:
             {
-                m_keyboardDevice.updateStates( currentEvent.key.keysym.sym, InputButtonEvent::Up );
+                updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Up );
                 break;
             }
             case SDL_MOUSEMOTION:
             {
                 m_mouseDevice.setMousePosition( { static_cast<int>(currentEvent.motion.x), static_cast<int>(currentEvent.motion.y) } );
+                if ( nullptr != m_inputListener )
+                {
+                    MouseEventData eventData;
+                    eventData.positionEvent = m_mouseDevice.getMousePosition();
+                    m_inputListener->onMouseEvent( MouseEventType::Position, eventData );
+                }
                 break;
             }
             case SDL_MOUSEBUTTONDOWN:
             {
-                m_mouseDevice.updateStates( currentEvent.button.button, InputButtonEvent::Down );
+                updateMouseButton( currentEvent.button.button, InputButtonEvent::Down );
                 break;
             }
             case SDL_MOUSEBUTTONUP:
             {
-                m_mouseDevice.updateStates( currentEvent.button.button, InputButtonEvent::Up );
+                updateMouseButton( currentEvent.button.button, InputButtonEvent::Up );
                 break;
             }
             case SDL_JOYBUTTONDOWN:
             {
-                m_controllerDevice.updateStates( SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Down );
+                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Down );
                 break;
             }
             case SDL_JOYBUTTONUP:
             {
-                m_controllerDevice.updateStates( SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Up );
+                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Up );
                 break;
             }
             case SDL_JOYAXISMOTION:
@@ -133,32 +187,74 @@ namespace puma::app
                 {
                 case 0:
                 {
-                    m_controllerDevice.setLeftJoystickX( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setLeftJoystickX( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.joystickEvent = { ControllerJoystick::CJ_LSTICK_X, controller.getLeftJoystickPosition().x };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                    }
                     break;
                 }
                 case 1:
                 {
-                    m_controllerDevice.setLeftJoystickY( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setLeftJoystickY( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.joystickEvent = { ControllerJoystick::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                    }
                     break;
                 }
                 case 2:
                 {
-                    m_controllerDevice.setLeftTrigger( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setLeftTrigger( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.triggerEvent = { ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Trigger, eventData );
+                    }
                     break;
                 }
                 case 3:
                 {
-                    m_controllerDevice.setRightJoystickX( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setRightJoystickX( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.joystickEvent = { ControllerJoystick::CJ_RSTICK_X, controller.getRightJoystickPosition().x };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                    }
                     break;
                 }
                 case 4:
                 {
-                    m_controllerDevice.setRightJoystickY( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setRightJoystickY( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.joystickEvent = { ControllerJoystick::CJ_RSTICK_Y, controller.getRightJoystickPosition().y };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                    }
                     break;
                 }
                 case 5:
                 {
-                    m_controllerDevice.setRightTrigger( currentEvent.jaxis.value );
+                    Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
+                    controller.setRightTrigger( currentEvent.jaxis.value );
+                    if ( nullptr != m_inputListener )
+                    {
+                        ControllerEventData eventData;
+                        eventData.triggerEvent = { ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() };
+                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Trigger, eventData );
+                    }
                     break;
                 }
                 default:
@@ -173,7 +269,7 @@ namespace puma::app
             //}
             case SDL_JOYHATMOTION:
             {
-                updateDPad( currentEvent.jhat.value );
+                updateDPad( currentEvent.jhat.which, currentEvent.jhat.value );
                 break;
             }
             default: 
@@ -186,53 +282,127 @@ namespace puma::app
     {
         m_mouseDevice.clearStates();
         m_keyboardDevice.clearStates();
-        m_controllerDevice.clearStates();
+        for ( Controller& controller : m_controllerDevices )
+        {
+            controller.clearStates();
+        }
     }
 
-    void Input::updateDPad( u32 input )
+    void Input::updateKeyboardKey( s32 _sdlInputId, InputButtonEvent _inputEvent )
     {
+        InputId inputId = resolveInputID( kSdlKeyboardMapping, _sdlInputId );
+        m_keyboardDevice.updateKeyStates( inputId, _inputEvent );
+        if ( nullptr != m_inputListener )
+        {
+            m_inputListener->onKeyboardEvent( _inputEvent, static_cast<KeyboardKey>(inputId) );
+        }
+    }
+
+    void Input::updateMouseButton( s32 _sdlInputId, InputButtonEvent _inputEvent )
+    {
+        InputId inputId = resolveInputID( kSdlMouseMapping, _sdlInputId );
+        m_mouseDevice.updateKeyStates( inputId, _inputEvent );
+        if ( nullptr != m_inputListener )
+        {
+            MouseEventData eventData;
+            eventData.buttonEvent = { _inputEvent, static_cast<MouseButton>(inputId) };
+            m_inputListener->onMouseEvent( MouseEventType::Button, eventData );
+        }
+    }
+
+    void Input::updateControllerButton( Controller& controller, s32 _sdlInputId, InputButtonEvent _inputEvent )
+    {
+        InputId inputId = resolveInputID( kSdlControllerMapping, _sdlInputId );
+        controller.updateKeyStates( inputId, _inputEvent );
+        if ( nullptr != m_inputListener )
+        {
+            ControllerEventData eventData;
+            eventData.buttonEvent = { _inputEvent, static_cast<ControllerButton>(inputId) };
+            m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Button, eventData );
+        }
+    }
+
+    void Input::updateDPad( s32 _id, u32 input )
+    {
+        Controller& controller = handleControllerBySdlId( _id );
+
         if ( input == SDL_HAT_CENTERED )
         {
-            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Up );
-            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Up );
-            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Up );
-            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Up );
-        }
-        
-        if ( input & SDL_HAT_UP )
-        {
-            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Down );
-        }
-        else
-        {
-            m_controllerDevice.updateStates( SDL_HAT_UP, InputButtonEvent::Up );
-        }
-        
-        if ( input & SDL_HAT_DOWN )
-        {
-            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Down );
-        }
-        else
-        {
-            m_controllerDevice.updateStates( SDL_HAT_DOWN, InputButtonEvent::Up );
-        }
-        
-        if ( input & SDL_HAT_LEFT )
-        {
-            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Down );
+            if ( controller.buttonState( ControllerButton::CB_DPAD_UP ) )
+            {
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Up );
+            }
+
+            if ( controller.buttonState( ControllerButton::CB_DPAD_RIGHT ) )
+            {
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Up );
+            }
+
+            if ( controller.buttonState( ControllerButton::CB_DPAD_LEFT ) )
+            {
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Up );
+            }
+
+            if ( controller.buttonState( ControllerButton::CB_DPAD_DOWN ) )
+            {
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Up );
+            }
         }
         else
         {
-            m_controllerDevice.updateStates( SDL_HAT_LEFT, InputButtonEvent::Up );
+            if ( input & SDL_HAT_UP )
+            {
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Down );
+            }
+            else if ( controller.buttonState( ControllerButton::CB_DPAD_UP ) )
+            {
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Up );
+            }
+
+            if ( input & SDL_HAT_DOWN )
+            {
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Down );
+            }
+            else if ( controller.buttonState( ControllerButton::CB_DPAD_DOWN ) )
+            {
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Up );
+            }
+
+            if ( input & SDL_HAT_LEFT )
+            {
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Down );
+            }
+            else if ( controller.buttonState( ControllerButton::CB_DPAD_LEFT ) )
+            {
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Up );
+            }
+
+            if ( input & SDL_HAT_RIGHT )
+            {
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Down );
+            }
+            else if( controller.buttonState( ControllerButton::CB_DPAD_RIGHT ) )
+            {
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Up );
+            }
         }
-        
-        if ( input & SDL_HAT_RIGHT )
+    }
+
+    Controller& Input::handleControllerBySdlId( s32 _id )
+    {
+        auto itFoundController = std::find_if( m_controllerDevices.begin(), m_controllerDevices.end(), [_id]( const Controller& _controller )
         {
-            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Down );
+            return _controller.getSdlId() == _id;
+        } );
+
+        if ( itFoundController != m_controllerDevices.end() )
+        {
+            return *itFoundController;
         }
         else
         {
-            m_controllerDevice.updateStates( SDL_HAT_RIGHT, InputButtonEvent::Up );
+            m_controllerDevices.push_back( Controller( _id, static_cast<ControllerId>(m_controllerDevices.size()) ) );
+            return m_controllerDevices[m_controllerDevices.size() - 1];
         }
     }
 }

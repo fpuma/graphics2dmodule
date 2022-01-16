@@ -6,14 +6,14 @@ namespace puma::app
     using InputId = u32;
     constexpr InputId kInvalidInputId = kMaxU32;
     
-    enum class MouseKey : InputId
+    enum class MouseButton : InputId
     {
         MB_Left,
         MB_Middle,
         MB_Right,
         MB_X1,
         MB_X2,
-        TotalKeys,
+        TotalButtons,
     };
 
     enum class KeyboardKey : InputId
@@ -154,7 +154,7 @@ namespace puma::app
         TotalKeys,
     };
 
-    enum class ControllerKey : InputId
+    enum class ControllerButton : InputId
     {
         CB_DPAD_UP,
         CB_DPAD_RIGHT,
@@ -170,6 +170,20 @@ namespace puma::app
         CB_START,
         CB_LSTICK,
         CB_RSTICK,
-        TotalKeys,
+        TotalButtons,
+    };
+
+    enum class ControllerJoystick : InputId
+    {
+        CJ_LSTICK_X,
+        CJ_LSTICK_Y,
+        CJ_RSTICK_X,
+        CJ_RSTICK_Y,
+    };
+
+    enum class ControllerTrigger : InputId
+    {
+        CT_LTRIGGER,
+        CT_RTRIGGER,
     };
 }

@@ -9,9 +9,9 @@ namespace puma::app
     {
     public:
 
-        virtual bool buttonState( MouseKey _mouseKey ) const = 0;
-        virtual bool buttonPressed( MouseKey _mouseKey ) const = 0;
-        virtual bool buttonReleased( MouseKey _mouseKey ) const = 0;
+        virtual bool buttonState( MouseButton _mouseKey ) const = 0;
+        virtual bool buttonPressed( MouseButton _mouseKey ) const = 0;
+        virtual bool buttonReleased( MouseButton _mouseKey ) const = 0;
 
         virtual MousePosition getMousePosition() const = 0;
     };

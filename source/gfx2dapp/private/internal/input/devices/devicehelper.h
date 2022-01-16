@@ -7,15 +7,9 @@ namespace puma::app
 {
     using StateMask = u8;
 
-    using MouseKeyStates = std::array<StateMask, static_cast<InputId>(MouseKey::TotalKeys)>;
+    using MouseKeyStates = std::array<StateMask, static_cast<InputId>(MouseButton::TotalButtons)>;
     using KeyboardKeyStates = std::array<StateMask, static_cast<InputId>(KeyboardKey::TotalKeys)>;
-    using ControllerKeyStates = std::array<StateMask, static_cast<InputId>(ControllerKey::TotalKeys)>;
-
-    enum class InputButtonEvent
-    {
-        Up,
-        Down,
-    };
+    using ControllerKeyStates = std::array<StateMask, static_cast<InputId>(ControllerButton::TotalButtons)>;
 
     enum StateFlag
     {
@@ -39,37 +33,6 @@ namespace puma::app
                 stateMask &= ~PressedStateBit;
             }
         }
-
-    protected:
-
-        bool inputState( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & CurrentStateBit; 
-        }
-        
-        bool inputPressed( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & PressedStateBit; 
-        }
-        
-        bool inputReleased( InputId _inputId ) const
-        { 
-            assert( _inputId != kInvalidInputId ); 
-            assert( _inputId < m_keyStates.size() );
-            return m_keyStates[(int)_inputId] & ReleasedStateBit; 
-        }
-
-        void internalUpdateKeyStates( const SDLInputMapping& _inputMapping, s32 _sdlInputId, InputButtonEvent _buttonEvent )
-        {
-            InputId inputId = resolveInputID( _inputMapping, _sdlInputId );
-            updateKeyStates( inputId, _buttonEvent );
-        }
-
-    private:
 
         void updateKeyStates( InputId _inputId, InputButtonEvent _buttonEvent )
         {
@@ -113,6 +76,31 @@ namespace puma::app
                 break;
             }
         }
+
+    protected:
+
+        bool inputState( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & CurrentStateBit; 
+        }
+        
+        bool inputPressed( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & PressedStateBit; 
+        }
+        
+        bool inputReleased( InputId _inputId ) const
+        { 
+            assert( _inputId != kInvalidInputId ); 
+            assert( _inputId < m_keyStates.size() );
+            return m_keyStates[(int)_inputId] & ReleasedStateBit; 
+        }
+
+    private:
 
         DeviceKeysType m_keyStates = {};
     };

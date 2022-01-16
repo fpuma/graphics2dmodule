@@ -9,9 +9,12 @@ namespace puma::app
     {
     public:
 
-        bool keyState( ControllerKey _controllerKey ) const override { return inputState( static_cast<InputId>(_controllerKey) ); }
-        bool keyPressed( ControllerKey _controllerKey ) const override { return inputPressed( static_cast<InputId>(_controllerKey) ); }
-        bool keyReleased( ControllerKey _controllerKey ) const override { return inputReleased( static_cast<InputId>(_controllerKey) ); }
+        Controller() {}
+        Controller( s32 _sdlId, ControllerId _controllerId );
+
+        bool buttonState( ControllerButton _controllerKey ) const override { return inputState( static_cast<InputId>(_controllerKey) ); }
+        bool buttonPressed( ControllerButton _controllerKey ) const override { return inputPressed( static_cast<InputId>(_controllerKey) ); }
+        bool buttonReleased( ControllerButton _controllerKey ) const override { return inputReleased( static_cast<InputId>(_controllerKey) ); }
 
         JoystickPosition getRightJoystickPosition() const override { return m_rightJoystickPosition; }
         JoystickPosition getLeftJoystickPosition() const override { return m_leftJoystickPosition; }
@@ -19,7 +22,7 @@ namespace puma::app
         float getRightTrigger() const override { return m_rightTrigger; }
         float getLeftTrigger() const override { return m_leftTrigger; }
 
-        void updateStates( s32 _sdlInputId, InputButtonEvent _buttonEvent );
+        ControllerId getControllerId() const override { return m_controllerId; }
 
         void setRightJoystickX( s32 _value );
         void setRightJoystickY( s32 _value );
@@ -30,6 +33,8 @@ namespace puma::app
         void setRightTrigger( s32 _value ); 
         void setLeftTrigger( s32 _value ); 
 
+        s32 getSdlId() const { return m_sdlId; }
+
     private:
 
         JoystickPosition m_rightJoystickPosition;
@@ -37,5 +42,9 @@ namespace puma::app
 
         float m_rightTrigger = 0.0f;
         float m_leftTrigger = 0.0f;
+
+        ControllerId m_controllerId = kMaxU32;
+
+        s32 m_sdlId = -1;
     };
 }

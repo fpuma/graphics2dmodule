@@ -2,6 +2,12 @@
 
 namespace puma::app
 {
+    enum class InputButtonEvent
+    {
+        Up,
+        Down,
+    };
+
     struct MousePosition
     {
         int x = 0;

@@ -10,21 +10,69 @@
 #include <input/devices/ikeyboard.h>
 #include <input/devices/imouse.h>
 #include <input/devices/icontroller.h>
+#include <input/iinputlistener.h>
 
 #include <utils/formatstring.h>
 
 using namespace puma;
 using namespace puma::app;
 
-#define PRINT_WHEN_USED_CONTROLLER(KEY) if ( ip->getController().keyPressed( KEY ) ) \
-{\
-    std::cout << #KEY << " PRESSED" << std::endl;\
-}\
-if ( ip->getController().keyReleased( KEY ) )\
-{\
-    std::cout << #KEY << " RELEASED" << std::endl;\
-}
+class MyInputListener : public puma::app::IInputListener
+{
+public:
 
+    MyInputListener( IInput* _input )
+        :input( _input )
+    {}
+
+    void onKeyboardEvent( InputButtonEvent _inputEvent, KeyboardKey _key ) const
+    {
+        if ( input->getKeyboard().keyPressed( _key ) )
+        {
+            std::cout << "Keyboard: " << input->getInputName(_key) << " PRESSED" << std::endl;
+        }
+        if ( input->getKeyboard().keyReleased( _key ) )
+        {
+            std::cout << "Keyboard: " << input->getInputName( _key ) << " RELEASED" << std::endl;
+        }
+    }
+    
+    void onMouseEvent( MouseEventType _eventType, const MouseEventData& _mouseEventData ) const
+    {
+        if ( MouseEventType::Button == _eventType )
+        {
+            MouseButton button = _mouseEventData.buttonEvent.mouseButton;
+
+            if ( input->getMouse().buttonPressed( button ) )
+            {
+                std::cout << "Mouse: " << input->getInputName( button ) << " PRESSED" << std::endl;
+            }
+            if ( input->getMouse().buttonReleased( button ) )
+            {
+                std::cout << "Mouse: " << input->getInputName( button ) << " RELEASED" << std::endl;
+            }
+        }
+    }
+    
+    void onControllerEvent( ControllerId _id, ControllerEventType _eventType, const ControllerEventData& _eventData ) const
+    {
+        if ( ControllerEventType::Button == _eventType )
+        {
+            ControllerButton button = _eventData.buttonEvent.controllerButton;
+
+            if ( input->getController(_id).buttonPressed( button ) )
+            {
+                std::cout << "Controller" << _id <<": " << input->getInputName( button ) << " PRESSED" << std::endl;
+            }
+            if ( input->getController(_id).buttonReleased( button ) )
+            {
+                std::cout << "Controller" << _id << ": " << input->getInputName( button ) << " RELEASED" << std::endl;
+            }
+        }
+    }
+
+    IInput* input;
+};
 
 int main()
 {
@@ -42,39 +90,40 @@ int main()
     IRenderer* rendererPtr = windowPtr->getRenderer();
     rendererPtr->setDefaultBackgroundColor( Color::Black() );
 
+    ip->setInputListener( std::move( std::make_unique<MyInputListener>( ip.get() ) ) );
+
+
     while ( !appPtr->shouldQuit() )
     {
         ip->update();
         appPtr->update();
-
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_UP );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_RIGHT );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_DOWN );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_DPAD_LEFT );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_A );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_B );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_X );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_Y );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_LB );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_RB );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_SELECT );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_START );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_LSTICK );
-        PRINT_WHEN_USED_CONTROLLER( ControllerKey::CB_RSTICK );
-
+        
         rendererPtr->beginRender();
-        rendererPtr->renderText( { 0, 0 },
+
+        for ( u32 controllerId = 0; controllerId < ip->getControllerCount(); ++controllerId )
+        {
+            rendererPtr->renderText( { (s32)(controllerId * 250), 0 },
+                Color::White(),
+                formatString( "%.4f | %.4f", ip->getController( controllerId ).getLeftJoystickPosition().x, ip->getController( controllerId ).getLeftJoystickPosition().y ).c_str() );
+            rendererPtr->renderText( { (s32)(controllerId * 250), 15 },
+                Color::White(),
+                formatString( "%.4f | %.4f", ip->getController( controllerId ).getRightJoystickPosition().x, ip->getController( controllerId ).getRightJoystickPosition().y ).c_str() );
+            rendererPtr->renderText( { (s32)(controllerId * 250), 30 },
+                Color::White(),
+                formatString( "%.4f", ip->getController( controllerId ).getLeftTrigger() ).c_str() );
+            rendererPtr->renderText( { (s32)(controllerId * 250), 45 },
+                Color::White(),
+                formatString( "%.4f", ip->getController( controllerId ).getRightTrigger() ).c_str() );
+        }
+        
+        
+        MousePosition mousePos = ip->getMouse().getMousePosition();
+
+        rendererPtr->renderText( { mousePos.x, mousePos.y },
             Color::White(),
-            formatString( "%.4f | %.4f", ip->getController().getLeftJoystickPosition().x, ip->getController().getLeftJoystickPosition().y ).c_str() );
-        rendererPtr->renderText( { 0, 15 },
-            Color::White(),
-            formatString( "%.4f | %.4f", ip->getController().getRightJoystickPosition().x, ip->getController().getRightJoystickPosition().y ).c_str() );
-        rendererPtr->renderText( { 0, 30 },
-            Color::White(),
-            formatString( "%.4f", ip->getController().getLeftTrigger() ).c_str() );
-        rendererPtr->renderText( { 0, 45 },
-            Color::White(),
-            formatString( "%.4f", ip->getController().getRightTrigger() ).c_str() );
+            formatString( "%d | %d", mousePos.x, mousePos.y ).c_str() );
+        
+
         rendererPtr->endRender();
         
     };

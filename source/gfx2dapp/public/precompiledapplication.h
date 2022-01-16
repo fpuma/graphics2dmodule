@@ -29,4 +29,6 @@ namespace puma::app
     using FontHandle = _TTF_Font*;
 
     constexpr WindowHandle kInvalidWindowHandle = 0;
+
+    using ControllerId = u32;
 }
