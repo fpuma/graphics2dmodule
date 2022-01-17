@@ -15,11 +15,14 @@ namespace puma::app
         bool buttonReleased( MouseButton _mouseKey ) const override { return inputReleased( static_cast<InputId>(_mouseKey) ); }
 
         MousePosition getMousePosition() const override { return m_mousePosition; }
+        MouseWheelState getMouseWheelState() const override { return m_wheelState; }
 
         void setMousePosition( MousePosition _mousePosition ) { m_mousePosition = _mousePosition; }
+        void setMouseWheelState( MouseWheelState _mouseWheelState ) { m_wheelState = _mouseWheelState; }
 
     private:
 
         MousePosition m_mousePosition = {};
+        MouseWheelState m_wheelState = MouseWheelState::MW_IDLE;
     };
 }

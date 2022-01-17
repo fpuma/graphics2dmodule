@@ -16,6 +16,7 @@ namespace puma::app
 
         static const char* getInputName( KeyboardKey _key );
         static const char* getInputName( MouseButton _button );
+        static const char* getInputName( MouseWheelState _wheel );
         static const char* getInputName( ControllerButton _button );
 
         virtual ~IInput() {}

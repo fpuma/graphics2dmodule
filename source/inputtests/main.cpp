@@ -39,7 +39,9 @@ public:
     
     void onMouseEvent( MouseEventType _eventType, const MouseEventData& _mouseEventData ) const
     {
-        if ( MouseEventType::Button == _eventType )
+        switch ( _eventType )
+        {
+        case MouseEventType::Button:
         {
             MouseButton button = _mouseEventData.buttonEvent.mouseButton;
 
@@ -51,6 +53,15 @@ public:
             {
                 std::cout << "Mouse: " << input->getInputName( button ) << " RELEASED" << std::endl;
             }
+            break;
+        }
+        case MouseEventType::Wheel:
+        {
+            std::cout << "Mouse: " << input->getInputName( _mouseEventData.mouseWheel ) << std::endl;
+            break;
+        }
+        default:
+            break;
         }
     }
     

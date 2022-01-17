@@ -4,11 +4,19 @@ namespace puma::app
 {
     using InputNameMapping = std::map<InputId, const char*>;
     constexpr std::initializer_list<InputNameMapping::value_type> kMouseKeyNamesInitList = {
-        {static_cast<InputId>(MouseButton::MB_Left)           ,"LBM"          },
-        {static_cast<InputId>(MouseButton::MB_Middle)         ,"MMB"          },
-        {static_cast<InputId>(MouseButton::MB_Right)          ,"RMB"          },
+        {static_cast<InputId>(MouseButton::MB_LEFT)           ,"MB LEFT"      },
+        {static_cast<InputId>(MouseButton::MB_MIDDLE)         ,"MB MIDDLE"    },
+        {static_cast<InputId>(MouseButton::MB_RIGHT)          ,"MB RIGHT"     },
         {static_cast<InputId>(MouseButton::MB_X1)             ,"MB4"          },
         {static_cast<InputId>(MouseButton::MB_X2)             ,"MB5"          },
+    };
+
+    constexpr std::initializer_list<InputNameMapping::value_type> kMouseWheelNamesInitList = {
+        {static_cast<InputId>(MouseWheelState::MW_IDLE)  ,"MW IDLE"          },
+        {static_cast<InputId>(MouseWheelState::MW_UP)    ,"MW UP"          },
+        {static_cast<InputId>(MouseWheelState::MW_RIGHT) ,"MW RIGHT"          },
+        {static_cast<InputId>(MouseWheelState::MW_DOWN)  ,"MW DOWN "          },
+        {static_cast<InputId>(MouseWheelState::MW_LEFT)  ,"MW LEFT"          },
     };
 
     constexpr std::initializer_list<InputNameMapping::value_type> kKeyboardKeyNamesInitList = {
@@ -153,6 +161,7 @@ namespace puma::app
     };
 
     InputNameMapping kMouseKeyNames = kMouseKeyNamesInitList;
+    InputNameMapping kMouseWheelNames = kMouseWheelNamesInitList;
     InputNameMapping kKeyboardKeyNames = kKeyboardKeyNamesInitList;
     InputNameMapping kControllerKeyNames = kControllerKeyNamesInitList;
 }

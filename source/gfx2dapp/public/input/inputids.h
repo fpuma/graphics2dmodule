@@ -8,12 +8,21 @@ namespace puma::app
     
     enum class MouseButton : InputId
     {
-        MB_Left,
-        MB_Middle,
-        MB_Right,
+        MB_LEFT,
+        MB_MIDDLE,
+        MB_RIGHT,
         MB_X1,
         MB_X2,
         TotalButtons,
+    };
+
+    enum class MouseWheelState : InputId
+    {
+        MW_IDLE,
+        MW_UP,
+        MW_RIGHT,
+        MW_DOWN,
+        MW_LEFT,
     };
 
     enum class KeyboardKey : InputId

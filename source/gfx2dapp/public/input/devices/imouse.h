@@ -14,5 +14,6 @@ namespace puma::app
         virtual bool buttonReleased( MouseButton _mouseKey ) const = 0;
 
         virtual MousePosition getMousePosition() const = 0;
+        virtual MouseWheelState getMouseWheelState() const = 0;
     };
 }

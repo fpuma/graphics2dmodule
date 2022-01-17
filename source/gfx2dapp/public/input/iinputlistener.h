@@ -9,6 +9,7 @@ namespace puma::app
     enum class MouseEventType
     {
         Position,
+        Wheel,
         Button,
     };
 
@@ -23,6 +24,7 @@ namespace puma::app
         MouseEventData() {}
 
         MousePosition positionEvent;
+        MouseWheelState mouseWheel;
         MouseButtonEvent buttonEvent = {};
     };
 

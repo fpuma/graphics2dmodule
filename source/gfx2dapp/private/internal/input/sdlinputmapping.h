@@ -6,9 +6,9 @@ namespace puma::app
 {
     using SDLInputMapping = std::map<s32, InputId>;
     constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlMouseMappingInitList = {
-        {SDL_BUTTON_LEFT    , static_cast<InputId>( MouseButton::MB_Left           )},
-        {SDL_BUTTON_MIDDLE  , static_cast<InputId>( MouseButton::MB_Middle         )},
-        {SDL_BUTTON_RIGHT   , static_cast<InputId>( MouseButton::MB_Right          )},
+        {SDL_BUTTON_LEFT    , static_cast<InputId>( MouseButton::MB_LEFT           )},
+        {SDL_BUTTON_MIDDLE  , static_cast<InputId>( MouseButton::MB_MIDDLE         )},
+        {SDL_BUTTON_RIGHT   , static_cast<InputId>( MouseButton::MB_RIGHT          )},
         {SDL_BUTTON_X1      , static_cast<InputId>( MouseButton::MB_X1             )},
         {SDL_BUTTON_X2      , static_cast<InputId>( MouseButton::MB_X2             )},
     };

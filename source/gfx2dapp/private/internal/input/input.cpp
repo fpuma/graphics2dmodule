@@ -51,6 +51,20 @@ namespace puma::app
         return result;
     }
 
+    const char* IInput::getInputName( MouseWheelState _wheel )
+    {
+        const char* result = nullptr;
+        
+        auto itFoundName = kMouseWheelNames.find( static_cast<InputId>(_wheel) );
+
+        if ( itFoundName != kMouseWheelNames.end() )
+        {
+            result = itFoundName->second;
+        }
+
+        return result;
+    }
+
     const char* IInput::getInputName( ControllerButton _button )
     {
         const char* result = nullptr;
@@ -159,6 +173,26 @@ namespace puma::app
                     eventData.positionEvent = m_mouseDevice.getMousePosition();
                     m_inputListener->onMouseEvent( MouseEventType::Position, eventData );
                 }
+                break;
+            }
+            case SDL_MOUSEWHEEL:
+            {
+                if ( currentEvent.wheel.x != 0 )
+                {
+                    m_mouseDevice.setMouseWheelState( currentEvent.wheel.x < 0 ? MouseWheelState::MW_LEFT : MouseWheelState::MW_RIGHT );
+                }
+                else if ( currentEvent.wheel.y != 0 )
+                {
+                    m_mouseDevice.setMouseWheelState( currentEvent.wheel.y < 0 ? MouseWheelState::MW_DOWN : MouseWheelState::MW_UP );
+                }
+
+                if ( nullptr != m_inputListener )
+                {
+                    MouseEventData eventData;
+                    eventData.mouseWheel = m_mouseDevice.getMouseWheelState();
+                    m_inputListener->onMouseEvent( MouseEventType::Wheel, eventData );
+                }
+
                 break;
             }
             case SDL_MOUSEBUTTONDOWN:
@@ -281,6 +315,7 @@ namespace puma::app
     void Input::clearPreviousStates()
     {
         m_mouseDevice.clearStates();
+        m_mouseDevice.setMouseWheelState( MouseWheelState::MW_IDLE );
         m_keyboardDevice.clearStates();
         for ( Controller& controller : m_controllerDevices )
         {
