@@ -11,6 +11,12 @@ namespace puma::app
     using KeyboardKeyStates = std::array<StateMask, static_cast<InputId>(KeyboardKey::TotalKeys)>;
     using ControllerKeyStates = std::array<StateMask, static_cast<InputId>(ControllerButton::TotalButtons)>;
 
+    enum class InputButtonEvent
+    {
+        Up,
+        Down,
+    };
+
     enum StateFlag
     {
         CurrentStateBit = 0x01,

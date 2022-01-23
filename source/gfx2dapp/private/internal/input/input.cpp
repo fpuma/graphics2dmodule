@@ -169,9 +169,7 @@ namespace puma::app
                 m_mouseDevice.setMousePosition( { static_cast<int>(currentEvent.motion.x), static_cast<int>(currentEvent.motion.y) } );
                 if ( nullptr != m_inputListener )
                 {
-                    MouseEventData eventData;
-                    eventData.positionEvent = m_mouseDevice.getMousePosition();
-                    m_inputListener->onMouseEvent( MouseEventType::Position, eventData );
+                    m_inputListener->onMousePosition( m_mouseDevice.getMousePosition() );
                 }
                 break;
             }
@@ -188,9 +186,7 @@ namespace puma::app
 
                 if ( nullptr != m_inputListener )
                 {
-                    MouseEventData eventData;
-                    eventData.mouseWheel = m_mouseDevice.getMouseWheelState();
-                    m_inputListener->onMouseEvent( MouseEventType::Wheel, eventData );
+                    m_inputListener->onMouseWheel( m_mouseDevice.getMouseWheelState() );
                 }
 
                 break;
@@ -225,9 +221,7 @@ namespace puma::app
                     controller.setLeftJoystickX( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.joystickEvent = { ControllerJoystick::CJ_LSTICK_X, controller.getLeftJoystickPosition().x };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_LSTICK_X, controller.getLeftJoystickPosition().x );
                     }
                     break;
                 }
@@ -237,9 +231,7 @@ namespace puma::app
                     controller.setLeftJoystickY( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.joystickEvent = { ControllerJoystick::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y );
                     }
                     break;
                 }
@@ -249,9 +241,7 @@ namespace puma::app
                     controller.setLeftTrigger( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.triggerEvent = { ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Trigger, eventData );
+                        m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() );
                     }
                     break;
                 }
@@ -261,9 +251,7 @@ namespace puma::app
                     controller.setRightJoystickX( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.joystickEvent = { ControllerJoystick::CJ_RSTICK_X, controller.getRightJoystickPosition().x };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_RSTICK_X, controller.getRightJoystickPosition().x );
                     }
                     break;
                 }
@@ -273,9 +261,7 @@ namespace puma::app
                     controller.setRightJoystickY( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.joystickEvent = { ControllerJoystick::CJ_RSTICK_Y, controller.getRightJoystickPosition().y };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Joystick, eventData );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_RSTICK_Y, controller.getRightJoystickPosition().y );
                     }
                     break;
                 }
@@ -285,9 +271,7 @@ namespace puma::app
                     controller.setRightTrigger( currentEvent.jaxis.value );
                     if ( nullptr != m_inputListener )
                     {
-                        ControllerEventData eventData;
-                        eventData.triggerEvent = { ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() };
-                        m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Trigger, eventData );
+                        m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() );
                     }
                     break;
                 }
@@ -329,7 +313,7 @@ namespace puma::app
         m_keyboardDevice.updateKeyStates( inputId, _inputEvent );
         if ( nullptr != m_inputListener )
         {
-            m_inputListener->onKeyboardEvent( _inputEvent, static_cast<KeyboardKey>(inputId) );
+            m_inputListener->onKeyboardKey( static_cast<KeyboardKey>(inputId) );
         }
     }
 
@@ -339,9 +323,7 @@ namespace puma::app
         m_mouseDevice.updateKeyStates( inputId, _inputEvent );
         if ( nullptr != m_inputListener )
         {
-            MouseEventData eventData;
-            eventData.buttonEvent = { _inputEvent, static_cast<MouseButton>(inputId) };
-            m_inputListener->onMouseEvent( MouseEventType::Button, eventData );
+            m_inputListener->onMouseButton( static_cast<MouseButton>(inputId) );
         }
     }
 
@@ -351,9 +333,7 @@ namespace puma::app
         controller.updateKeyStates( inputId, _inputEvent );
         if ( nullptr != m_inputListener )
         {
-            ControllerEventData eventData;
-            eventData.buttonEvent = { _inputEvent, static_cast<ControllerButton>(inputId) };
-            m_inputListener->onControllerEvent( controller.getControllerId(), ControllerEventType::Button, eventData );
+            m_inputListener->onControllerButton( controller.getControllerId(), static_cast<ControllerButton>(inputId) );
         }
     }
 
