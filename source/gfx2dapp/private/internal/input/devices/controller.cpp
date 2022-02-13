@@ -11,7 +11,7 @@ namespace puma::app
     {
         float convertJoystickAxis( s32 _raw )
         {
-            return _raw / (_raw < 0 ? -32768.0f : 32767.0f);
+            return _raw / (_raw < 0 ? 32768.0f : 32767.0f);
         }
 
         float convertJoystickTrigger( s32 _raw )
@@ -32,7 +32,7 @@ namespace puma::app
 
     void Controller::setRightJoystickY( s32 _value )
     {
-        m_rightJoystickPosition.y = convertJoystickAxis( _value );
+        m_rightJoystickPosition.y = -convertJoystickAxis( _value );
     }
 
     void Controller::setLeftJoystickX( s32 _value )
@@ -42,7 +42,7 @@ namespace puma::app
 
     void Controller::setLeftJoystickY( s32 _value )
     {
-        m_leftJoystickPosition.y = convertJoystickAxis( _value );
+        m_leftJoystickPosition.y = -convertJoystickAxis( _value );
     }
 
     void Controller::setRightTrigger( s32 _value )
