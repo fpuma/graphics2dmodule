@@ -97,6 +97,16 @@ namespace puma::app
             }
             return result;
         }
+
+        float convertJoystickAxis( s32 _raw )
+        {
+            return _raw / (_raw < 0 ? 32768.0f : 32767.0f);
+        }
+
+        float convertJoystickTrigger( s32 _raw )
+        {
+            return (_raw + 32768) / 65535.0f;
+        }
     }
 
     void Input::init()
@@ -218,27 +228,37 @@ namespace puma::app
                 case 0:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setLeftJoystickX( currentEvent.jaxis.value );
+                    
+                    float axisValue = convertJoystickAxis( currentEvent.jaxis.value );
+                    
+                    if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
+
+                    controller.setLeftJoystickX( axisValue );
                     if ( nullptr != m_inputListener )
                     {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_LSTICK_X, controller.getLeftJoystickPosition().x );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_LSTICK_X, controller.getLeftJoystickPosition().x );
                     }
                     break;
                 }
                 case 1:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setLeftJoystickY( currentEvent.jaxis.value );
+
+                    float axisValue = -convertJoystickAxis( currentEvent.jaxis.value );
+                    
+                    if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
+
+                    controller.setLeftJoystickY( axisValue );
                     if ( nullptr != m_inputListener )
                     {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y );
                     }
                     break;
                 }
                 case 2:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setLeftTrigger( currentEvent.jaxis.value );
+                    controller.setLeftTrigger( convertJoystickTrigger( currentEvent.jaxis.value ) );
                     if ( nullptr != m_inputListener )
                     {
                         m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() );
@@ -248,27 +268,37 @@ namespace puma::app
                 case 3:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setRightJoystickX( currentEvent.jaxis.value );
+
+                    float axisValue = convertJoystickAxis( currentEvent.jaxis.value );
+                    
+                    if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
+
+                    controller.setRightJoystickX( axisValue );
                     if ( nullptr != m_inputListener )
                     {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_RSTICK_X, controller.getRightJoystickPosition().x );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_RSTICK_X, controller.getRightJoystickPosition().x );
                     }
                     break;
                 }
                 case 4:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setRightJoystickY( currentEvent.jaxis.value );
+
+                    float axisValue = -convertJoystickAxis( currentEvent.jaxis.value );
+                    
+                    if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
+                    
+                    controller.setRightJoystickY( axisValue );
                     if ( nullptr != m_inputListener )
                     {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystick::CJ_RSTICK_Y, controller.getRightJoystickPosition().y );
+                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_RSTICK_Y, controller.getRightJoystickPosition().y );
                     }
                     break;
                 }
                 case 5:
                 {
                     Controller& controller = handleControllerBySdlId( currentEvent.jaxis.which );
-                    controller.setRightTrigger( currentEvent.jaxis.value );
+                    controller.setRightTrigger( convertJoystickTrigger( currentEvent.jaxis.value ) );
                     if ( nullptr != m_inputListener )
                     {
                         m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() );
@@ -276,6 +306,7 @@ namespace puma::app
                     break;
                 }
                 default:
+                    assert( false ); //Axis index not yet supported
                     break;
                 }
                 break;

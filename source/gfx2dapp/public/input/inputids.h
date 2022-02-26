@@ -182,7 +182,7 @@ namespace puma::app
         TotalButtons,
     };
 
-    enum class ControllerJoystick : InputId
+    enum class ControllerJoystickAxis : InputId
     {
         CJ_LSTICK_X,
         CJ_LSTICK_Y,

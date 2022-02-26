@@ -12,6 +12,11 @@ namespace puma::app
         virtual bool buttonPressed( ControllerButton _controllerKey ) const = 0;
         virtual bool buttonReleased( ControllerButton _controllerKey ) const = 0;
 
+        virtual bool wasRightJoystickUpdated() const = 0;
+        virtual bool wasLeftJoystickUpdated() const = 0;
+        virtual bool wasRightTriggerUpdated() const = 0;
+        virtual bool wasLeftTriggerUpdated() const = 0;
+
         virtual JoystickPosition getRightJoystickPosition() const = 0;
         virtual JoystickPosition getLeftJoystickPosition() const = 0;
 

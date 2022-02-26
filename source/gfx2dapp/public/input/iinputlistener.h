@@ -18,7 +18,7 @@ namespace puma::app
         virtual void onMousePosition( MousePosition _wheelState ) const = 0;
 
         virtual void onControllerButton( ControllerId _id, ControllerButton _buttonId) const = 0;
-        virtual void onControllerJoystick( ControllerId _id, ControllerJoystick _joystickId, float _joystickValue ) const = 0;
+        virtual void onControllerJoystick( ControllerId _id, ControllerJoystickAxis _joystickId, float _joystickValue ) const = 0;
         virtual void onControllerTrigger( ControllerId _id, ControllerTrigger _triggerId, float _triggerValue ) const = 0;
     };
 }

@@ -16,6 +16,11 @@ namespace puma::app
         bool buttonPressed( ControllerButton _controllerKey ) const override { return inputPressed( static_cast<InputId>(_controllerKey) ); }
         bool buttonReleased( ControllerButton _controllerKey ) const override { return inputReleased( static_cast<InputId>(_controllerKey) ); }
 
+        bool wasRightJoystickUpdated() const override { return m_updatedMotionsFlags & RightJoystickUpdated; }
+        bool wasLeftJoystickUpdated() const override { return m_updatedMotionsFlags & LeftJoystickUpdated; }
+        bool wasRightTriggerUpdated() const override { return m_updatedMotionsFlags & RightTriggerUpdated; }
+        bool wasLeftTriggerUpdated() const override { return m_updatedMotionsFlags & LeftTriggerUpdated; }
+
         JoystickPosition getRightJoystickPosition() const override { return m_rightJoystickPosition; }
         JoystickPosition getLeftJoystickPosition() const override { return m_leftJoystickPosition; }
 
@@ -24,18 +29,32 @@ namespace puma::app
 
         ControllerId getControllerId() const override { return m_controllerId; }
 
-        void setRightJoystickX( s32 _value );
-        void setRightJoystickY( s32 _value );
+        void setRightJoystickX( float _value );
+        void setRightJoystickY( float _value );
 
-        void setLeftJoystickX( s32 _value );
-        void setLeftJoystickY( s32 _value );
+        void setLeftJoystickX( float _value );
+        void setLeftJoystickY( float _value );
 
-        void setRightTrigger( s32 _value ); 
-        void setLeftTrigger( s32 _value ); 
+        void setRightTrigger( float _value ); 
+        void setLeftTrigger( float _value ); 
 
         s32 getSdlId() const { return m_sdlId; }
 
+    protected:
+
+        void internalClearStates() override { m_updatedMotionsFlags = 0; }
+
     private:
+
+        enum
+        {
+            RightJoystickUpdated = 0x01,
+            LeftJoystickUpdated = 0x02,
+            RightTriggerUpdated = 0x04,
+            LeftTriggerUpdated = 0x08,
+        };
+
+        u8 m_updatedMotionsFlags = 0;
 
         JoystickPosition m_rightJoystickPosition;
         JoystickPosition m_leftJoystickPosition;

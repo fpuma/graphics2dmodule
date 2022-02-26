@@ -1,57 +1,52 @@
 #include "precompiledapplication.h"
 
+#include "controller.h"
+
 #include <internal/input/devices/devicehelper.h>
 #include <internal/input/sdlinputmapping.h>
 
-#include "controller.h"
+#include <math.h>
 
 namespace puma::app
 {
-    namespace
-    {
-        float convertJoystickAxis( s32 _raw )
-        {
-            return _raw / (_raw < 0 ? 32768.0f : 32767.0f);
-        }
-
-        float convertJoystickTrigger( s32 _raw )
-        {
-            return (_raw + 32768) / 65535.0f;
-        }
-    }
-
     Controller::Controller( s32 _sdlId, ControllerId _controllerId )
         : m_controllerId( _controllerId )
         , m_sdlId( _sdlId )
     {}
 
-    void Controller::setRightJoystickX( s32 _value )
+    void Controller::setRightJoystickX( float _value )
     {
-        m_rightJoystickPosition.x = convertJoystickAxis( _value );
+        m_rightJoystickPosition.x = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | RightJoystickUpdated;
     }
 
-    void Controller::setRightJoystickY( s32 _value )
+    void Controller::setRightJoystickY( float _value )
     {
-        m_rightJoystickPosition.y = -convertJoystickAxis( _value );
+        m_rightJoystickPosition.y = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | RightJoystickUpdated;
     }
 
-    void Controller::setLeftJoystickX( s32 _value )
+    void Controller::setLeftJoystickX( float _value )
     {
-        m_leftJoystickPosition.x = convertJoystickAxis( _value );
+        m_leftJoystickPosition.x = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | LeftJoystickUpdated;
     }
 
-    void Controller::setLeftJoystickY( s32 _value )
+    void Controller::setLeftJoystickY( float _value )
     {
-        m_leftJoystickPosition.y = -convertJoystickAxis( _value );
+        m_leftJoystickPosition.y = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | LeftJoystickUpdated;
     }
 
-    void Controller::setRightTrigger( s32 _value )
+    void Controller::setRightTrigger( float _value )
     {
-        m_rightTrigger = convertJoystickTrigger( _value );
+        m_rightTrigger = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | RightTriggerUpdated;
     }
 
-    void Controller::setLeftTrigger( s32 _value )
+    void Controller::setLeftTrigger( float _value )
     {
-        m_leftTrigger = convertJoystickTrigger( _value );
+        m_leftTrigger = _value;
+        m_updatedMotionsFlags = m_updatedMotionsFlags | LeftTriggerUpdated;
     }
 }

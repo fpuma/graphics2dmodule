@@ -71,7 +71,7 @@ public:
         }
     }
 
-    void onControllerJoystick( ControllerId _id, ControllerJoystick _joystickId, float _joystickValue ) const override {}
+    void onControllerJoystick( ControllerId _id, ControllerJoystickAxis _joystickId, float _joystickValue ) const override {}
     void onControllerTrigger( ControllerId _id, ControllerTrigger _triggerId, float _triggerValue ) const override {}
 
     IInput* input;
@@ -105,27 +105,36 @@ int main()
 
         for ( u32 controllerId = 0; controllerId < ip->getControllerCount(); ++controllerId )
         {
+            const IController& controller = ip->getController( controllerId );
+
             rendererPtr->renderText( { (s32)(controllerId * 250), 0 },
                 Color::White(),
-                formatString( "%.4f | %.4f", ip->getController( controllerId ).getLeftJoystickPosition().x, ip->getController( controllerId ).getLeftJoystickPosition().y ).c_str() );
+                formatString( "%.4f | %.4f", controller.getLeftJoystickPosition().x, controller.getLeftJoystickPosition().y ).c_str() );
             rendererPtr->renderText( { (s32)(controllerId * 250), 15 },
                 Color::White(),
-                formatString( "%.4f | %.4f", ip->getController( controllerId ).getRightJoystickPosition().x, ip->getController( controllerId ).getRightJoystickPosition().y ).c_str() );
+                formatString( "%.4f | %.4f", controller.getRightJoystickPosition().x, controller.getRightJoystickPosition().y ).c_str() );
             rendererPtr->renderText( { (s32)(controllerId * 250), 30 },
                 Color::White(),
-                formatString( "%.4f", ip->getController( controllerId ).getLeftTrigger() ).c_str() );
+                formatString( "%.4f", controller.getLeftTrigger() ).c_str() );
             rendererPtr->renderText( { (s32)(controllerId * 250), 45 },
                 Color::White(),
-                formatString( "%.4f", ip->getController( controllerId ).getRightTrigger() ).c_str() );
+                formatString( "%.4f", controller.getRightTrigger() ).c_str() );
+
+            if ( controller.wasLeftJoystickUpdated() ) std::cout << "Controller: " << controllerId << " | Left joystick updated!" << std::endl;
+            if ( controller.wasRightJoystickUpdated() ) std::cout << "Controller: " << controllerId << " | Right joystick updated!" << std::endl;
+            if ( controller.wasLeftTriggerUpdated() ) std::cout << "Controller: " << controllerId << " | Left trigger updated!" << std::endl;
+            if ( controller.wasRightTriggerUpdated() ) std::cout << "Controller: " << controllerId << " | Rgiht trigger updated!" << std::endl;
         }
         
-        
+        if ( ip->getMouse().wasMousePositionUpdated() ) std::cout << "Mouse position updated!" << std::endl;
+
         MousePosition mousePos = ip->getMouse().getMousePosition();
 
         rendererPtr->renderText( { mousePos.x, mousePos.y },
             Color::White(),
             formatString( "%d | %d", mousePos.x, mousePos.y ).c_str() );
         
+
 
         rendererPtr->endRender();
         

@@ -31,6 +31,8 @@ namespace puma::app
     {
     public:
         
+        virtual ~DeviceKeyStates() {}
+
         void clearStates()
         {
             for ( StateMask& stateMask : m_keyStates )
@@ -38,6 +40,7 @@ namespace puma::app
                 stateMask &= ~ReleasedStateBit;
                 stateMask &= ~PressedStateBit;
             }
+            internalClearStates();
         }
 
         void updateKeyStates( InputId _inputId, InputButtonEvent _buttonEvent )
@@ -79,11 +82,14 @@ namespace puma::app
                 break;
             }
             default:
+                assert( false ); //InputButtonEvent not yet supported
                 break;
             }
         }
 
     protected:
+
+        virtual void internalClearStates() = 0;
 
         bool inputState( InputId _inputId ) const
         { 
