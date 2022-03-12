@@ -40,7 +40,7 @@ namespace puma::app
         void updateDPad( s32 _id, u32 input);
         Controller& handleControllerBySdlId( s32 _id );
 
-        float m_joystickDeadZone = 0.1f;
+        float m_joystickDeadZone = 0.2f;
 
         Mouse m_mouseDevice;
         Keyboard m_keyboardDevice;
