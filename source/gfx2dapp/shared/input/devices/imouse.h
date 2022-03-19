@@ -3,7 +3,7 @@
 #include <input/inputids.h>
 #include <input/inputdefinitions.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class IMouse
     {

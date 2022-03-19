@@ -7,7 +7,7 @@ namespace puma
     struct ScreenPos;
 }
 
-namespace puma::app
+namespace puma::nina
 {
     class Texture;
     class ITextureManager;

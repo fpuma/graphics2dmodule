@@ -13,7 +13,7 @@
 
 #include <iterator>
 
-namespace puma::app
+namespace puma::nina
 {
     Renderer::Renderer( Window& _window )
     {

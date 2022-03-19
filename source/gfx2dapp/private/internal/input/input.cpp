@@ -10,7 +10,7 @@
 #include <iostream>
 #include "inputnames.h"
 
-namespace puma::app
+namespace puma::nina
 {
     constexpr int kSdlEventBufferSize = 10;
 

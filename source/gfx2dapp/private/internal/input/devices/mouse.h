@@ -4,7 +4,7 @@
 #include <input/inputdefinitions.h>
 #include <internal/input/devices/devicehelper.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Mouse : public IMouse, public DeviceKeyStates<MouseKeyStates>
     {

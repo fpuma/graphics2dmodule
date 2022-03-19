@@ -3,7 +3,7 @@
 #include <input/devices/icontroller.h>
 #include <internal/input/devices/devicehelper.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Controller : public IController, public DeviceKeyStates<ControllerKeyStates>
     {

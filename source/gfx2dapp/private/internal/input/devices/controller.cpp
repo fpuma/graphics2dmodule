@@ -7,7 +7,7 @@
 
 #include <math.h>
 
-namespace puma::app
+namespace puma::nina
 {
     Controller::Controller( s32 _sdlId, ControllerId _controllerId )
         : m_controllerId( _controllerId )

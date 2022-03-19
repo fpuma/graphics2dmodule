@@ -12,7 +12,7 @@
 #include <vector>
 #include <iostream>
 
-using namespace puma::app;
+using namespace puma::nina;
 using namespace puma;
 
 void testTextureManager();

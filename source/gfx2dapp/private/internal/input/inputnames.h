@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::app
+namespace puma::nina
 {
     using InputNameMapping = std::map<InputId, const char*>;
     constexpr std::initializer_list<InputNameMapping::value_type> kMouseKeyNamesInitList = {

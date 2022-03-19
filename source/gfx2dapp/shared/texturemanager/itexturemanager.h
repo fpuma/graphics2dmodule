@@ -6,7 +6,7 @@ namespace puma
     struct Color;
 }
 
-namespace puma::app
+namespace puma::nina
 {
     class IRenderer;
 

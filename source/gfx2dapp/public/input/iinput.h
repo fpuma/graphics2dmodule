@@ -2,7 +2,7 @@
 
 #include <input/iinputlistener.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class IMouse;
     class IKeyboard;

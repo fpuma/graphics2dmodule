@@ -3,7 +3,7 @@
 #include <utils/genericid.h>
 #include <utils/graphics/color.h>
 
-namespace puma::app
+namespace puma::nina
 {
     struct TextureMap
     {

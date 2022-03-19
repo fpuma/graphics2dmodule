@@ -3,7 +3,7 @@
 #include <input/inputdefinitions.h>
 #include <input/inputids.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class IInputListener
     {

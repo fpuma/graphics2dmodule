@@ -1,7 +1,7 @@
 #include <precompiledapplication.h>
 #include "devicehelper.h"
 
-namespace puma::app
+namespace puma::nina
 {
     InputId resolveInputID( const SDLInputMapping& _sdlInputMapping, s32 _sdlInputNumber )
     {

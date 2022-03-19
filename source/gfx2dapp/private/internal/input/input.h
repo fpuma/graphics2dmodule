@@ -10,7 +10,7 @@
 
 #include <utils/containers/containedvector.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Input : public IInput
     {

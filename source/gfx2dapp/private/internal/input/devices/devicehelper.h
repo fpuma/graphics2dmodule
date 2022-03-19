@@ -3,7 +3,7 @@
 #include <internal/applogger/applogger.h>
 #include <internal/input/sdlinputmapping.h>
 
-namespace puma::app
+namespace puma::nina
 {
     using StateMask = u8;
 

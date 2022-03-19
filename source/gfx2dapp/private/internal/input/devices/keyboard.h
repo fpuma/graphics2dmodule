@@ -3,7 +3,7 @@
 #include <input/devices/ikeyboard.h>
 #include <internal/input/devices/devicehelper.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Keyboard : public IKeyboard, public DeviceKeyStates<KeyboardKeyStates>
     {

@@ -2,7 +2,7 @@
 
 #include <utils/graphics/dimensions.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class IRenderer;
 

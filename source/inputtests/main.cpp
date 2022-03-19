@@ -15,9 +15,9 @@
 #include <utils/formatstring.h>
 
 using namespace puma;
-using namespace puma::app;
+using namespace puma::nina;
 
-class MyInputListener : public puma::app::IInputListener
+class MyInputListener : public IInputListener
 {
 public:
 
@@ -82,7 +82,7 @@ int main()
     auto appPtr = IApplication::create();
     appPtr->init();
     appPtr->getLogger()->addOutput<ConsoleLogOutput>();
-    auto ip = app::IInput::create();
+    auto ip = IInput::create();
 
     Extent extent = { 500,500,100,100 };
     WindowHandle window = appPtr->createWindow( extent, "InputTest" );

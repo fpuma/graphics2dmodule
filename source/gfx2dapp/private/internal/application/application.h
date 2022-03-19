@@ -4,7 +4,7 @@
 #include <internal/texturemanager/texturemanager.h>
 #include <internal/applogger/applogger.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Window;
 

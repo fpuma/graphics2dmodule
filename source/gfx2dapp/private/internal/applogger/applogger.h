@@ -2,7 +2,7 @@
 
 #include <logger/logger.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class AppLogger
     {
@@ -24,9 +24,9 @@ namespace puma::app
 
 #include <utils/defaultinstance.h>
 
-namespace puma::app
+namespace puma::nina
 {
     class Application;
 }
 
-#define gAppLogger puma::DefaultInstance<puma::app::AppLogger, puma::app::Application>::getInstance()
+#define gAppLogger puma::DefaultInstance<puma::nina::AppLogger, puma::nina::Application>::getInstance()

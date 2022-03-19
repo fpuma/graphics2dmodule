@@ -1,7 +1,7 @@
 #include <precompiledapplication.h>
 #include <internal/applogger/applogger.h>
 
-namespace puma::app
+namespace puma::nina
 {
     AppLogger::AppLogger()
     {

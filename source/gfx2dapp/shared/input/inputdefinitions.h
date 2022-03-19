@@ -1,6 +1,6 @@
 #pragma once
 
-namespace puma::app
+namespace puma::nina
 {
     struct MousePosition
     {

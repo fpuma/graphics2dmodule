@@ -6,7 +6,7 @@
 struct SDL_Window;
 struct SDL_Renderer;
 
-namespace puma::app
+namespace puma::nina
 {
     class Window : public IWindow
     {

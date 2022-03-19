@@ -21,9 +21,9 @@ struct SDL_Texture;
 struct SDL_Renderer;
 struct _TTF_Font;
 
-namespace puma::app
+namespace puma::nina
 {
-    using WindowHandle = puma::u32;
+    using WindowHandle = u32;
     using TextureHandle = SDL_Texture*;
     using RendererHandle = SDL_Renderer*;
     using FontHandle = _TTF_Font*;

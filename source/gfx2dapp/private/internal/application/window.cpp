@@ -6,7 +6,7 @@
 
 #include <SDL.h>
 
-namespace puma::app
+namespace puma::nina
 {
     
     Window::Window( const Extent& _windowExtent, const char* _windowName )

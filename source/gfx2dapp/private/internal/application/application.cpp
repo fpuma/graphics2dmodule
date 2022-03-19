@@ -7,7 +7,7 @@
 #include <SDL.h>
 #include <SDL_ttf.h>
 
-namespace puma::app
+namespace puma::nina
 {
     constexpr s32 kSdlEventBufferSize = 10;
 

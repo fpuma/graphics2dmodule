@@ -2,10 +2,10 @@
 
 #include <SDL.h>
 
-namespace puma::app
+namespace puma::nina
 {
     using SDLInputMapping = std::map<s32, InputId>;
-    constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlMouseMappingInitList = {
+    constexpr std::initializer_list<puma::nina::SDLInputMapping::value_type> kSdlMouseMappingInitList = {
         {SDL_BUTTON_LEFT    , static_cast<InputId>( MouseButton::MB_LEFT           )},
         {SDL_BUTTON_MIDDLE  , static_cast<InputId>( MouseButton::MB_MIDDLE         )},
         {SDL_BUTTON_RIGHT   , static_cast<InputId>( MouseButton::MB_RIGHT          )},
@@ -13,7 +13,7 @@ namespace puma::app
         {SDL_BUTTON_X2      , static_cast<InputId>( MouseButton::MB_X2             )},
     };
 
-    constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlKeyboardMappingInitList = {
+    constexpr std::initializer_list<puma::nina::SDLInputMapping::value_type> kSdlKeyboardMappingInitList = {
         {SDLK_RETURN        , static_cast<InputId>( KeyboardKey::KB_RETURN         )},
         {SDLK_ESCAPE        , static_cast<InputId>( KeyboardKey::KB_ESCAPE         )},
         {SDLK_BACKSPACE     , static_cast<InputId>( KeyboardKey::KB_BACKSPACE      )},
@@ -149,7 +149,7 @@ namespace puma::app
 #define PUMA_SDL_JOY_RSTICK 9 << 4
 #define SDL_TO_PUMA(X) X << 4
 
-    constexpr std::initializer_list<puma::app::SDLInputMapping::value_type> kSdlControllerMappingInitList = {
+    constexpr std::initializer_list<puma::nina::SDLInputMapping::value_type> kSdlControllerMappingInitList = {
         {SDL_HAT_UP          , static_cast<InputId>(ControllerButton::CB_DPAD_UP)},
         {SDL_HAT_RIGHT       , static_cast<InputId>(ControllerButton::CB_DPAD_RIGHT)},
         {SDL_HAT_DOWN        , static_cast<InputId>(ControllerButton::CB_DPAD_DOWN)},

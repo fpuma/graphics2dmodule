@@ -4,7 +4,7 @@
 
 #include <string>
 
-namespace puma::app
+namespace puma::nina
 {
     class TextureManager final : public ITextureManager
     {

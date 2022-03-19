@@ -14,7 +14,7 @@
 #include <SDL_ttf.h>
 
 
-namespace puma::app
+namespace puma::nina
 {
     TextureManager::TextureManager( IRenderer* _renderer )
     {

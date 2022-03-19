@@ -6,7 +6,7 @@ namespace puma
     struct Extent;
 }
 
-namespace puma::app
+namespace puma::nina
 {
     class IRenderer;
     class IWindow;
