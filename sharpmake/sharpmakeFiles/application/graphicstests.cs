@@ -11,7 +11,7 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPublicDependency<Puma.Gfx2dApp>(target);
+            conf.AddPublicDependency<Puma.Nina>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
         }

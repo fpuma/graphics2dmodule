@@ -13,7 +13,7 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddProject<Puma.Gfx2dApp>( target );
+            conf.AddProject<Puma.Nina>( target );
             conf.AddProject<Puma.GraphicsTest>(target);
             conf.AddProject<Puma.SDLTest>(target);
             conf.AddProject<Puma.InputTests>(target);
