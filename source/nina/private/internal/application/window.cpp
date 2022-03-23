@@ -36,9 +36,30 @@ namespace puma::nina
         m_renderer.reset();
     }
 
-    WindowHandle Window::getWindowHandle() const
+    void Window::setWindowSize( s32 _width, s32 _height )
     {
-        return m_windowHandle;
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        if ( nullptr != sdlWindow )
+        {
+            SDL_SetWindowSize( sdlWindow, _width, _height );
+        }
+        else
+        {
+            gAppLogger->error( formatString( "SDL Window could not be retrieved. Error: %s", SDL_GetError() ).c_str() );
+        }
+    }
+
+    void Window::setWindowPosition( s32 _x, s32 _y )
+    {
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        if ( nullptr != sdlWindow )
+        {
+            SDL_SetWindowPosition( sdlWindow, _x, _y);
+        }
+        else
+        {
+            gAppLogger->error( formatString( "SDL Window could not be retrieved. Error: %s", SDL_GetError() ).c_str() );
+        }
     }
 }
 
