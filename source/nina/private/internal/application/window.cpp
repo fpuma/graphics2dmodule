@@ -42,6 +42,8 @@ namespace puma::nina
         if ( nullptr != sdlWindow )
         {
             SDL_SetWindowSize( sdlWindow, _width, _height );
+            m_extent.width = _width;
+            m_extent.height = _height;
         }
         else
         {
@@ -55,6 +57,21 @@ namespace puma::nina
         if ( nullptr != sdlWindow )
         {
             SDL_SetWindowPosition( sdlWindow, _x, _y);
+            m_extent.xPos = _x;
+            m_extent.yPos = _y;
+        }
+        else
+        {
+            gAppLogger->error( formatString( "SDL Window could not be retrieved. Error: %s", SDL_GetError() ).c_str() );
+        }
+    }
+
+    void Window::setWindowTitle( const char* _title )
+    {
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        if ( nullptr != sdlWindow )
+        {
+            SDL_SetWindowTitle( sdlWindow, _title );
         }
         else
         {
