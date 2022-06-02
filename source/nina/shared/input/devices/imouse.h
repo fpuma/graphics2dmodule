@@ -9,6 +9,8 @@ namespace puma::nina
     {
     public:
 
+        virtual ~IMouse() {}
+
         virtual bool buttonState( MouseButton _mouseKey ) const = 0;
         virtual bool buttonPressed( MouseButton _mouseKey ) const = 0;
         virtual bool buttonReleased( MouseButton _mouseKey ) const = 0;

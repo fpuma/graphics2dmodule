@@ -8,6 +8,8 @@ namespace puma::nina
     {
     public:
 
+        virtual ~IController() {}
+
         virtual bool buttonState( ControllerButton _controllerKey ) const = 0;
         virtual bool buttonPressed( ControllerButton _controllerKey ) const = 0;
         virtual bool buttonReleased( ControllerButton _controllerKey ) const = 0;
