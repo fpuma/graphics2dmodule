@@ -166,12 +166,18 @@ namespace puma::nina
             {
             case SDL_KEYDOWN:
             {
-                updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Down );
+                if (currentEvent.key.repeat == 0)
+                {
+                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Down );
+                }
                 break;
             }
             case SDL_KEYUP:
             {
-                updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Up );
+                if (currentEvent.key.repeat == 0)
+                {
+                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Up );
+                }
                 break;
             }
             case SDL_MOUSEMOTION:

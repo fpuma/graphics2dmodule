@@ -126,11 +126,9 @@ int main()
             if ( controller.wasRightTriggerUpdated() ) std::cout << "Controller: " << controllerId << " | Rgiht trigger updated!" << std::endl;
         }
         
-        if ( ip->getMouse().wasMousePositionUpdated() ) std::cout << "Mouse position updated!" << std::endl;
-
         MousePosition mousePos = ip->getMouse().getMousePosition();
 
-        rendererPtr->renderText( { mousePos.x, mousePos.y },
+        rendererPtr->renderText( { mousePos.x, mousePos.y - 15 },
             Color::White(),
             formatString( "%d | %d", mousePos.x, mousePos.y ).c_str() );
         

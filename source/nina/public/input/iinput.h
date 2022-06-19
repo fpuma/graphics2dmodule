@@ -32,6 +32,7 @@ namespace puma::nina
         virtual u32 getControllerCount() const = 0;
 
         virtual void setInputListener( std::unique_ptr<IInputListener>&& _inputListener ) = 0;
+        virtual void clearInputListener() = 0;
 
         virtual void consumeSdlEvents() = 0;
         virtual void peekSdlEvents() = 0;

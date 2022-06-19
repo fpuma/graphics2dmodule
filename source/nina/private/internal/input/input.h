@@ -27,6 +27,7 @@ namespace puma::nina
         u32 getControllerCount() const override { return (u32)m_controllerDevices.size(); }
 
         void setInputListener( std::unique_ptr<IInputListener>&& _inputListener ) { m_inputListener.release(); m_inputListener = std::move( _inputListener ); }
+        void clearInputListener() { m_inputListener.release(); }
 
         void consumeSdlEvents() override { m_peekSdlEvents = false; }
         void peekSdlEvents() override { m_peekSdlEvents = true; }
