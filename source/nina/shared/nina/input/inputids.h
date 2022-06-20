@@ -182,12 +182,10 @@ namespace puma::nina
         TotalButtons,
     };
 
-    enum class ControllerJoystickAxis : InputId
+    enum class ControllerJoystick : InputId
     {
-        CJ_LSTICK_X,
-        CJ_LSTICK_Y,
-        CJ_RSTICK_X,
-        CJ_RSTICK_Y,
+        CJ_LSTICK,
+        CJ_RSTICK,
     };
 
     enum class ControllerTrigger : InputId

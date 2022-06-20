@@ -11,12 +11,6 @@ namespace puma::nina
     using KeyboardKeyStates = std::array<StateMask, static_cast<InputId>(KeyboardKey::TotalKeys)>;
     using ControllerKeyStates = std::array<StateMask, static_cast<InputId>(ControllerButton::TotalButtons)>;
 
-    enum class InputButtonEvent
-    {
-        Up,
-        Down,
-    };
-
     enum StateFlag
     {
         CurrentStateBit = 0x01,
@@ -43,17 +37,20 @@ namespace puma::nina
             internalClearStates();
         }
 
-        void updateKeyStates( InputId _inputId, InputButtonEvent _buttonEvent )
+        bool updateKeyStates( InputId _inputId, InputButtonEvent _buttonEvent )
         {
+            bool updated = false;
+
             switch ( _buttonEvent )
             {
-            case InputButtonEvent::Up:
+            case InputButtonEvent::Released:
             {
                 if ( _inputId != kInvalidInputId )
                 {
                     if ( m_keyStates[(int)_inputId] & CurrentStateBit )
                     {
                         m_keyStates[(int)_inputId] |= ReleasedStateBit;
+                        updated = true;
                     }
                     else
                     {
@@ -64,7 +61,7 @@ namespace puma::nina
                 }
                 break;
             }
-            case InputButtonEvent::Down:
+            case InputButtonEvent::Pressed:
             {
                 if ( _inputId != kInvalidInputId )
                 {
@@ -75,6 +72,7 @@ namespace puma::nina
                     else
                     {
                         m_keyStates[(int)_inputId] |= PressedStateBit;
+                        updated = true;
                     }
 
                     m_keyStates[(int)_inputId] |= CurrentStateBit;
@@ -85,6 +83,8 @@ namespace puma::nina
                 assert( false ); //InputButtonEvent not yet supported
                 break;
             }
+
+            return updated;
         }
 
     protected:

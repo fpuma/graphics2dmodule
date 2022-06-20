@@ -12,6 +12,21 @@
 
 namespace puma::nina
 {
+    namespace
+    {
+        struct JoystickEvent
+        {
+            bool operator < ( const JoystickEvent& _other ) const
+            {
+                if (controllerId != _other.controllerId) { return controllerId < _other.controllerId; }
+                if (joystick != _other.joystick) { return joystick < _other.joystick; }
+                return false;
+            }
+            ControllerId controllerId = {};
+            ControllerJoystick joystick = {};
+        };
+    }
+
     constexpr int kSdlEventBufferSize = 10;
 
     std::unique_ptr<IInput> IInput::create()
@@ -149,6 +164,8 @@ namespace puma::nina
     {
         clearPreviousStates();
 
+        std::set<JoystickEvent> joystickEvents;
+
         SDL_Event sdlEvents[kSdlEventBufferSize];
         SDL_PumpEvents();
         SDL_eventaction sdlEventAction = m_peekSdlEvents ? SDL_PEEKEVENT : SDL_GETEVENT;
@@ -168,7 +185,7 @@ namespace puma::nina
             {
                 if (currentEvent.key.repeat == 0)
                 {
-                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Down );
+                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Pressed );
                 }
                 break;
             }
@@ -176,7 +193,7 @@ namespace puma::nina
             {
                 if (currentEvent.key.repeat == 0)
                 {
-                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Up );
+                    updateKeyboardKey( currentEvent.key.keysym.sym, InputButtonEvent::Released );
                 }
                 break;
             }
@@ -209,22 +226,22 @@ namespace puma::nina
             }
             case SDL_MOUSEBUTTONDOWN:
             {
-                updateMouseButton( currentEvent.button.button, InputButtonEvent::Down );
+                updateMouseButton( currentEvent.button.button, InputButtonEvent::Pressed );
                 break;
             }
             case SDL_MOUSEBUTTONUP:
             {
-                updateMouseButton( currentEvent.button.button, InputButtonEvent::Up );
+                updateMouseButton( currentEvent.button.button, InputButtonEvent::Released );
                 break;
             }
             case SDL_JOYBUTTONDOWN:
             {
-                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Down );
+                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Pressed );
                 break;
             }
             case SDL_JOYBUTTONUP:
             {
-                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Up );
+                updateControllerButton( handleControllerBySdlId( currentEvent.jbutton.which ), SDL_TO_PUMA( currentEvent.jbutton.button ), InputButtonEvent::Released );
                 break;
             }
             case SDL_JOYAXISMOTION:
@@ -240,10 +257,7 @@ namespace puma::nina
                     if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
 
                     controller.setLeftJoystickX( axisValue );
-                    if ( nullptr != m_inputListener )
-                    {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_LSTICK_X, controller.getLeftJoystickPosition().x );
-                    }
+                    joystickEvents.insert( { controller.getControllerId(), ControllerJoystick::CJ_LSTICK } );
                     break;
                 }
                 case 1:
@@ -255,10 +269,7 @@ namespace puma::nina
                     if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
 
                     controller.setLeftJoystickY( axisValue );
-                    if ( nullptr != m_inputListener )
-                    {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_LSTICK_Y, controller.getLeftJoystickPosition().y );
-                    }
+                    joystickEvents.insert( { controller.getControllerId(), ControllerJoystick::CJ_LSTICK } );
                     break;
                 }
                 case 2:
@@ -280,10 +291,7 @@ namespace puma::nina
                     if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
 
                     controller.setRightJoystickX( axisValue );
-                    if ( nullptr != m_inputListener )
-                    {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_RSTICK_X, controller.getRightJoystickPosition().x );
-                    }
+                    joystickEvents.insert( { controller.getControllerId(), ControllerJoystick::CJ_RSTICK } );
                     break;
                 }
                 case 4:
@@ -295,10 +303,7 @@ namespace puma::nina
                     if ( std::fabsf( axisValue ) < m_joystickDeadZone ) axisValue = 0;
                     
                     controller.setRightJoystickY( axisValue );
-                    if ( nullptr != m_inputListener )
-                    {
-                        m_inputListener->onControllerJoystick( controller.getControllerId(), ControllerJoystickAxis::CJ_RSTICK_Y, controller.getRightJoystickPosition().y );
-                    }
+                    joystickEvents.insert( { controller.getControllerId(), ControllerJoystick::CJ_RSTICK } );
                     break;
                 }
                 case 5:
@@ -307,7 +312,7 @@ namespace puma::nina
                     controller.setRightTrigger( convertJoystickTrigger( currentEvent.jaxis.value ) );
                     if ( nullptr != m_inputListener )
                     {
-                        m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_LTRIGGER, controller.getLeftTrigger() );
+                        m_inputListener->onControllerTrigger( controller.getControllerId(), ControllerTrigger::CT_RTRIGGER, controller.getRightTrigger() );
                     }
                     break;
                 }
@@ -331,6 +336,13 @@ namespace puma::nina
                 break;
             }
         }
+
+        for(const JoystickEvent& jEvent : joystickEvents)
+        {
+            const IController& controller = getController( jEvent.controllerId );
+            JoystickPosition jPos = jEvent.joystick == ControllerJoystick::CJ_LSTICK ? controller.getLeftJoystickPosition() : controller.getRightJoystickPosition();
+            m_inputListener->onControllerJoystick( jEvent.controllerId, jEvent.joystick, jPos );
+        }
     }
 
     void Input::clearPreviousStates()
@@ -350,7 +362,7 @@ namespace puma::nina
         m_keyboardDevice.updateKeyStates( inputId, _inputEvent );
         if ( nullptr != m_inputListener )
         {
-            m_inputListener->onKeyboardKey( static_cast<KeyboardKey>(inputId) );
+            m_inputListener->onKeyboardKey( static_cast<KeyboardKey>(inputId), _inputEvent );
         }
     }
 
@@ -360,17 +372,16 @@ namespace puma::nina
         m_mouseDevice.updateKeyStates( inputId, _inputEvent );
         if ( nullptr != m_inputListener )
         {
-            m_inputListener->onMouseButton( static_cast<MouseButton>(inputId) );
+            m_inputListener->onMouseButton( static_cast<MouseButton>(inputId), _inputEvent );
         }
     }
 
     void Input::updateControllerButton( Controller& controller, s32 _sdlInputId, InputButtonEvent _inputEvent )
     {
         InputId inputId = resolveInputID( kSdlControllerMapping, _sdlInputId );
-        controller.updateKeyStates( inputId, _inputEvent );
-        if ( nullptr != m_inputListener )
+        if (controller.updateKeyStates( inputId, _inputEvent ) && nullptr != m_inputListener)
         {
-            m_inputListener->onControllerButton( controller.getControllerId(), static_cast<ControllerButton>(inputId) );
+            m_inputListener->onControllerButton( controller.getControllerId(), static_cast<ControllerButton>(inputId), _inputEvent );
         }
     }
 
@@ -382,60 +393,60 @@ namespace puma::nina
         {
             if ( controller.buttonState( ControllerButton::CB_DPAD_UP ) )
             {
-                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Released );
             }
 
             if ( controller.buttonState( ControllerButton::CB_DPAD_RIGHT ) )
             {
-                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Released );
             }
 
             if ( controller.buttonState( ControllerButton::CB_DPAD_LEFT ) )
             {
-                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Released );
             }
 
             if ( controller.buttonState( ControllerButton::CB_DPAD_DOWN ) )
             {
-                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Released );
             }
         }
         else
         {
             if ( input & SDL_HAT_UP )
             {
-                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Down );
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Pressed );
             }
             else if ( controller.buttonState( ControllerButton::CB_DPAD_UP ) )
             {
-                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_UP, InputButtonEvent::Released );
             }
 
             if ( input & SDL_HAT_DOWN )
             {
-                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Down );
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Pressed );
             }
             else if ( controller.buttonState( ControllerButton::CB_DPAD_DOWN ) )
             {
-                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_DOWN, InputButtonEvent::Released );
             }
 
             if ( input & SDL_HAT_LEFT )
             {
-                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Down );
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Pressed );
             }
             else if ( controller.buttonState( ControllerButton::CB_DPAD_LEFT ) )
             {
-                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_LEFT, InputButtonEvent::Released );
             }
 
             if ( input & SDL_HAT_RIGHT )
             {
-                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Down );
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Pressed );
             }
             else if( controller.buttonState( ControllerButton::CB_DPAD_RIGHT ) )
             {
-                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Up );
+                updateControllerButton( controller, SDL_HAT_RIGHT, InputButtonEvent::Released );
             }
         }
     }

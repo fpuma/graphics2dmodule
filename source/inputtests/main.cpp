@@ -25,25 +25,25 @@ public:
         :input( _input )
     {}
 
-    void onKeyboardKey( KeyboardKey _key ) const override
+    void onKeyboardKey( KeyboardKey _key, InputButtonEvent _event ) const override
     {
-        if ( input->getKeyboard().keyPressed( _key ) )
+        if (_event == InputButtonEvent::Pressed)
         {
             std::cout << "Keyboard: " << input->getInputName(_key) << " PRESSED" << std::endl;
         }
-        if ( input->getKeyboard().keyReleased( _key ) )
+        if (_event == InputButtonEvent::Released)
         {
             std::cout << "Keyboard: " << input->getInputName( _key ) << " RELEASED" << std::endl;
         }
     }
     
-    void onMouseButton( MouseButton _mouseButton ) const override
+    void onMouseButton( MouseButton _mouseButton, InputButtonEvent _event ) const override
     {
-        if ( input->getMouse().buttonPressed( _mouseButton ) )
+        if(_event == InputButtonEvent::Pressed)
         {
             std::cout << "Mouse: " << input->getInputName( _mouseButton ) << " PRESSED" << std::endl;
         }
-        if ( input->getMouse().buttonReleased( _mouseButton ) )
+        if(_event == InputButtonEvent::Released)
         {
             std::cout << "Mouse: " << input->getInputName( _mouseButton ) << " RELEASED" << std::endl;
         }
@@ -56,23 +56,30 @@ public:
 
     void onMousePosition( MousePosition _mousePosition ) const override
     {
-
+        //std::cout << "Mouse pos: " << _mousePosition.x << " | " << _mousePosition.y << std::endl;
     }
 
-    void onControllerButton( ControllerId _id, ControllerButton _buttonId ) const override
+    void onControllerButton( ControllerId _id, ControllerButton _buttonId, InputButtonEvent _event ) const override
     {
-        if ( input->getController(_id).buttonPressed( _buttonId ) )
+        if (_event == InputButtonEvent::Pressed)
         {
             std::cout << "Controller" << _id <<": " << input->getInputName( _buttonId ) << " PRESSED" << std::endl;
         }
-        if ( input->getController(_id).buttonReleased( _buttonId ) )
+        if (_event == InputButtonEvent::Released)
         {
             std::cout << "Controller" << _id << ": " << input->getInputName( _buttonId ) << " RELEASED" << std::endl;
         }
     }
 
-    void onControllerJoystick( ControllerId _id, ControllerJoystickAxis _joystickId, float _joystickValue ) const override {}
-    void onControllerTrigger( ControllerId _id, ControllerTrigger _triggerId, float _triggerValue ) const override {}
+    void onControllerJoystick( ControllerId _id, ControllerJoystick _joystickId, JoystickPosition _joystickValue ) const override 
+    {
+        //std::cout << "Controller: " << _id << " " << (ControllerJoystick::CJ_LSTICK == _joystickId ? "LEFT" : "RIGHT") << " joystick - " << _joystickValue.x << " | " << _joystickValue.y << std::endl;
+    }
+    
+    void onControllerTrigger( ControllerId _id, ControllerTrigger _triggerId, float _triggerValue ) const override 
+    {
+        //std::cout << "Controller: " << _id << " " << (ControllerTrigger::CT_LTRIGGER == _triggerId ? "LEFT" : "RIGHT") << " trigger - " << _triggerValue << std::endl;
+    }
 
     IInput* input;
 };
@@ -120,10 +127,6 @@ int main()
                 Color::White(),
                 formatString( "%.4f", controller.getRightTrigger() ).c_str() );
 
-            if ( controller.wasLeftJoystickUpdated() ) std::cout << "Controller: " << controllerId << " | Left joystick updated!" << std::endl;
-            if ( controller.wasRightJoystickUpdated() ) std::cout << "Controller: " << controllerId << " | Right joystick updated!" << std::endl;
-            if ( controller.wasLeftTriggerUpdated() ) std::cout << "Controller: " << controllerId << " | Left trigger updated!" << std::endl;
-            if ( controller.wasRightTriggerUpdated() ) std::cout << "Controller: " << controllerId << " | Rgiht trigger updated!" << std::endl;
         }
         
         MousePosition mousePos = ip->getMouse().getMousePosition();
