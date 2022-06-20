@@ -1,7 +1,7 @@
 #pragma once
 
-#include <input/devices/imouse.h>
-#include <input/inputdefinitions.h>
+#include <nina/input/devices/imouse.h>
+#include <nina/input/inputdefinitions.h>
 #include <internal/input/devices/devicehelper.h>
 
 namespace puma::nina

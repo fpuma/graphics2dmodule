@@ -1,13 +1,13 @@
 #include <precompiledapplication.h>
-#include <application/iapplication.h>
-#include <application/irenderer.h>
-#include <application/iwindow.h>
+#include <nina/application/iapplication.h>
+#include <nina/application/irenderer.h>
+#include <nina/application/iwindow.h>
 #include <logger/logger.h>
 #include <logger/output/consolelogoutput.h>
 #include <utils/graphics/color.h>
 #include <utils/graphics/dimensions.h>
-#include <texturemanager/itexturemanager.h>
-#include <texturemanager/texture.h>
+#include <nina/texturemanager/itexturemanager.h>
+#include <nina/texturemanager/texture.h>
 
 #include <vector>
 #include <iostream>

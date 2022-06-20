@@ -1,7 +1,7 @@
 #pragma once
 
-#include <input/inputids.h>
-#include <input/inputdefinitions.h>
+#include <nina/input/inputids.h>
+#include <nina/input/inputdefinitions.h>
 
 namespace puma::nina
 {

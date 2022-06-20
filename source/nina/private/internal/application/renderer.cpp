@@ -4,7 +4,7 @@
           
 #include <internal/application/window.h>
 #include <internal/applogger/applogger.h>
-#include <texturemanager/texture.h>
+#include <nina/texturemanager/texture.h>
 
 #include <utils/graphics/dimensions.h>
 

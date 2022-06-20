@@ -1,22 +1,3 @@
-namespace Extern
-{
-    [Sharpmake.Generate]
-    class SDLgfx : Puma.Common.IExternLib
-    {
-        public SDLgfx()
-            : base("SDLgfx", @"SDL2_gfx-1.0.1")
-        { }
-
-        public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
-        {
-            base.ConfigureAll(conf, target);
-
-            conf.IncludePaths.Add(@"\include");
-            conf.AddPrivateDependency<Export.SDL>(target);
-        }
-    }
-}
-
 namespace Export
 {
     [Sharpmake.Export]

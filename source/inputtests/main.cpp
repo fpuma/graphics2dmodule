@@ -1,16 +1,16 @@
 #include <precompiledapplication.h>
-#include <application/iapplication.h>
-#include <application/iwindow.h>
-#include <application/irenderer.h>
-#include <input/iinput.h>
+#include <nina/application/iapplication.h>
+#include <nina/application/iwindow.h>
+#include <nina/application/irenderer.h>
+#include <nina/input/iinput.h>
 #include <utils/graphics/dimensions.h>
 #include <logger/logger.h>
 #include <logger/output/consolelogoutput.h>
 
-#include <input/devices/ikeyboard.h>
-#include <input/devices/imouse.h>
-#include <input/devices/icontroller.h>
-#include <input/iinputlistener.h>
+#include <nina/input/devices/ikeyboard.h>
+#include <nina/input/devices/imouse.h>
+#include <nina/input/devices/icontroller.h>
+#include <nina/input/iinputlistener.h>
 
 #include <utils/formatstring.h>
 

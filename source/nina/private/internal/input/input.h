@@ -1,8 +1,8 @@
 #pragma once
 
-#include <input/iinput.h>
-#include <input/inputids.h>
-#include <input/iinputlistener.h>
+#include <nina/input/iinput.h>
+#include <nina/input/inputids.h>
+#include <nina/input/iinputlistener.h>
 
 #include <internal/input/devices/mouse.h>
 #include <internal/input/devices/keyboard.h>

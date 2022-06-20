@@ -1,6 +1,6 @@
 #pragma once
 
-#include <input/iinputlistener.h>
+#include <nina/input/iinputlistener.h>
 
 namespace puma::nina
 {

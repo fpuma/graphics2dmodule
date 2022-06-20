@@ -1,6 +1,6 @@
 #pragma once
 
-#include <input/devices/icontroller.h>
+#include <nina/input/devices/icontroller.h>
 #include <internal/input/devices/devicehelper.h>
 
 namespace puma::nina

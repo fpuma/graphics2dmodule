@@ -1,6 +1,6 @@
 #pragma once
 
-#include <input/devices/ikeyboard.h>
+#include <nina/input/devices/ikeyboard.h>
 #include <internal/input/devices/devicehelper.h>
 
 namespace puma::nina

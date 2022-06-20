@@ -1,6 +1,6 @@
 #pragma once
 
-#include <input/inputids.h>
+#include <nina/input/inputids.h>
 
 namespace puma::nina
 {

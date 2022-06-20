@@ -12,9 +12,9 @@
 #include <utils/noncopyable.h>
 #include <utils/formatstring.h>
 
-#include <texturemanager/texturedefinitions.h>
-#include <input/inputdefinitions.h>
-#include <input/inputids.h>
+#include <nina/texturemanager/texturedefinitions.h>
+#include <nina/input/inputdefinitions.h>
+#include <nina/input/inputids.h>
 
 
 struct SDL_Texture;

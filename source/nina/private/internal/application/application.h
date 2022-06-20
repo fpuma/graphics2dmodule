@@ -1,5 +1,5 @@
 #pragma once
-#include <application/iapplication.h>
+#include <nina/application/iapplication.h>
 #include <internal/application/renderer.h>
 #include <internal/texturemanager/texturemanager.h>
 #include <internal/applogger/applogger.h>

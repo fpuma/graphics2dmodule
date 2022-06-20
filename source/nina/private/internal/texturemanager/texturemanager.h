@@ -1,6 +1,6 @@
 #pragma once
 
-#include <texturemanager/itexturemanager.h>
+#include <nina/texturemanager/itexturemanager.h>
 
 #include <string>
 
