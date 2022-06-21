@@ -20,6 +20,19 @@ void testApplication();
 
 int main( int argc, char* argv[] )
 {
+#ifdef _DEBUG
+    //------------------------------------
+    _CrtSetDbgFlag( _CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF );
+
+    //*
+    _CrtSetBreakAlloc( -1 );
+    /*/
+    //_CrtSetBreakAlloc( 72 );
+    //*/
+
+    //---------------------------------------------------------------//
+#endif
+
     //testTextureManager();
     testApplication();
     return 0;
@@ -105,6 +118,9 @@ void testApplication()
                     Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
                     Extent targetExtent = { 200, 200, 200, 200 };
                     renderer->renderTexture( myTexture, textureExtent, targetExtent, 0.0f );
+
+                    std::vector<ScreenPos> poly = { {50,50}, {50,70}, {70,50} };
+                    renderer->renderSolidPolygon( poly, { 255, 255, 255, 255 } );
                 }
 
                 if ( wh == windowHandle2 )

@@ -6,6 +6,7 @@
 
 #include <SDL.h>
 #include <SDL_ttf.h>
+#include <SDL2_gfxPrimitives.h>
 
 namespace puma::nina
 {
@@ -67,6 +68,7 @@ namespace puma::nina
 
         TTF_Quit();
         SDL_QuitSubSystem( SDL_INIT_VIDEO );
+        freeAllocatedPollyInts();
     }
 
     void Application::update()

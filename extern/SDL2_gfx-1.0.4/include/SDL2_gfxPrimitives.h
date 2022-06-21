@@ -2,7 +2,7 @@
 
 SDL2_gfxPrimitives.h: graphics primitives for SDL
 
-Copyright (C) 2012  Andreas Schiffler
+Copyright (C) 2012-2014  Andreas Schiffler
 
 This software is provided 'as-is', without any express or implied
 warranty. In no event will the authors be held liable for any damages
@@ -46,7 +46,7 @@ extern "C" {
 
 #define SDL2_GFXPRIMITIVES_MAJOR	1
 #define SDL2_GFXPRIMITIVES_MINOR	0
-#define SDL2_GFXPRIMITIVES_MICRO	1
+#define SDL2_GFXPRIMITIVES_MICRO	4
 
 
 	/* ---- Function Prototypes */
@@ -213,6 +213,7 @@ extern "C" {
 	SDL2_GFXPRIMITIVES_SCOPE int filledPolygonColor(SDL_Renderer * renderer, const Sint16 * vx, const Sint16 * vy, int n, Uint32 color);
 	SDL2_GFXPRIMITIVES_SCOPE int filledPolygonRGBA(SDL_Renderer * renderer, const Sint16 * vx,
 		const Sint16 * vy, int n, Uint8 r, Uint8 g, Uint8 b, Uint8 a);
+	SDL2_GFXPRIMITIVES_SCOPE void freeAllocatedPollyInts(); // [fpuma] Adding this method to be called after uninitializing my program to avoid memory leaks.
 
 	/* Textured Polygon */
 
