@@ -129,6 +129,7 @@ namespace puma::nina
         TextureData textureData = { {}, _texture };
 
         auto itFound = m_textures.find( textureData );
+        assert( m_textures.end() != itFound ); //Did not find texture to unload
         if ( m_textures.end() != itFound )
         {
             SDL_DestroyTexture( (SDL_Texture*)itFound->texture.getHandle() );
@@ -141,6 +142,7 @@ namespace puma::nina
         FontData fontData = { {}, _fontHandle };
 
         auto itFound = m_fonts.find( fontData );
+        assert( m_fonts.end() != itFound ); //Did not find font to unload
         if ( m_fonts.end() != itFound )
         {
             TTF_CloseFont( (TTF_Font*)itFound->font );
@@ -150,15 +152,15 @@ namespace puma::nina
 
     void TextureManager::unloadText( const Texture& _texture )
     {
-       /* for ( const TextureID& textureId : _textureIds )
+        TextData textData = { {}, _texture, {} };
+
+        auto itFound = m_texts.find( textData );
+        assert( m_texts.end() != itFound ); //Did not find text to unload
+        if (m_texts.end() != itFound)
         {
-            auto itFound = m_sdlTextures.find( textureId );
-            if ( m_sdlTextures.end() != itFound )
-            {
-                SDL_DestroyTexture( (SDL_Texture*)itFound->second.getHandle() );
-                m_sdlTextures.erase( textureId );
-            }
-        }*/
+            SDL_DestroyTexture( (SDL_Texture*)itFound->texture.getHandle() );
+            m_texts.erase( itFound );
+        }
     }
 
     //Private

@@ -41,14 +41,27 @@ int main( int argc, char* argv[] )
 void testTextureManager()
 {
     auto appPtr = IApplication::create();
+    appPtr->init();
     Extent extent = { 500,500,100,100 };
     WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
     ITextureManager* textureManagerPtr = appPtr->getWindow( windowHandle )->getRenderer()->getTextureManager();
 
     Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
     Texture myTexture2 = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
+    FontHandle myFont = textureManagerPtr->loadFont( "../asset/Blitztark_v0-Regular.ttf" );
+    Texture myText3 = textureManagerPtr->loadText( { "Test text", "../asset/Blitztark_v0-Regular.ttf", Color::Blue() } );
 
+    textureManagerPtr->unloadText( myText3 );
     textureManagerPtr->unloadTexture( myTexture );
+    textureManagerPtr->unloadFont( myFont );
+
+    while (!appPtr->shouldQuit())
+    {
+        appPtr->update();
+    }
+
+    appPtr->uninit();
+
 }
 
 void testApplication()
@@ -86,6 +99,9 @@ void testApplication()
     FontHandle myFont = textureManagerPtr2->loadFont( "../asset/Blitztark_v0-Regular.ttf" );
     Texture myText = textureManagerPtr2->loadText( { "Short", "../asset/Blitztark_v0-Regular.ttf", Color::Green() } );
     Texture myText2 = textureManagerPtr2->loadText( { "Longer text", "../asset/Blitztark_v0-Regular.ttf", Color::Blue() } );
+
+    Texture myText3 = textureManagerPtr2->loadText( { "Test text", "../asset/Blitztark_v0-Regular.ttf", Color::Blue() } );
+    textureManagerPtr2->unloadText( myText3 );
     
     if ( myFont == nullptr )
     {
@@ -144,5 +160,6 @@ void testApplication()
 
         shouldQuit = appPtr->shouldQuit();
     }
+
     appPtr->uninit();
 }
