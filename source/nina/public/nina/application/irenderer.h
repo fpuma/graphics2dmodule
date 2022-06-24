@@ -18,8 +18,8 @@ namespace puma::nina
         virtual ~IRenderer() = default;
 
         virtual bool isValid() const = 0;
-        virtual void beginRender() = 0;
-        virtual void endRender() = 0;
+        virtual void beginRender() const = 0;
+        virtual void endRender() const = 0;
 
         virtual void setDefaultBackgroundColor( const Color& _bgColor ) = 0;
 

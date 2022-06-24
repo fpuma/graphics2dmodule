@@ -37,13 +37,13 @@ namespace puma::nina
         m_sdlRenderer = nullptr;
     }
 
-    void Renderer::beginRender()
+    void Renderer::beginRender() const
     {
         SDL_SetRenderDrawColor( m_sdlRenderer, m_bgColor.red, m_bgColor.green, m_bgColor.blue, m_bgColor.alpha );
         SDL_RenderClear( m_sdlRenderer );
     }
 
-    void Renderer::endRender()
+    void Renderer::endRender() const
     {
         SDL_RenderPresent( m_sdlRenderer );
     }

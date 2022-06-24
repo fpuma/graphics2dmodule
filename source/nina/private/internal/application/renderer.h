@@ -17,8 +17,8 @@ namespace puma::nina
         Renderer( Window& _window );
         ~Renderer();
 
-        void beginRender() override;
-        void endRender() override;
+        void beginRender() const override;
+        void endRender() const override;
 
         bool isValid() const override { return m_sdlRenderer != nullptr; }
 
