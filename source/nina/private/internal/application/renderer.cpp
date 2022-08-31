@@ -7,6 +7,7 @@
 #include <nina/texturemanager/texture.h>
 
 #include <utils/graphics/dimensions.h>
+#include <utils/geometry/geometryhelpers.h>
 
 #include <SDL.h>
 #include <SDL2_gfxPrimitives.h>
@@ -63,7 +64,7 @@ namespace puma::nina
         targetRect.h = _targetExtent.height;
 
 
-        SDL_RenderCopyEx( m_sdlRenderer, _texture.getHandle(), &textureRect, &targetRect, _rotation, nullptr, SDL_FLIP_NONE );
+        SDL_RenderCopyEx( m_sdlRenderer, _texture.getHandle(), &textureRect, &targetRect, GeometryHelpers::radiansToDegrees( _rotation ), nullptr, SDL_FLIP_NONE);
     }
 
     void Renderer::renderText( const ScreenPos& _pos, const Color& _color, const char* _text ) const
