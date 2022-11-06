@@ -23,8 +23,10 @@ namespace puma::nina
         void clearTextures() override;
 
     private:
+
         Texture textToTexture( const char* _text, FontHandle _font, const Color& _color );
 
+        using PathHash = std::hash<std::string>;
 
         struct TextureData
         {
@@ -35,7 +37,7 @@ namespace puma::nina
             {
                 return (texture.isValid() && _other.texture.isValid()) ?
                     texture.getHandle() < _other.texture.getHandle() :
-                    path < _other.path;
+                    PathHash{}(path) < PathHash{}( _other.path );
             }
         };
 
@@ -48,7 +50,7 @@ namespace puma::nina
             {
                 return (font != nullptr && _other.font != nullptr) ?
                     font < _other.font :
-                    path < _other.path;
+                    PathHash{}(path) < PathHash{}(_other.path);
             }
         };
 
