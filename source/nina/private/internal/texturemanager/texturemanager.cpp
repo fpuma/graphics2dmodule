@@ -30,27 +30,10 @@ namespace puma::nina
 
     Texture TextureManager::loadTexture( const char* _texturePath )
     {
-        //[fpuma] TO CHECK As far as I understand these 2 pieces of code should do the same. But for some reason they don't
-        //If I use strcmp with find_if and the lambda, it will return an element that does not match the texture path that I am capturing
-
-        /*
-        auto itFoundTexture = std::find_if( m_textures.begin(), m_textures.begin(), [&]( const TextureData& _td ) 
+        auto itFoundTexture = std::find_if( m_textures.begin(), m_textures.end(), [&]( const TextureData& _td ) 
             {
                 return std::strcmp( _td.path.c_str(), _texturePath ) == 0;
             });
-        /*/
-        auto itFoundTexture = m_textures.begin();
-
-        for (; itFoundTexture != m_textures.end(); ++itFoundTexture)
-        {
-            //gAppLogger->info( "------------------------" );
-            //gAppLogger->info( itFoundTexture->path.c_str() );
-            //gAppLogger->info( _texturePath );
-            //gAppLogger->info( formatString( "%d", std::strcmp( itFoundTexture->path.c_str(), _texturePath ) ).c_str() );
-            if (std::strcmp( itFoundTexture->path.c_str(), _texturePath ) == 0) break;
-        }
-        //*/
-
 
         if (m_textures.end() != itFoundTexture)
         {
@@ -90,26 +73,10 @@ namespace puma::nina
 
     FontHandle TextureManager::loadFont( const char* _fontPath )
     {
-        //[fpuma] TO CHECK As far as I understand these 2 pieces of code should do the same. But for some reason they don't
-        //If I use strcmp with find_if and the lambda, it will return an element that does not match the texture path that I am capturing
-
-        /*
         auto itFoundFont = std::find_if( m_fonts.begin(), m_fonts.end(), [&_fontPath]( const FontData& _fd ) 
             {
                 return std::strcmp( _fd.path.c_str(), _fontPath );
             });
-        /*/
-        auto itFoundFont = m_fonts.begin();
-
-        for (; itFoundFont != m_fonts.end(); ++itFoundFont)
-        {
-            //gAppLogger->info( "------------------------" );
-            //gAppLogger->info( itFoundFont->path.c_str() );
-            //gAppLogger->info( _fontPath );
-            //gAppLogger->info( formatString( "%d", std::strcmp( itFoundFont->path.c_str(), _fontPath ) ).c_str() );
-            if (std::strcmp( itFoundFont->path.c_str(), _fontPath ) == 0) break;
-        }
-        //*/
 
         if (m_fonts.end() != itFoundFont)
         {
@@ -134,23 +101,12 @@ namespace puma::nina
 
     Texture TextureManager::loadText( const TexturizedTextInfo& _textInfo )
     {
-        /*
         auto itFound = std::find_if( m_texts.begin(), m_texts.end(), [&_textInfo]( const TextData& _td )
             {
                 return  std::strcmp( _td.textInfo.fontPath, _textInfo.fontPath ) == 0 &&
                     std::strcmp( _td.textInfo.text, _textInfo.text ) == 0 &&
                     _td.textInfo.color == _textInfo.color;
             } );
-        /*/
-        auto itFound = m_texts.begin();
-
-        for (; itFound != m_texts.end(); ++itFound)
-        {
-            if (std::strcmp( itFound->textInfo.fontPath, _textInfo.fontPath ) == 0 &&
-                std::strcmp( itFound->textInfo.text, _textInfo.text ) == 0 &&
-                itFound->textInfo.color == _textInfo.color) break;
-        }
-        //*/
 
         if (itFound != m_texts.end())
         {
