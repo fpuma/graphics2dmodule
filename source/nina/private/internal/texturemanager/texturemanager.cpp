@@ -30,27 +30,30 @@ namespace puma::nina
 
     Texture TextureManager::loadTexture( const char* _texturePath )
     {
-        TextureData textureData = { _texturePath, {} };
+        auto itFoundTexture = std::find_if( m_textures.begin(), m_textures.begin(), [&_texturePath]( const TextureData& _td ) 
+            {
+                return std::strcmp( _td.path.c_str(), _texturePath ) == 0;
+            });
 
-        auto itFoundTexture = m_textures.find( textureData );
-
-        if ( m_textures.end() != itFoundTexture )
+        if (m_textures.end() != itFoundTexture)
         {
+            gAppLogger->info( formatString( "Texture <%s> found. Getting from manager", _texturePath ).c_str() );
             return itFoundTexture->texture;
         }
         else
         {
+            gAppLogger->info( formatString( "Texture <%s> not found. Loading frrom disk", _texturePath ).c_str() );
             SDL_Texture* newTexture = nullptr;
 
             SDL_Surface* loadedSurface = IMG_Load( _texturePath );
-            if ( loadedSurface == nullptr )
+            if (loadedSurface == nullptr)
             {
-                gAppLogger->error(formatString( "Unable to load image <%s>! SDL_image Error: %s", _texturePath, IMG_GetError() ).c_str());
+                gAppLogger->error( formatString( "Unable to load image <%s>! SDL_image Error: %s", _texturePath, IMG_GetError() ).c_str() );
             }
             else
             {
                 newTexture = SDL_CreateTextureFromSurface( (SDL_Renderer*)m_renderer->getRendererHandle(), loadedSurface );
-                if ( newTexture == nullptr )
+                if (newTexture == nullptr)
                 {
                     gAppLogger->error( formatString( "Unable to create texture from <%s>! SDL Error: %s", _texturePath, SDL_GetError() ).c_str() );
                 }
@@ -61,8 +64,8 @@ namespace puma::nina
             Rect originalSize = {};
             SDL_QueryTexture( newTexture, nullptr, nullptr, &originalSize.width, &originalSize.height );
 
-            textureData.texture = Texture ( newTexture, originalSize );
-            m_textures.insert( textureData );
+            TextureData textureData = { _texturePath, Texture( newTexture, originalSize ) };
+            m_textures.emplace_back( textureData );
 
             return textureData.texture;
         }
@@ -70,54 +73,58 @@ namespace puma::nina
 
     FontHandle TextureManager::loadFont( const char* _fontPath )
     {
-        FontData fontData = { _fontPath, nullptr };
-        auto itFoundFont = m_fonts.find( fontData );
+        auto itFoundFont = std::find_if( m_fonts.begin(), m_fonts.end(), [&_fontPath]( const FontData& _fd ) 
+            {
+                return std::strcmp( _fd.path.c_str(), _fontPath );
+            });
 
-        if ( m_fonts.end() != itFoundFont )
+        if (m_fonts.end() != itFoundFont)
         {
+            gAppLogger->info( formatString( "Font <%s> found. Getting from manager", _fontPath ).c_str() );
             return itFoundFont->font;
         }
         else
         {
+            gAppLogger->info( formatString( "Font <%s> not found. Loading frrom disk", _fontPath ).c_str() );
             TTF_Font* font = TTF_OpenFont( _fontPath, 72 );
-            if ( nullptr == font )
+            if (nullptr == font)
             {
                 gAppLogger->error( formatString( "Unable to create font from <%s>! TTF Error: ", _fontPath, TTF_GetError() ).c_str() );
             }
 
-            fontData.font = font;
+            FontData fontData = { _fontPath, font };
 
-            m_fonts.insert( fontData );
+            m_fonts.emplace_back( fontData );
             return font;
         }
     }
 
     Texture TextureManager::loadText( const TexturizedTextInfo& _textInfo )
     {
-        size_t hashResult = 0;
-        hashCombine( hashResult, _textInfo.fontPath );
-        hashCombine( hashResult, _textInfo.text );
-        hashCombine( hashResult, _textInfo.color.red );
-        hashCombine( hashResult, _textInfo.color.green );
-        hashCombine( hashResult, _textInfo.color.blue );
-        TextData textData = { _textInfo, {}, hashResult };
+        auto itFound = std::find_if( m_texts.begin(), m_texts.end(), [&_textInfo]( const TextData& _td )
+            {
+                return  std::strcmp( _td.textInfo.fontPath, _textInfo.fontPath ) == 0 &&
+                    std::strcmp( _td.textInfo.text, _textInfo.text ) == 0 &&
+                    _td.textInfo.color == _textInfo.color;
+            } );
 
-        auto itFound = m_texts.find( textData );
-
-        if ( itFound != m_texts.end() )
+        if (itFound != m_texts.end())
         {
             return itFound->texture;
         }
         else
         {
-            auto itFoundFont = m_fonts.find( { _textInfo.fontPath, nullptr } );
+            auto itFoundFont = std::find_if( m_fonts.begin(), m_fonts.end(), [&_textInfo]( const FontData& _f )
+                {
+                    return std::strcmp( _f.path.c_str(), _textInfo.fontPath ) == 0;
+                } );
 
             assert( itFoundFont != m_fonts.end() ); //That font has not been loaded
 
             Texture texturizedText = textToTexture( _textInfo.text, itFoundFont->font, _textInfo.color );
-            textData.texture = texturizedText;
+            TextData textData = { _textInfo, texturizedText };
 
-            m_texts.insert( textData );
+            m_texts.emplace_back( textData );
             return textData.texture;
         }
     }
@@ -126,9 +133,11 @@ namespace puma::nina
 
     void TextureManager::unloadTexture( const Texture& _texture )
     {
-        TextureData textureData = { {}, _texture };
+        auto itFound = std::find_if( m_textures.begin(), m_textures.end(), [&_texture]( const TextureData& _td ) 
+            {
+                return _td.texture.getHandle() == _texture.getHandle();
+            } );
 
-        auto itFound = m_textures.find( textureData );
         assert( m_textures.end() != itFound ); //Did not find texture to unload
         if ( m_textures.end() != itFound )
         {
@@ -139,9 +148,11 @@ namespace puma::nina
 
     void TextureManager::unloadFont( FontHandle _fontHandle )
     {
-        FontData fontData = { {}, _fontHandle };
+        auto itFound = std::find_if( m_fonts.begin(), m_fonts.end(), [&_fontHandle]( const FontData& _fd )
+            {
+                return _fd.font == _fontHandle;
+            } );
 
-        auto itFound = m_fonts.find( fontData );
         assert( m_fonts.end() != itFound ); //Did not find font to unload
         if ( m_fonts.end() != itFound )
         {
@@ -152,9 +163,11 @@ namespace puma::nina
 
     void TextureManager::unloadText( const Texture& _texture )
     {
-        TextData textData = { {}, _texture, {} };
+        auto itFound = std::find_if( m_texts.begin(), m_texts.end(), [&_texture]( const TextData& _td )
+            {
+                return _td.texture.getHandle() == _texture.getHandle();
+            } );
 
-        auto itFound = m_texts.find( textData );
         assert( m_texts.end() != itFound ); //Did not find text to unload
         if (m_texts.end() != itFound)
         {

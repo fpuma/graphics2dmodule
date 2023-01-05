@@ -32,47 +32,23 @@ namespace puma::nina
         {
             std::string path;
             Texture texture;
-
-            bool operator < ( const TextureData& _other ) const
-            {
-                return (texture.isValid() && _other.texture.isValid()) ?
-                    texture.getHandle() < _other.texture.getHandle() :
-                    PathHash{}(path) < PathHash{}( _other.path );
-            }
         };
 
         struct FontData
         {
             std::string path;
             FontHandle font = nullptr;
-
-            bool operator < ( const FontData& _other ) const
-            {
-                return (font != nullptr && _other.font != nullptr) ?
-                    font < _other.font :
-                    PathHash{}(path) < PathHash{}(_other.path);
-            }
         };
 
         struct TextData
         {
             TexturizedTextInfo textInfo;
             Texture texture;
-            u64 hash = 0;
-
-            bool operator < ( const TextData& _other ) const
-            {
-                return (texture.isValid() && _other.texture.isValid()) ?
-                    texture.getHandle() < _other.texture.getHandle() :
-                    hash < _other.hash;
-            }
-
-
         };
 
-        std::set<TextureData> m_textures;
-        std::set<FontData> m_fonts;
-        std::set<TextData> m_texts;
+        std::vector<TextureData> m_textures;
+        std::vector<FontData> m_fonts;
+        std::vector<TextData> m_texts;
         
         IRenderer* m_renderer = nullptr;
     };
