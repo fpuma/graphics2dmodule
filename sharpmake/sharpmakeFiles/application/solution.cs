@@ -17,6 +17,7 @@ namespace Puma
             conf.AddProject<Puma.GraphicsTest>(target);
             conf.AddProject<Puma.SDLTest>(target);
             conf.AddProject<Puma.InputTests>(target);
+            conf.AddProject<Puma.OpenGlTest>(target);
         }
     }
 
