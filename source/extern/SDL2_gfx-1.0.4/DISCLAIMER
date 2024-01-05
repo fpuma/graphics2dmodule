@@ -1,0 +1,3 @@
+I have modified the original code of this library to fix a memory leak when using filledPolygonRGBA.
+My modification consists of adding a method to free some allocated memory, so I can call it when uninitilizing my program.
+You can find my changes by searching [fpuma] in the sdl_gfx library files

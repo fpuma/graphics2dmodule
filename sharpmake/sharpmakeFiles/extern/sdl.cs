@@ -1,10 +1,10 @@
 namespace Extern
 {
     [Sharpmake.Generate]
-    class SDLgfx : Puma.Common.IExternLib
+    class SDLgfx : Puma.SharpmakeBase.IStaticLibrary
     {
         public SDLgfx()
-            : base("SDLgfx", @"SDL2_gfx-1.0.4")
+            : base("SDLgfx", @"extern/SDL2_gfx-1.0.4")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
@@ -20,10 +20,10 @@ namespace Extern
 namespace Export
 {
     [Sharpmake.Export]
-    class SDLgfx : Puma.Common.IExternBinaries
+    class SDLgfx : Puma.SharpmakeBase.IBinaries
     {
         public SDLgfx()
-            : base("SDLgfx", @"SDL2_gfx-1.0.4")
+            : base("SDLgfx", @"extern/SDL2_gfx-1.0.4")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
@@ -48,10 +48,10 @@ namespace Export
     }
 
     [Sharpmake.Export]
-    class SDL : Puma.Common.IExternBinaries
+    class SDL : Puma.SharpmakeBase.IBinaries
     {
         public SDL()
-            : base("ExternSDL", @"SDL2-2.0.10")
+            : base("ExternSDL", @"extern/SDL2-2.0.10")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
@@ -71,10 +71,10 @@ namespace Export
     }
 
     [Sharpmake.Export]
-    class SDLImage : Puma.Common.IExternBinaries
+    class SDLImage : Puma.SharpmakeBase.IBinaries
     {
         public SDLImage()
-            : base("ExternSDLImage", @"SDL2_image-2.0.5")
+            : base("ExternSDLImage", @"extern/SDL2_image-2.0.5")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
@@ -98,10 +98,10 @@ namespace Export
     }
 
     [Sharpmake.Export]
-    class SDLTtf : Puma.Common.IExternBinaries
+    class SDLTtf : Puma.SharpmakeBase.IBinaries
     {
         public SDLTtf()
-            : base("ExternSDLImage", @"SDL2_ttf-2.0.15")
+            : base("ExternSDLImage", @"extern/SDL2_ttf-2.0.15")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)

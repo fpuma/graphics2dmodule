@@ -3,7 +3,7 @@ using System.IO;
 namespace Puma
 {
     [Sharpmake.Generate]
-    public class NinaSolution : Puma.Common.IMySolution
+    public class NinaSolution : Puma.SharpmakeBase.ISolution
     {
         public NinaSolution()
             : base("Nina")
@@ -22,7 +22,7 @@ namespace Puma
     }
 
     [Sharpmake.Generate]
-    public class ExternSolution : Puma.Common.IMySolution
+    public class ExternSolution : Puma.SharpmakeBase.ISolution
     {
         public ExternSolution()
             : base("ExternLibs")

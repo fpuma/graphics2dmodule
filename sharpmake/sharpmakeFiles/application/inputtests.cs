@@ -3,7 +3,7 @@ using Sharpmake;
 namespace Puma
 {
     [Sharpmake.Generate]
-    class InputTests : Puma.Common.IMyApplication
+    class InputTests : Puma.SharpmakeBase.IApplication
     {
         public InputTests()
             : base ("InputTests", @"inputtests")

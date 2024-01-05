@@ -1,7 +1,7 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class GraphicsTest : Puma.Common.IMyApplication
+    class GraphicsTest : Puma.SharpmakeBase.IApplication
     {
         public GraphicsTest()
             : base("GraphicsTest", @"graphicstests")

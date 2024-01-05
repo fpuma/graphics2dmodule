@@ -1,7 +1,7 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class OpenGlTest : Puma.Common.IMyApplication
+    class OpenGlTest : Puma.SharpmakeBase.IApplication
     {
         public OpenGlTest()
             : base("OpenGlTest", @"opengltests")
@@ -12,6 +12,7 @@ namespace Puma
             base.ConfigureAll(conf, target);
 
             conf.AddPublicDependency<Export.SDL>(target);
+            conf.AddPublicDependency<Export.OpenGL>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
         }

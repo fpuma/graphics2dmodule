@@ -1,7 +1,7 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class SDLTest : Puma.Common.IMyApplication
+    class SDLTest : Puma.SharpmakeBase.IApplication
     {
         public SDLTest()
             : base("SDLTest", @"sdlests")

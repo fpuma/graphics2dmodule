@@ -1,10 +1,10 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class Logger : Puma.Common.IExternLib
+    class Logger : Puma.SharpmakeBase.IStaticLibrary
     {
         public Logger()
-            : base("Logger", @"logger\source\logger")
+            : base("Logger", @"extern/logger\source\logger")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
