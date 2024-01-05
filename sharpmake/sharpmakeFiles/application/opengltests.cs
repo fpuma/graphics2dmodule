@@ -12,6 +12,7 @@ namespace Puma
             base.ConfigureAll(conf, target);
 
             conf.AddPublicDependency<Export.SDL>(target);
+            conf.AddPublicDependency<Export.OpenGL>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
         }

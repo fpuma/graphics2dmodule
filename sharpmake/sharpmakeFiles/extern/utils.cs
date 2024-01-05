@@ -1,22 +1,15 @@
 namespace Puma
 {
-    [Sharpmake.Generate]
-    class Utils : Puma.SharpmakeBase.IStaticLibrary
+    [Sharpmake.Export]
+    class Utils : Puma.SharpmakeBase.IHeaderOnly
     {
         public Utils()
-            : base("Utils", @"extern\utils\source\utils")
+            : base("Utils", @"extern\utilslibrary\source\utils")
         { }
 
-        public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
+        public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
         {
-            base.ConfigureAll(conf, target);
-
-            conf.IncludePrivatePaths.Add(@"\private");
-            conf.IncludePaths.Add(@"\public");
-
-            conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
-
-            conf.SolutionFolder = "Extern";
+            conf.IncludePaths.Add(@"\include");
         }
     }
 }
