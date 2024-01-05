@@ -1,9 +1,3 @@
-[submodule "extern/utils"]
-	path = extern/utils
-	url = https://github.com/fpuma/utilslibrary.git
-[submodule "extern/logger"]
-	path = extern/logger
-	url = https://github.com/fpuma/Logger.git
 [submodule "sharpmake/sharpmakeutils"]
 	path = sharpmake/sharpmakeutils
 	url = https://github.com/fpuma/SharpmakeUtils.git
