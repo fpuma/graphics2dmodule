@@ -1,7 +1,7 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class OpenGlTest : Puma.Common.IMyApplication
+    class OpenGlTest : Puma.SharpmakeBase.IApplication
     {
         public OpenGlTest()
             : base("OpenGlTest", @"opengltests")

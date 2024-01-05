@@ -1,10 +1,10 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class Utils : Puma.Common.IExternLib
+    class Utils : Puma.SharpmakeBase.IStaticLibrary
     {
         public Utils()
-            : base("Utils", @"utils\source\utils")
+            : base("Utils", @"extern\utils\source\utils")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)

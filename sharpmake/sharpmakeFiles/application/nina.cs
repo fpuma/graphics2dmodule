@@ -1,7 +1,7 @@
 namespace Puma
 {
     [Sharpmake.Generate]
-    class Nina : Puma.Common.IMyLib
+    class Nina : Puma.SharpmakeBase.IStaticLibrary
     {
         public Nina()
             : base("Nina", @"nina")
