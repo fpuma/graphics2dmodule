@@ -11,10 +11,10 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPrivateDependency<Export.SDL>(target);
-            conf.AddPrivateDependency<Export.SDLImage>(target);
-            conf.AddPrivateDependency<Export.SDLTtf>(target);
-            conf.AddPrivateDependency<Export.SDLgfx>(target);
+            conf.AddPrivateDependency<Extern.SDL>(target);
+            conf.AddPrivateDependency<Extern.SDLImage>(target);
+            conf.AddPrivateDependency<Extern.SDLTtf>(target);
+            conf.AddPrivateDependency<Extern.SDLgfx>(target);
             conf.AddPublicDependency<Puma.Utils>(target);
             conf.AddPublicDependency<Puma.Logger>(target);
 

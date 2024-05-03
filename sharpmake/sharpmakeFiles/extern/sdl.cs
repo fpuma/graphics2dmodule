@@ -12,46 +12,17 @@ namespace Extern
             base.ConfigureAll(conf, target);
 
             conf.IncludePaths.Add(@"\include");
-            conf.AddPrivateDependency<Export.SDL>(target);
-        }
-    }
-}
+            conf.AddPrivateDependency<Extern.SDL>(target);
 
-namespace Export
-{
-    [Sharpmake.Export]
-    class SDLgfx : Puma.SharpmakeBase.IBinaries
-    {
-        public SDLgfx()
-            : base("SDLgfx", @"extern/SDL2_gfx-1.0.4")
-        { }
-
-        public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
-        {
-            conf.IncludePaths.Add(@"\include");
-        }
-
-        public override void ConfigureLink(Configuration conf, Sharpmake.Target target)
-        {
-            conf.LibraryPaths.Add(SourceRootPath + @"\lib");
-
-            if(target.Optimization == Sharpmake.Optimization.Debug)
-            {
-                conf.LibraryFiles.Add(@"sdlgfx_d.lib");
-
-            }
-            else
-            {
-                conf.LibraryFiles.Add(@"sdlgfx_r.lib");
-            }
+            conf.SolutionFolder = "Extern";
         }
     }
 
-    [Sharpmake.Export]
+    [Sharpmake.Generate]
     class SDL : Puma.SharpmakeBase.IBinaries
     {
         public SDL()
-            : base("ExternSDL", @"extern/SDL2-2.0.10")
+            : base("SDL", @"extern/SDL2-2.0.10")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
@@ -67,10 +38,12 @@ namespace Export
             conf.LibraryFiles.Add(@"SDL2main.lib");
 
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\SDL2.dll");
+
+            conf.SolutionFolder = "Extern";
         }
     }
 
-    [Sharpmake.Export]
+    [Sharpmake.Generate]
     class SDLImage : Puma.SharpmakeBase.IBinaries
     {
         public SDLImage()
@@ -94,14 +67,16 @@ namespace Export
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\libtiff-5.dll");
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\libwebp-7.dll");
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\zlib1.dll");
+
+            conf.SolutionFolder = "Extern";
         }
     }
 
-    [Sharpmake.Export]
+    [Sharpmake.Generate]
     class SDLTtf : Puma.SharpmakeBase.IBinaries
     {
         public SDLTtf()
-            : base("ExternSDLImage", @"extern/SDL2_ttf-2.0.15")
+            : base("SDLttf", @"extern/SDL2_ttf-2.0.15")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
@@ -118,7 +93,8 @@ namespace Export
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\SDL2_ttf.dll");
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\libfreetype-6.dll");
             conf.TargetCopyFiles.Add(SourceRootPath + @"\lib\x64\zlib1.dll");
+
+            conf.SolutionFolder = "Extern";
         }
     }
 }
-

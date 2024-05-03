@@ -11,11 +11,13 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPublicDependency<Export.SDL>(target);
-            conf.AddPublicDependency<Export.OpenGL>(target);
-            conf.AddPublicDependency<Export.GLEW>(target);
+            conf.AddPublicDependency<Extern.SDL>(target);
+            conf.AddPublicDependency<Extern.OpenGL>(target);
+            conf.AddPublicDependency<Extern.GLEW>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
+
+            conf.SolutionFolder = "Tests";
         }
     }
 }

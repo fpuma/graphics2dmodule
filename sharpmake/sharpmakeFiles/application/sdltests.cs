@@ -11,12 +11,14 @@ namespace Puma
         {
             base.ConfigureAll(conf, target);
 
-            conf.AddPublicDependency<Export.SDL>(target);
-            conf.AddPublicDependency<Export.SDLgfx>(target);
-            conf.AddPublicDependency<Export.SDLImage>(target);
-            conf.AddPublicDependency<Export.SDLTtf>(target);
+            conf.AddPublicDependency<Extern.SDL>(target);
+            conf.AddPublicDependency<Extern.SDLgfx>(target);
+            conf.AddPublicDependency<Extern.SDLImage>(target);
+            conf.AddPublicDependency<Extern.SDLTtf>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
+            
+            conf.SolutionFolder = "Tests";
         }
     }
 }

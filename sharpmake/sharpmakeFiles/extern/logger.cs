@@ -18,7 +18,7 @@ namespace Puma
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
 
-            conf.SolutionFolder = "Extern";
+            conf.SolutionFolder = "Submodules";
         }
     }
 }

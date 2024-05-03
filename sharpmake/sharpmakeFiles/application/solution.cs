@@ -20,19 +20,4 @@ namespace Puma
             conf.AddProject<Puma.OpenGlTest>(target);
         }
     }
-
-    [Sharpmake.Generate]
-    public class ExternSolution : Puma.SharpmakeBase.ISolution
-    {
-        public ExternSolution()
-            : base("ExternLibs")
-        { }
-
-        public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
-        {
-            base.ConfigureAll(conf, target);
-
-            conf.AddProject<Extern.SDLgfx>(target);
-        }
-    }
 }

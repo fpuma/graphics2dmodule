@@ -1,4 +1,4 @@
-namespace Export
+namespace Extern
 {
     [Sharpmake.Export]
     class OpenGL : Puma.SharpmakeBase.IBinaries
@@ -14,10 +14,12 @@ namespace Export
         public override void ConfigureLink(Configuration conf, Sharpmake.Target target)
         {
             conf.LibraryFiles.Add(@"opengl32.lib");
+            
+            conf.SolutionFolder = "Extern";
         }
     }
 
-    [Sharpmake.Export]
+    [Sharpmake.Generate]
     class GLEW : Puma.SharpmakeBase.IBinaries
     {
         public GLEW()
@@ -32,6 +34,8 @@ namespace Export
         {
             conf.LibraryPaths.Add(SourceRootPath + @"\lib");
             conf.LibraryFiles.Add(@"glew32.lib");
+
+            conf.SolutionFolder = "Extern";
         }
     }
 

@@ -14,6 +14,8 @@ namespace Puma
             conf.AddPublicDependency<Puma.Nina>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
+
+            conf.SolutionFolder = "Tests";
         }
     }
 }
