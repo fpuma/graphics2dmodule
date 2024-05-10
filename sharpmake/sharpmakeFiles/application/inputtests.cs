@@ -6,7 +6,7 @@ namespace Puma
     class InputTests : Puma.SharpmakeBase.IApplication
     {
         public InputTests()
-            : base ("InputTests", @"inputtests")
+            : base ("InputTests", @"tests\inputtests")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)

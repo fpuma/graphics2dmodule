@@ -4,7 +4,7 @@ namespace Puma
     class Utils : Puma.SharpmakeBase.IHeaderOnly
     {
         public Utils()
-            : base("Utils", @"extern\utilslibrary\source\utils")
+            : base("Utils", @"extern\utilslibrary")
         { }
 
         public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)

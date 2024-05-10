@@ -4,7 +4,7 @@ namespace Puma
     class SDLTest : Puma.SharpmakeBase.IApplication
     {
         public SDLTest()
-            : base("SDLTest", @"sdlests")
+            : base("SDLTest", @"tests\sdlests")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)

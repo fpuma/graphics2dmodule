@@ -16,7 +16,6 @@ namespace Puma
             conf.AddPrivateDependency<Extern.SDLTtf>(target);
             conf.AddPrivateDependency<Extern.SDLgfx>(target);
             conf.AddPublicDependency<Puma.Utils>(target);
-            conf.AddPublicDependency<Puma.Logger>(target);
 
             conf.IncludePrivatePaths.Add(@"\private");
             conf.IncludePaths.Add(@"\public");

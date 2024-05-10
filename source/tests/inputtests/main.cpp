@@ -4,8 +4,8 @@
 #include <nina/application/irenderer.h>
 #include <nina/input/iinput.h>
 #include <utils/graphics/dimensions.h>
-#include <logger/logger.h>
-#include <logger/output/consolelogoutput.h>
+#include <utils/logger/logger.h>
+#include <utils/logger/output/consolelogoutput.h>
 
 #include <nina/input/devices/ikeyboard.h>
 #include <nina/input/devices/imouse.h>

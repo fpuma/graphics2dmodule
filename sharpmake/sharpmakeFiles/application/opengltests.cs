@@ -4,7 +4,7 @@ namespace Puma
     class OpenGlTest : Puma.SharpmakeBase.IApplication
     {
         public OpenGlTest()
-            : base("OpenGlTest", @"opengltests")
+            : base("OpenGlTest", @"tests\opengltests")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)

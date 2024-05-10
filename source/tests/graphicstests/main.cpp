@@ -2,8 +2,8 @@
 #include <nina/application/iapplication.h>
 #include <nina/application/irenderer.h>
 #include <nina/application/iwindow.h>
-#include <logger/logger.h>
-#include <logger/output/consolelogoutput.h>
+#include <utils/logger/logger.h>
+#include <utils/logger/output/consolelogoutput.h>
 #include <utils/graphics/color.h>
 #include <utils/graphics/dimensions.h>
 #include <nina/texturemanager/itexturemanager.h>

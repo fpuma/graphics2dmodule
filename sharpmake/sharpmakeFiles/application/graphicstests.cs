@@ -4,7 +4,7 @@ namespace Puma
     class GraphicsTest : Puma.SharpmakeBase.IApplication
     {
         public GraphicsTest()
-            : base("GraphicsTest", @"graphicstests")
+            : base("GraphicsTest", @"tests\graphicstests")
         { }
 
         public override void ConfigureAll(Configuration conf, Sharpmake.Target target)
