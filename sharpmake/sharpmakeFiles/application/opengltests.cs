@@ -13,7 +13,7 @@ namespace Puma
 
             conf.AddPublicDependency<Extern.SDL>(target);
             conf.AddPublicDependency<Extern.OpenGL>(target);
-            conf.AddPublicDependency<Extern.GLEW>(target);
+            conf.AddPublicDependency<Extern.GLAD>(target);
 
             conf.Options.Add(Sharpmake.Options.Vc.General.TreatWarningsAsErrors.Enable);
 
