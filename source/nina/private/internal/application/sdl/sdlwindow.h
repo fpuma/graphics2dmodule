@@ -1,25 +1,25 @@
 #pragma once
 
 #include <nina/application/iwindow.h>
-#include <internal/application/renderer.h>
+#include <internal/application/sdl/sdlrenderer.h>
 
 struct SDL_Window;
 struct SDL_Renderer;
 
 namespace puma::nina
 {
-    class Window : public IWindow
+    class SdlWindow : public IWindow
     {
     public:
-        Window( const Extent& _windowExtent, const char* _windowName );
-        ~Window();
+        SdlWindow( const Extent& _windowExtent, const char* _windowName );
+        ~SdlWindow();
 
         void setWindowSize( s32 _width, s32 _height ) override;
         void setWindowPosition( s32 _x, s32 _y ) override;
         void setWindowTitle( const char* _title ) override;
 
-        Renderer* getRenderer() override { return m_renderer.get(); }
-        const Renderer* getRenderer() const override { return m_renderer.get(); }
+        SdlRenderer* getRenderer() override { return m_renderer.get(); }
+        const SdlRenderer* getRenderer() const override { return m_renderer.get(); }
 
         Extent getExtent() const override { return m_extent; }
 
@@ -31,7 +31,7 @@ namespace puma::nina
 
         Extent m_extent = {};
         WindowHandle m_windowHandle = kInvalidWindowHandle;
-        std::unique_ptr<Renderer> m_renderer = nullptr;
+        std::unique_ptr<SdlRenderer> m_renderer = nullptr;
     };
 }
 

@@ -1,6 +1,6 @@
 #include <precompiledapplication.h>
 
-#include "window.h"
+#include "sdlwindow.h"
 
 #include <internal/applogger/applogger.h>
 
@@ -9,7 +9,7 @@
 namespace puma::nina
 {
     
-    Window::Window( const Extent& _windowExtent, const char* _windowName )
+    SdlWindow::SdlWindow( const Extent& _windowExtent, const char* _windowName )
     {
         m_extent = _windowExtent;
 
@@ -23,11 +23,11 @@ namespace puma::nina
         {
             m_windowHandle = SDL_GetWindowID( sdlWindow );
             gAppLogger->info( formatString( "SDL Window: %d was created.", m_windowHandle ).c_str() );
-            m_renderer = std::make_unique<Renderer>( *this );
+            m_renderer = std::make_unique<SdlRenderer>( *this );
         }
     }
 
-    Window::~Window()
+    SdlWindow::~SdlWindow()
     {
         SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
         assert( nullptr != sdlWindow );
@@ -36,7 +36,7 @@ namespace puma::nina
         m_renderer.reset();
     }
 
-    void Window::setWindowSize( s32 _width, s32 _height )
+    void SdlWindow::setWindowSize( s32 _width, s32 _height )
     {
         SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
         if ( nullptr != sdlWindow )
@@ -51,7 +51,7 @@ namespace puma::nina
         }
     }
 
-    void Window::setWindowPosition( s32 _x, s32 _y )
+    void SdlWindow::setWindowPosition( s32 _x, s32 _y )
     {
         SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
         if ( nullptr != sdlWindow )
@@ -66,7 +66,7 @@ namespace puma::nina
         }
     }
 
-    void Window::setWindowTitle( const char* _title )
+    void SdlWindow::setWindowTitle( const char* _title )
     {
         SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
         if ( nullptr != sdlWindow )

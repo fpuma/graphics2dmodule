@@ -2,7 +2,7 @@
 
 #include "application.h"
 
-#include <internal/application/window.h>
+#include <internal/application/sdl/sdlwindow.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -43,7 +43,7 @@ namespace puma::nina
 
     WindowHandle Application::createWindow( const Extent& _extent, const char* _windowName )
     {
-        auto windowPtr = std::make_unique<Window>( _extent, _windowName );
+        auto windowPtr = std::make_unique<SdlWindow>( _extent, _windowName );
         assert( windowPtr->isValid() );
         
         WindowHandle windowHandle = windowPtr->getWindowHandle();

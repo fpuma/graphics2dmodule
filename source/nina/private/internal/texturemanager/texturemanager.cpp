@@ -2,7 +2,7 @@
 
 #include "texturemanager.h"
 
-#include <internal/application/renderer.h>
+#include <internal/application/sdl/sdlrenderer.h>
 #include <internal/applogger/applogger.h>
 
 #include <utils/graphics/dimensions.h>

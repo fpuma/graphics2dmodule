@@ -9,13 +9,13 @@ struct SDL_Renderer;
 
 namespace puma::nina
 {
-    class Window;
+    class SdlWindow;
 
-    class Renderer final : public IRenderer
+    class SdlRenderer final : public IRenderer
     {
     public:
-        Renderer( Window& _window );
-        ~Renderer();
+        SdlRenderer( SdlWindow& _window );
+        ~SdlRenderer();
 
         void beginRender() const override;
         void endRender() const override;

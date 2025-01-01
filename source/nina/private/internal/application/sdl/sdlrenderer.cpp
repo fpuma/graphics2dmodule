@@ -1,8 +1,8 @@
 #include <precompiledapplication.h>
 
-#include "renderer.h"
+#include "sdlrenderer.h"
           
-#include <internal/application/window.h>
+#include <internal/application/sdl/sdlwindow.h>
 #include <internal/applogger/applogger.h>
 #include <nina/texturemanager/texture.h>
 
@@ -16,7 +16,7 @@
 
 namespace puma::nina
 {
-    Renderer::Renderer( Window& _window )
+    SdlRenderer::SdlRenderer( SdlWindow& _window )
     {
         SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowHandle() );
         m_sdlRenderer = SDL_CreateRenderer( sdlWindow , -1, SDL_RENDERER_ACCELERATED );
@@ -32,24 +32,24 @@ namespace puma::nina
         m_textureManager = std::make_unique<TextureManager>( this );
     }
 
-    Renderer::~Renderer()
+    SdlRenderer::~SdlRenderer()
     {
         SDL_DestroyRenderer( m_sdlRenderer );
         m_sdlRenderer = nullptr;
     }
 
-    void Renderer::beginRender() const
+    void SdlRenderer::beginRender() const
     {
         SDL_SetRenderDrawColor( m_sdlRenderer, m_bgColor.red, m_bgColor.green, m_bgColor.blue, m_bgColor.alpha );
         SDL_RenderClear( m_sdlRenderer );
     }
 
-    void Renderer::endRender() const
+    void SdlRenderer::endRender() const
     {
         SDL_RenderPresent( m_sdlRenderer );
     }
 
-    void Renderer::renderTexture( const Texture& _texture, const Extent& _textureExtent, const Extent& _targetExtent, float _rotation ) const
+    void SdlRenderer::renderTexture( const Texture& _texture, const Extent& _textureExtent, const Extent& _targetExtent, float _rotation ) const
     {
         SDL_Rect textureRect;
         textureRect.x = _textureExtent.xPos;
@@ -67,7 +67,7 @@ namespace puma::nina
         SDL_RenderCopyEx( m_sdlRenderer, _texture.getHandle(), &textureRect, &targetRect, GeometryHelpers::radiansToDegrees( _rotation ), nullptr, SDL_FLIP_NONE);
     }
 
-    void Renderer::renderText( const ScreenPos& _pos, const Color& _color, const char* _text ) const
+    void SdlRenderer::renderText( const ScreenPos& _pos, const Color& _color, const char* _text ) const
     {
         stringRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, _text, _color.red, _color.green, _color.blue, _color.alpha );
     }
@@ -94,7 +94,7 @@ namespace puma::nina
         }
     }
 
-    void Renderer::renderPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
+    void SdlRenderer::renderPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
     {
         std::vector<s16> xCoords;
         std::vector<s16> yCoords;
@@ -104,7 +104,7 @@ namespace puma::nina
         polygonRGBA( m_sdlRenderer, xCoords.data(), yCoords.data(), (s32)_vertices.size(), _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSolidPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
+    void SdlRenderer::renderSolidPolygon( const std::vector<ScreenPos>& _vertices, const Color& _color ) const
     {
         std::vector<s16> xCoords;
         std::vector<s16> yCoords;
@@ -114,17 +114,17 @@ namespace puma::nina
         filledPolygonRGBA( m_sdlRenderer, xCoords.data(), yCoords.data(), (s32)_vertices.size(), _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
+    void SdlRenderer::renderCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
     {
         circleRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSolidCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
+    void SdlRenderer::renderSolidCircle( const ScreenPos& _pos, s32 _radius, const Color& _color ) const
     {
         filledCircleRGBA( m_sdlRenderer, (s16)_pos.xCoord, (s16)_pos.yCoord, (s16)_radius, _color.red, _color.green, _color.blue, _color.alpha );
     }
 
-    void Renderer::renderSegment( const ScreenPos& _pos0, const ScreenPos& _pos1, const Color& _color ) const
+    void SdlRenderer::renderSegment( const ScreenPos& _pos0, const ScreenPos& _pos1, const Color& _color ) const
     {
         lineRGBA( m_sdlRenderer, (s16)_pos0.xCoord, (s16)_pos0.yCoord, (s16)_pos1.xCoord, (s16)_pos1.yCoord, _color.red, _color.green, _color.blue, _color.alpha );
     }

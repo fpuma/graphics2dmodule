@@ -1,14 +1,14 @@
 #pragma once
 #include <nina/application/iapplication.h>
-#include <internal/application/renderer.h>
+#include <internal/application/sdl/sdlrenderer.h>
 #include <internal/texturemanager/texturemanager.h>
 #include <internal/applogger/applogger.h>
 
 namespace puma::nina
 {
-    class Window;
+    class SdlWindow;
 
-    using WindowPtr = std::unique_ptr<Window>;
+    using WindowPtr = std::unique_ptr<SdlWindow>;
     using WindowMap = std::map<WindowHandle, WindowPtr>;
 
     class Application final : public IApplication
