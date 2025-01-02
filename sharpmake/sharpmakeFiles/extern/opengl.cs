@@ -36,4 +36,18 @@ namespace Extern
         }
     }
 
+    [Sharpmake.Export]
+    class GLM : Puma.SharpmakeBase.IHeaderOnly
+    {
+        public GLM()
+            : base("glm", @"extern/glm")
+        { }
+
+        public override void ConfigureIncludes(Configuration conf, Sharpmake.Target target)
+        {
+            conf.IncludePaths.Add(@"");
+            conf.SolutionFolder = "Extern";
+        }
+    }
+
 }

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <glm/glm.hpp>
 
 // Vertex Shader Source Code
 const char* vertexShaderSource = R"(
