@@ -4,3 +4,6 @@
 [submodule "source/extern/utilslibrary"]
 	path = source/extern/utilslibrary
 	url = https://github.com/fpuma/utilslibrary.git
+[submodule "source/extern/glm"]
+	path = source/extern/glm
+	url = https://github.com/g-truc/glm.git
