@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nina/application/iwindow.h>
+#include <nina/application/isdlwindow.h>
 #include <internal/application/sdl/sdlrenderer.h>
 
 struct SDL_Window;

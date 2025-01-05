@@ -1,7 +1,7 @@
 #include <precompiledapplication.h>
 #include <nina/application/iapplication.h>
-#include <nina/application/iwindow.h>
-#include <nina/application/irenderer.h>
+#include <nina/application/isdlwindow.h>
+#include <nina/application/isdlrenderer.h>
 #include <nina/input/iinput.h>
 #include <utils/graphics/dimensions.h>
 #include <utils/logger/logger.h>

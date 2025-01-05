@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nina/application/irenderer.h>
+#include <nina/application/isdlrenderer.h>
 #include <internal/texturemanager/texturemanager.h>
 #include <utils/graphics/color.h>
 
