@@ -96,8 +96,8 @@ int main()
 
     ip->init();
 
-    IWindow* windowPtr = appPtr->getWindow( window );
-    IRenderer* rendererPtr = windowPtr->getRenderer();
+    ISdlWindow* windowPtr = appPtr->getWindow( window );
+    ISdlRenderer* rendererPtr = windowPtr->getRenderer();
     rendererPtr->setDefaultBackgroundColor( Color::Black() );
 
     ip->setInputListener( std::move( std::make_unique<MyInputListener>( ip.get() ) ) );

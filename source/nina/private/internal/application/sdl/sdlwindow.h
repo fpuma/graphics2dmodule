@@ -8,7 +8,7 @@ struct SDL_Renderer;
 
 namespace puma::nina
 {
-    class SdlWindow : public IWindow
+    class SdlWindow : public ISdlWindow
     {
     public:
         SdlWindow( const Extent& _windowExtent, const char* _windowName );

@@ -89,7 +89,7 @@ void testApplication()
 
     for ( WindowHandle wh : windows )
     {
-        IRenderer* renderer = appPtr->getWindow( wh )->getRenderer();
+        ISdlRenderer* renderer = appPtr->getWindow( wh )->getRenderer();
         assert( renderer->isValid() );
 
         renderer->setDefaultBackgroundColor( { 0, 0, 0, 255 } );
@@ -122,11 +122,11 @@ void testApplication()
 
         for ( WindowHandle wh : windows )
         {
-            IWindow* window = appPtr->getWindow( wh );
+            ISdlWindow* window = appPtr->getWindow( wh );
 
             if ( window != nullptr )
             {
-                IRenderer* renderer = window->getRenderer();
+                ISdlRenderer* renderer = window->getRenderer();
                 renderer->beginRender();
 
                 if ( wh == windowHandle )

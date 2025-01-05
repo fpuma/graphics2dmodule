@@ -16,7 +16,7 @@
 
 namespace puma::nina
 {
-    TextureManager::TextureManager( IRenderer* _renderer )
+    TextureManager::TextureManager( ISdlRenderer* _renderer )
     {
         m_renderer = _renderer;
     }

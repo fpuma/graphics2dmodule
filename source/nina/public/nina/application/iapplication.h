@@ -8,8 +8,8 @@ namespace puma
 
 namespace puma::nina
 {
-    class IRenderer;
-    class IWindow;
+    class ISdlRenderer;
+    class ISdlWindow;
 
     class IApplication : public NonCopyable
     {
@@ -26,8 +26,8 @@ namespace puma::nina
         virtual WindowHandle createWindow( const Extent& _extent, const char* _windowName ) = 0;
         virtual void removeWindow( WindowHandle _windowHandle ) = 0;
 
-        virtual IWindow* getWindow( WindowHandle _windowHandle ) = 0;
-        virtual const IWindow* getWindow( WindowHandle _windowHandle ) const = 0;
+        virtual ISdlWindow* getWindow( WindowHandle _windowHandle ) = 0;
+        virtual const ISdlWindow* getWindow( WindowHandle _windowHandle ) const = 0;
 
         virtual bool shouldQuit() const = 0;
 

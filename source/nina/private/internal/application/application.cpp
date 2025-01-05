@@ -128,12 +128,12 @@ namespace puma::nina
 
     namespace
     {
-        IWindow* findWindow( const WindowMap& _windowMap, WindowHandle _windowHandle )
+        ISdlWindow* findWindow( const WindowMap& _windowMap, WindowHandle _windowHandle )
         {
             assert( kInvalidWindowHandle != _windowHandle );
             auto foundIt = _windowMap.find( _windowHandle );
 
-            IWindow* result = nullptr;
+            ISdlWindow* result = nullptr;
 
             if ( foundIt != _windowMap.end() )
             {
@@ -143,11 +143,11 @@ namespace puma::nina
             return result;
         }
 
-        IRenderer* getWindowRenderer( const WindowMap& _windowMap, WindowHandle _windowHandle )
+        ISdlRenderer* getWindowRenderer( const WindowMap& _windowMap, WindowHandle _windowHandle )
         {
             assert( kInvalidWindowHandle != _windowHandle );
-            IRenderer* result = nullptr;
-            IWindow* defaultWindow = findWindow( _windowMap, _windowHandle );
+            ISdlRenderer* result = nullptr;
+            ISdlWindow* defaultWindow = findWindow( _windowMap, _windowHandle );
 
             if ( nullptr != defaultWindow )
             {
@@ -158,12 +158,12 @@ namespace puma::nina
         }
     }
 
-    IWindow* Application::getWindow( WindowHandle _windowHandle )
+    ISdlWindow* Application::getWindow( WindowHandle _windowHandle )
     {
         return findWindow( m_windows, _windowHandle );
     }
 
-    const IWindow* Application::getWindow( WindowHandle _windowHandle ) const
+    const ISdlWindow* Application::getWindow( WindowHandle _windowHandle ) const
     {
         return findWindow( m_windows, _windowHandle );
     }

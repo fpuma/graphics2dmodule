@@ -12,10 +12,10 @@ namespace puma::nina
     class Texture;
     class ITextureManager;
 
-    class IRenderer : public NonCopyable
+    class ISdlRenderer : public NonCopyable
     {
     public:
-        virtual ~IRenderer() = default;
+        virtual ~ISdlRenderer() = default;
 
         virtual bool isValid() const = 0;
         virtual void beginRender() const = 0;

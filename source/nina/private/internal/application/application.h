@@ -22,8 +22,8 @@ namespace puma::nina
         WindowHandle createWindow( const Extent& _extent, const char* _windowName ) override;
         void removeWindow( WindowHandle _windowHandle ) override;
 
-        IWindow* getWindow( WindowHandle _windowHandle );
-        const IWindow* getWindow( WindowHandle _windowHandle ) const;
+        ISdlWindow* getWindow( WindowHandle _windowHandle );
+        const ISdlWindow* getWindow( WindowHandle _windowHandle ) const;
 
         bool shouldQuit() const override { return m_shouldQuit; }
 

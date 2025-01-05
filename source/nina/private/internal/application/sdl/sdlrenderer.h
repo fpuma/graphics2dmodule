@@ -11,7 +11,7 @@ namespace puma::nina
 {
     class SdlWindow;
 
-    class SdlRenderer final : public IRenderer
+    class SdlRenderer final : public ISdlRenderer
     {
     public:
         SdlRenderer( SdlWindow& _window );

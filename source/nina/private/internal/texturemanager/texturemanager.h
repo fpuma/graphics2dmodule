@@ -9,7 +9,7 @@ namespace puma::nina
     class TextureManager final : public ITextureManager
     {
     public:
-        TextureManager( IRenderer* _renderer );
+        TextureManager( ISdlRenderer* _renderer );
         ~TextureManager();
 
         Texture loadTexture( const char* _texturePath ) override;
@@ -50,6 +50,6 @@ namespace puma::nina
         std::vector<FontData> m_fonts;
         std::vector<TextData> m_texts;
         
-        IRenderer* m_renderer = nullptr;
+        ISdlRenderer* m_renderer = nullptr;
     };
 }
