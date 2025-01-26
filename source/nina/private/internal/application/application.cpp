@@ -87,6 +87,7 @@ namespace puma::nina
     void Application::uninit()
     {
         m_sdlWindows.clear();
+        m_oglWindows.clear();
 
         TTF_Quit();
         SDL_QuitSubSystem( SDL_INIT_VIDEO );
@@ -174,7 +175,7 @@ namespace puma::nina
 			}
         }
 
-        if ( m_sdlWindows.empty() )
+        if (m_sdlWindows.empty() && m_oglWindows.empty())
         {
             m_shouldQuit = true;
         }
