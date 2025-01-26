@@ -2,7 +2,8 @@
 
 #include "application.h"
 
-#include <internal/application/window.h>
+#include <internal/application/opengl/oglwindow.h>
+#include <internal/application/sdl/sdlwindow.h>
 
 #include <SDL.h>
 #include <SDL_ttf.h>
@@ -41,34 +42,75 @@ namespace puma::nina
         }
     }
 
-    WindowHandle Application::createWindow( const Extent& _extent, const char* _windowName )
+    OglWindowId Application::createOglWindow(const Extent& _extent, const char* _windowName)
     {
-        auto windowPtr = std::make_unique<Window>( _extent, _windowName );
-        assert( windowPtr->isValid() );
-        
-        WindowHandle windowHandle = windowPtr->getWindowHandle();
+        auto windowPtr = std::make_unique<OglWindow>(_extent, _windowName);
+        assert(windowPtr->isValid());
 
-        m_windows.insert( std::pair( windowHandle, std::move( windowPtr ) ) );
+        OglWindowId windowHandle = windowPtr->getWindowId();
+
+        m_oglWindows.insert(std::pair(windowHandle, std::move(windowPtr)));
 
         return windowHandle;
     }
 
-    void Application::removeWindow( WindowHandle _windowHandle )
+    SdlWindowId Application::createSdlWindow( const Extent& _extent, const char* _windowName )
     {
-        auto foundIt = m_windows.find( _windowHandle );
+        auto windowPtr = std::make_unique<SdlWindow>( _extent, _windowName );
+        assert( windowPtr->isValid() );
+        
+        SdlWindowId windowHandle = windowPtr->getWindowId();
 
-        assert( foundIt != m_windows.end() );
+        m_sdlWindows.insert( std::pair( windowHandle, std::move( windowPtr ) ) );
 
-        m_windows.erase( foundIt );
+        return windowHandle;
+    }
+
+    void Application::removeWindow( SdlWindowId _windowId )
+    {
+        auto foundIt = m_sdlWindows.find(_windowId);
+
+        assert( foundIt != m_sdlWindows.end() );
+
+        m_sdlWindows.erase( foundIt );
+    }
+
+    void Application::removeWindow(OglWindowId _windowId)
+    {
+        auto foundIt = m_oglWindows.find(_windowId);
+
+        assert(foundIt != m_oglWindows.end());
+
+        m_oglWindows.erase(foundIt);
     }
 
     void Application::uninit()
     {
-        m_windows.clear();
+        m_sdlWindows.clear();
+        m_oglWindows.clear();
 
         TTF_Quit();
         SDL_QuitSubSystem( SDL_INIT_VIDEO );
         freeAllocatedPollyInts();
+    }
+
+    namespace internalNinaApplication
+    {
+        template <class WindowType, class WindowIdType>
+        WindowType* findWindow(const std::unordered_map<WindowIdType, std::unique_ptr<WindowType>>& _windowMap, WindowIdType _windowId)
+        {
+            assert(_windowId.isValid());
+            auto foundIt = _windowMap.find(_windowId);
+
+            WindowType* result = nullptr;
+
+            if (foundIt != _windowMap.end())
+            {
+                result = foundIt->second.get();
+            }
+
+            return result;
+        }
     }
 
     void Application::update()
@@ -103,10 +145,23 @@ namespace puma::nina
                 {
                 case SDL_WINDOWEVENT_CLOSE:
                 {
-                    auto foundIt = m_windows.find( event.window.windowID );
-                    assert( foundIt != m_windows.end() );
+                    {
+                        SdlWindow* sdlWindow = internalNinaApplication::findWindow(m_sdlWindows, SdlWindowId(event.window.windowID));
+                        if (nullptr != sdlWindow)
+                        {
+                            m_sdlWindows.erase(SdlWindowId(event.window.windowID));
+                            break;
+                        }
+                    }
 
-                    m_windows.erase( foundIt->first );
+                    {
+                        OglWindow* oglWindow = internalNinaApplication::findWindow(m_oglWindows, OglWindowId(event.window.windowID));
+                        if (nullptr != oglWindow)
+                        {
+                            m_oglWindows.erase(OglWindowId(event.window.windowID));
+                            break;
+                        }
+                    }
 
                     break;
                 }
@@ -120,51 +175,29 @@ namespace puma::nina
 			}
         }
 
-        if ( m_windows.empty() )
+        if (m_sdlWindows.empty() && m_oglWindows.empty())
         {
             m_shouldQuit = true;
         }
     }
 
-    namespace
+    IOglWindow* Application::getWindow(OglWindowId _windowId)
     {
-        IWindow* findWindow( const WindowMap& _windowMap, WindowHandle _windowHandle )
-        {
-            assert( kInvalidWindowHandle != _windowHandle );
-            auto foundIt = _windowMap.find( _windowHandle );
-
-            IWindow* result = nullptr;
-
-            if ( foundIt != _windowMap.end() )
-            {
-                result = foundIt->second.get();
-            }
-
-            return result;
-        }
-
-        IRenderer* getWindowRenderer( const WindowMap& _windowMap, WindowHandle _windowHandle )
-        {
-            assert( kInvalidWindowHandle != _windowHandle );
-            IRenderer* result = nullptr;
-            IWindow* defaultWindow = findWindow( _windowMap, _windowHandle );
-
-            if ( nullptr != defaultWindow )
-            {
-                result = defaultWindow->getRenderer();
-            }
-
-            return result;
-        }
+        return static_cast<IOglWindow*>(internalNinaApplication::findWindow(m_oglWindows, _windowId));
     }
 
-    IWindow* Application::getWindow( WindowHandle _windowHandle )
+    const IOglWindow* Application::getWindow(OglWindowId _windowId) const
     {
-        return findWindow( m_windows, _windowHandle );
+        return static_cast<IOglWindow*>(internalNinaApplication::findWindow(m_oglWindows, _windowId));
     }
 
-    const IWindow* Application::getWindow( WindowHandle _windowHandle ) const
+    ISdlWindow* Application::getWindow( SdlWindowId _windowId )
     {
-        return findWindow( m_windows, _windowHandle );
+        return static_cast<ISdlWindow*>(internalNinaApplication::findWindow(m_sdlWindows, _windowId));
+    }
+
+    const ISdlWindow* Application::getWindow( SdlWindowId _windowId) const
+    {
+        return static_cast<ISdlWindow*>(internalNinaApplication::findWindow(m_sdlWindows, _windowId));
     }
 }

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <sstream>
 #include <string>
+#include <glm/glm.hpp>
 
 // Vertex Shader Source Code
 const char* vertexShaderSource = R"(
@@ -44,7 +45,8 @@ void main() {
 //}
 
 // Function to compile a shader
-GLuint compileShader(GLenum shaderType, const std::string& source) {
+GLuint compileShader(GLenum shaderType, const std::string& source) 
+{
     GLuint shader = glCreateShader(shaderType);
     const char* src = source.c_str();
     glShaderSource(shader, 1, &src, nullptr);
@@ -63,7 +65,8 @@ GLuint compileShader(GLenum shaderType, const std::string& source) {
 }
 
 // Function to create a shader program
-GLuint createShaderProgram(const std::string& vertexSource, const std::string& fragmentSource) {
+GLuint createShaderProgram(const std::string& vertexSource, const std::string& fragmentSource) 
+{
     GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
     GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
 
@@ -88,23 +91,41 @@ GLuint createShaderProgram(const std::string& vertexSource, const std::string& f
     return program;
 }
 
-int main(int argc, char* argv[]) {
+int main(int argc, char* argv[]) 
+{
+
+#ifdef _DEBUG
+    //------------------------------------
+    _CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+
+    //*
+    _CrtSetBreakAlloc(-1);
+    /*/
+    //_CrtSetBreakAlloc( 72 );
+    //*/
+
+    //---------------------------------------------------------------//
+#endif
+
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-        std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-        return -1;
-    }
+    //if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+    //{
+    //    std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+    //    return -1;
+    //}
 
     // Create SDL Window with OpenGL context
     SDL_Window* window = SDL_CreateWindow("Shader Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
-    if (!window) {
+    if (!window) 
+    {
         std::cerr << "Failed to create SDL window: " << SDL_GetError() << std::endl;
         SDL_Quit();
         return -1;
     }
 
     SDL_GLContext context = SDL_GL_CreateContext(window);
-    if (!context) {
+    if (!context) 
+    {
         std::cerr << "Failed to create OpenGL context: " << SDL_GetError() << std::endl;
         SDL_DestroyWindow(window);
         SDL_Quit();
@@ -112,21 +133,23 @@ int main(int argc, char* argv[]) {
     }
 
     // Initialize GLAD
-    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) {
+    if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress)) 
+    {
         std::cerr << "Failed to initialize GLAD" << std::endl;
         SDL_GL_DeleteContext(context);
         SDL_DestroyWindow(window);
         SDL_Quit();
         return -1;
     }
-
+    
     // Print OpenGL version
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
     // Define vertex data for a triangle
-    float vertices[] = {
+    float vertices[] = 
+    {
         // Positions        // Colors
-         0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
+         0.0f,  0.5f, 0.5f,  1.0f, 0.0f, 0.0f,
         -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
          0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
     };
@@ -159,9 +182,11 @@ int main(int argc, char* argv[]) {
 
     // Render loop
     bool running = true;
-    while (running) {
+    while (running) 
+    {
         SDL_Event event;
-        while (SDL_PollEvent(&event)) {
+        while (SDL_PollEvent(&event)) 
+        {
             if (event.type == SDL_QUIT)
                 running = false;
         }

@@ -1,7 +1,7 @@
 #include <precompiledapplication.h>
 #include <nina/application/iapplication.h>
-#include <nina/application/iwindow.h>
-#include <nina/application/irenderer.h>
+#include <nina/application/isdlwindow.h>
+#include <nina/application/isdlrenderer.h>
 #include <nina/input/iinput.h>
 #include <utils/graphics/dimensions.h>
 #include <utils/logger/logger.h>
@@ -92,12 +92,12 @@ int main()
     auto ip = IInput::create();
 
     Extent extent = { 500,500,100,100 };
-    WindowHandle window = appPtr->createWindow( extent, "InputTest" );
+    SdlWindowId window = appPtr->createSdlWindow( extent, "InputTest" );
 
     ip->init();
 
-    IWindow* windowPtr = appPtr->getWindow( window );
-    IRenderer* rendererPtr = windowPtr->getRenderer();
+    ISdlWindow* windowPtr = appPtr->getWindow( window );
+    ISdlRenderer* rendererPtr = windowPtr->getRenderer();
     rendererPtr->setDefaultBackgroundColor( Color::Black() );
 
     ip->setInputListener( std::move( std::make_unique<MyInputListener>( ip.get() ) ) );

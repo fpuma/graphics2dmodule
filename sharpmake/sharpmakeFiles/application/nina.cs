@@ -15,6 +15,11 @@ namespace Puma
             conf.AddPrivateDependency<Extern.SDLImage>(target);
             conf.AddPrivateDependency<Extern.SDLTtf>(target);
             conf.AddPrivateDependency<Extern.SDLgfx>(target);
+
+            conf.AddPrivateDependency<Extern.OpenGL>(target);
+            conf.AddPrivateDependency<Extern.GLAD>(target);
+            conf.AddPrivateDependency<Extern.GLM>(target);
+
             conf.AddPublicDependency<Puma.Utils>(target);
 
             conf.IncludePrivatePaths.Add(@"\private");

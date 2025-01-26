@@ -1,6 +1,6 @@
 #pragma once
 
-#include <nina/application/irenderer.h>
+#include <nina/application/isdlrenderer.h>
 #include <internal/texturemanager/texturemanager.h>
 #include <utils/graphics/color.h>
 
@@ -9,13 +9,13 @@ struct SDL_Renderer;
 
 namespace puma::nina
 {
-    class Window;
+    class SdlWindow;
 
-    class Renderer final : public IRenderer
+    class SdlRenderer final : public ISdlRenderer
     {
     public:
-        Renderer( Window& _window );
-        ~Renderer();
+        SdlRenderer( SdlWindow& _window );
+        ~SdlRenderer();
 
         void beginRender() const override;
         void endRender() const override;

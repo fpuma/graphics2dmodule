@@ -8,7 +8,7 @@ namespace puma
 
 namespace puma::nina
 {
-    class IRenderer;
+    class ISdlRenderer;
 
     class ITextureManager : public NonCopyable
     {
