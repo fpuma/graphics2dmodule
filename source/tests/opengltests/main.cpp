@@ -108,11 +108,11 @@ int main(int argc, char* argv[])
 #endif
 
     // Initialize SDL
-    if (SDL_Init(SDL_INIT_VIDEO) < 0) 
-    {
-        std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-        return -1;
-    }
+    //if (SDL_Init(SDL_INIT_VIDEO) < 0) 
+    //{
+    //    std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
+    //    return -1;
+    //}
 
     // Create SDL Window with OpenGL context
     SDL_Window* window = SDL_CreateWindow("Shader Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
@@ -141,7 +141,7 @@ int main(int argc, char* argv[])
         SDL_Quit();
         return -1;
     }
-
+    
     // Print OpenGL version
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 

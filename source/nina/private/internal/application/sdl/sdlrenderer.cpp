@@ -18,7 +18,7 @@ namespace puma::nina
 {
     SdlRenderer::SdlRenderer( SdlWindow& _window )
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowHandle() );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowId().value() );
         m_sdlRenderer = SDL_CreateRenderer( sdlWindow , -1, SDL_RENDERER_ACCELERATED );
         if ( nullptr == m_sdlRenderer )
         {
@@ -26,7 +26,7 @@ namespace puma::nina
         }
         else
         {
-            gAppLogger->info( formatString( "SDL Renderer was created for window: %d", _window.getWindowHandle() ).c_str() );
+            gAppLogger->info( formatString( "SDL Renderer was created for window: %d", _window.getWindowId().value() ).c_str() );
         }
 
         m_textureManager = std::make_unique<TextureManager>( this );

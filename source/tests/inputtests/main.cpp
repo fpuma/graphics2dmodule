@@ -92,7 +92,7 @@ int main()
     auto ip = IInput::create();
 
     Extent extent = { 500,500,100,100 };
-    WindowHandle window = appPtr->createWindow( extent, "InputTest" );
+    SdlWindowId window = appPtr->createSdlWindow( extent, "InputTest" );
 
     ip->init();
 

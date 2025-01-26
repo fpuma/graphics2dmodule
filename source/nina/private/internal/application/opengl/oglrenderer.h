@@ -3,6 +3,9 @@
 #include <nina/application/ioglrenderer.h>
 #include <utils/graphics/color.h>
 
+#include <glad.h>
+#include <SDL.h>
+
 struct SDL_Window;
 struct SDL_Renderer;
 
@@ -19,16 +22,15 @@ namespace puma::nina
         void beginRender() const override;
         void endRender() const override;
 
-        bool isValid() const override { return m_sdlRenderer != nullptr; }
+        bool isValid() const override { return m_oglRenderer != nullptr; }
 
         void setDefaultBackgroundColor( const Color& _bgColor ) override { m_bgColor = _bgColor; }
 
-        const RendererHandle getRendererHandle() const { return m_sdlRenderer; }
-        RendererHandle getRendererHandle() { return m_sdlRenderer; }
-       
     private:
 
-        SDL_Renderer* m_sdlRenderer = nullptr;
+        const OglWindow& m_window;
+
+        SDL_GLContext m_oglRenderer;
         Color m_bgColor = { 0, 0, 255, 255 };
     };
 }

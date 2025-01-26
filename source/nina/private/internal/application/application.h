@@ -7,9 +7,7 @@
 namespace puma::nina
 {
     class SdlWindow;
-
-    using WindowPtr = std::unique_ptr<SdlWindow>;
-    using WindowMap = std::map<WindowHandle, WindowPtr>;
+    class OglWindow;
 
     class Application final : public IApplication
     {
@@ -19,11 +17,17 @@ namespace puma::nina
         void uninit() override;
         void update() override;
         
-        WindowHandle createWindow( const Extent& _extent, const char* _windowName ) override;
-        void removeWindow( WindowHandle _windowHandle ) override;
+        OglWindowId createOglWindow(const Extent& _extent, const char* _windowName) override;
+        SdlWindowId createSdlWindow( const Extent& _extent, const char* _windowName ) override;
+        
+        IOglWindow* getWindow(OglWindowId _windowId) override;
+        const IOglWindow* getWindow(OglWindowId _windowId) const override;
 
-        ISdlWindow* getWindow( WindowHandle _windowHandle );
-        const ISdlWindow* getWindow( WindowHandle _windowHandle ) const;
+        ISdlWindow* getWindow(SdlWindowId _windowId) override;
+        const ISdlWindow* getWindow(SdlWindowId _windowId) const override;
+
+        void removeWindow(OglWindowId _windowId) override;
+        void removeWindow(SdlWindowId _windowId) override;
 
         bool shouldQuit() const override { return m_shouldQuit; }
 
@@ -34,7 +38,8 @@ namespace puma::nina
 
     private:
 
-        WindowMap m_windows;
+        std::unordered_map<SdlWindowId, std::unique_ptr<SdlWindow>>  m_sdlWindows;
+        std::unordered_map<OglWindowId, std::unique_ptr<OglWindow>>  m_oglWindows;
         
         bool m_shouldQuit = false;
         bool m_peekSdlEvents = false;

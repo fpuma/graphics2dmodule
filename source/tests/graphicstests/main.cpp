@@ -43,8 +43,8 @@ void testTextureManager()
     auto appPtr = IApplication::create();
     appPtr->init();
     Extent extent = { 500,500,100,100 };
-    WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
-    ITextureManager* textureManagerPtr = appPtr->getWindow( windowHandle )->getRenderer()->getTextureManager();
+    SdlWindowId windowId = appPtr->createSdlWindow( extent, "AppTest" );
+    ITextureManager* textureManagerPtr = appPtr->getWindow( windowId )->getRenderer()->getTextureManager();
 
     Texture myTexture = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
     Texture myTexture2 = textureManagerPtr->loadTexture( "../asset/programmerdrawing.png" );
@@ -72,22 +72,22 @@ void testApplication()
 
     appPtr->getLogger()->addOutput<ConsoleLogOutput>();
 
-    std::vector<WindowHandle> windows;
+    std::vector<SdlWindowId> windows;
 
     Extent extent = { 500,500,100,100 };
     Extent extent2 = { 500,500,700,100 };
 
-    WindowHandle windowHandle = appPtr->createWindow( extent, "AppTest" );
-    WindowHandle windowHandle2 = appPtr->createWindow( extent2, "AppTest2" );
-    assert( appPtr->getWindow( windowHandle )->isValid() );
+    SdlWindowId windowId0 = appPtr->createSdlWindow( extent, "AppTest" );
+    SdlWindowId windowId1 = appPtr->createSdlWindow( extent2, "AppTest2" );
+    assert( appPtr->getWindow( windowId0 )->isValid() );
 
-    windows.emplace_back( windowHandle );
-    windows.emplace_back( windowHandle2 );
+    windows.emplace_back( windowId0 );
+    windows.emplace_back( windowId1 );
 
-    auto textureManagerPtr = appPtr->getWindow( windowHandle )->getRenderer()->getTextureManager() ;
-    auto textureManagerPtr2 = appPtr->getWindow( windowHandle2 )->getRenderer()->getTextureManager();
+    auto textureManagerPtr = appPtr->getWindow( windowId0 )->getRenderer()->getTextureManager() ;
+    auto textureManagerPtr2 = appPtr->getWindow( windowId1 )->getRenderer()->getTextureManager();
 
-    for ( WindowHandle wh : windows )
+    for ( SdlWindowId wh : windows )
     {
         ISdlRenderer* renderer = appPtr->getWindow( wh )->getRenderer();
         assert( renderer->isValid() );
@@ -111,16 +111,16 @@ void testApplication()
     assert( myTexture.isValid() );
     assert( myText.isValid() );
 
-    std::cout << myTexture.getOriginalSize().width << " " << myTexture.getOriginalSize().height;
-
     bool shouldQuit = false;
+
+    //appPtr->createOglWindow({ 500,500,100,650 }, "OglWindow");
 
     while ( !shouldQuit )
     {
         appPtr->update();
 
 
-        for ( WindowHandle wh : windows )
+        for ( SdlWindowId wh : windows )
         {
             ISdlWindow* window = appPtr->getWindow( wh );
 
@@ -129,7 +129,7 @@ void testApplication()
                 ISdlRenderer* renderer = window->getRenderer();
                 renderer->beginRender();
 
-                if ( wh == windowHandle )
+                if ( wh == windowId0 )
                 {
                     Extent textureExtent = { myTexture.getOriginalSize().width, myTexture.getOriginalSize().height, 0, 0 };
                     Extent targetExtent = { 200, 200, 200, 200 };
@@ -139,7 +139,7 @@ void testApplication()
                     renderer->renderSolidPolygon( poly, { 255, 255, 255, 255 } );
                 }
 
-                if ( wh == windowHandle2 )
+                if ( wh == windowId1 )
                 {
                     Extent textureExtent = { myText.getOriginalSize().width, myText.getOriginalSize().height, 0, 0 };
                     Extent textureExtent2 = { myText2.getOriginalSize().width, myText2.getOriginalSize().height, 0, 0 };

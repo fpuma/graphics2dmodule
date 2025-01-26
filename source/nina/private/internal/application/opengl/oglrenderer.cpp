@@ -10,40 +10,45 @@
 #include <utils/geometry/geometryhelpers.h>
 
 #include <SDL.h>
-#include <SDL2_gfxPrimitives.h>
 
 #include <iterator>
 
 namespace puma::nina
 {
     OglRenderer::OglRenderer(OglWindow& _window )
+        : m_window(_window)
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowHandle() );
-        m_sdlRenderer = SDL_CreateRenderer( sdlWindow , -1, SDL_RENDERER_ACCELERATED );
-        if ( nullptr == m_sdlRenderer )
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( _window.getWindowId().value() );
+
+        m_oglRenderer = SDL_GL_CreateContext(sdlWindow);
+        if (!m_oglRenderer)
         {
-            gAppLogger->error( formatString( "SDL Renderer could not be created. Error: %s", SDL_GetError() ).c_str() );
+            gAppLogger->error(formatString("Could not create OGL context. Error: %s", SDL_GetError()).c_str());
         }
-        else
+
+        // Initialize GLAD
+        if (!gladLoadGLLoader((GLADloadproc)SDL_GL_GetProcAddress))
         {
-            gAppLogger->info( formatString( "SDL Renderer was created for window: %d", _window.getWindowHandle() ).c_str() );
+            gAppLogger->error("Failed to initialize GLAD");
         }
     }
 
     OglRenderer::~OglRenderer()
     {
-        SDL_DestroyRenderer( m_sdlRenderer );
-        m_sdlRenderer = nullptr;
+        SDL_GL_DeleteContext( m_oglRenderer );
+        m_oglRenderer = nullptr;
     }
 
     void OglRenderer::beginRender() const
     {
-        SDL_SetRenderDrawColor( m_sdlRenderer, m_bgColor.red, m_bgColor.green, m_bgColor.blue, m_bgColor.alpha );
-        SDL_RenderClear( m_sdlRenderer );
+        // Clear the screen
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
     }
 
     void OglRenderer::endRender() const
     {
-        SDL_RenderPresent( m_sdlRenderer );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID(m_window.getWindowId().value());
+        SDL_GL_SwapWindow(sdlWindow);
     }
 }

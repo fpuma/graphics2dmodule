@@ -24,8 +24,5 @@ namespace puma::nina
         virtual void endRender() const = 0;
 
         virtual void setDefaultBackgroundColor( const Color& _bgColor ) = 0;
-
-        virtual const RendererHandle getRendererHandle() const = 0;
-        virtual RendererHandle getRendererHandle() = 0;
     };
 }

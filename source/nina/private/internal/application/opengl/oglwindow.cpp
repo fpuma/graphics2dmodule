@@ -21,24 +21,24 @@ namespace puma::nina
         }
         else
         {
-            m_windowHandle = SDL_GetWindowID( sdlWindow );
-            gAppLogger->info( formatString( "SDL Window: %d was created.", m_windowHandle ).c_str() );
+            m_windowId = OglWindowId(SDL_GetWindowID(sdlWindow));
+            gAppLogger->info( formatString( "SDL Window: %d was created.", m_windowId.value() ).c_str() );
             m_renderer = std::make_unique<OglRenderer>( *this );
         }
     }
 
     OglWindow::~OglWindow()
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowId.value() );
         assert( nullptr != sdlWindow );
         SDL_DestroyWindow( sdlWindow );
-        m_windowHandle = kInvalidWindowHandle;
+        m_windowId.invalidate();
         m_renderer.reset();
     }
 
     void OglWindow::setWindowSize( s32 _width, s32 _height )
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowId.value() );
         if ( nullptr != sdlWindow )
         {
             SDL_SetWindowSize( sdlWindow, _width, _height );
@@ -53,7 +53,7 @@ namespace puma::nina
 
     void OglWindow::setWindowPosition( s32 _x, s32 _y )
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowId.value() );
         if ( nullptr != sdlWindow )
         {
             SDL_SetWindowPosition( sdlWindow, _x, _y);
@@ -68,7 +68,7 @@ namespace puma::nina
 
     void OglWindow::setWindowTitle( const char* _title )
     {
-        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowHandle );
+        SDL_Window* sdlWindow = SDL_GetWindowFromID( m_windowId.value() );
         if ( nullptr != sdlWindow )
         {
             SDL_SetWindowTitle( sdlWindow, _title );

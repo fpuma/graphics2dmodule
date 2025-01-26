@@ -23,14 +23,14 @@ namespace puma::nina
 
         Extent getExtent() const override { return m_extent; }
 
-        WindowHandle getWindowHandle() const override { return m_windowHandle; }
+        SdlWindowId getWindowId() const override { return m_windowId; }
 
-        bool isValid() const override { return m_windowHandle != kInvalidWindowHandle; }
+        bool isValid() const override { return m_windowId.isValid(); }
 
     private:
 
         Extent m_extent = {};
-        WindowHandle m_windowHandle = kInvalidWindowHandle;
+        SdlWindowId m_windowId;
         std::unique_ptr<SdlRenderer> m_renderer = nullptr;
     };
 }

@@ -23,7 +23,7 @@ namespace puma::nina
 
         virtual Extent getExtent() const = 0;
 
-        virtual WindowHandle getWindowHandle() const = 0;
+        virtual OglWindowId getWindowId() const = 0;
 
         virtual bool isValid() const = 0;
     };
