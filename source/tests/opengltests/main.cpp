@@ -6,44 +6,6 @@
 #include <string>
 #include <glm/glm.hpp>
 
-// Vertex Shader Source Code
-const char* vertexShaderSource = R"(
-#version 330 core
-layout (location = 0) in vec3 aPos;
-layout (location = 1) in vec3 aColor;
-
-out vec3 vertexColor;
-
-void main() {
-    gl_Position = vec4(aPos, 1.0);
-    vertexColor = aColor;
-}
-)";
-
-// Fragment Shader Source Code
-const char* fragmentShaderSource = R"(
-#version 330 core
-in vec3 vertexColor;
-
-out vec4 FragColor;
-
-void main() {
-    FragColor = vec4(vertexColor, 1.0);
-}
-)";
-
-// Function to read a shader file
-//std::string readShaderFile(const std::string& filePath) {
-//    std::ifstream file(filePath);
-//    if (!file.is_open()) {
-//        std::cerr << "Failed to open shader file: " << filePath << std::endl;
-//        return "";
-//    }
-//    std::stringstream buffer;
-//    buffer << file.rdbuf();
-//    return buffer.str();
-//}
-
 // Function to compile a shader
 GLuint compileShader(GLenum shaderType, const std::string& source) 
 {
@@ -91,6 +53,9 @@ GLuint createShaderProgram(const std::string& vertexSource, const std::string& f
     return program;
 }
 
+#include "triangletest.h"
+#include "cubetest.h"
+
 int main(int argc, char* argv[]) 
 {
 
@@ -106,13 +71,6 @@ int main(int argc, char* argv[])
 
     //---------------------------------------------------------------//
 #endif
-
-    // Initialize SDL
-    //if (SDL_Init(SDL_INIT_VIDEO) < 0) 
-    //{
-    //    std::cerr << "Failed to initialize SDL: " << SDL_GetError() << std::endl;
-    //    return -1;
-    //}
 
     // Create SDL Window with OpenGL context
     SDL_Window* window = SDL_CreateWindow("Shader Example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_OPENGL);
@@ -145,40 +103,7 @@ int main(int argc, char* argv[])
     // Print OpenGL version
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-    // Define vertex data for a triangle
-    float vertices[] = 
-    {
-        // Positions        // Colors
-         0.0f,  0.5f, 0.5f,  1.0f, 0.0f, 0.0f,
-        -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
-         0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
-    };
-
-    // Create a Vertex Buffer Object (VBO) and Vertex Array Object (VAO)
-    GLuint VBO, VAO;
-    glGenVertexArrays(1, &VAO);
-    glGenBuffers(1, &VBO);
-
-    glBindVertexArray(VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
-    // Position attribute
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);
-
-    // Color attribute
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)(3 * sizeof(float)));
-    glEnableVertexAttribArray(1);
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    // Load and compile shaders
-    //std::string vertexSource = readShaderFile("vertex_shader.glsl");
-    //std::string fragmentSource = readShaderFile("fragment_shader.glsl");
-    GLuint shaderProgram = createShaderProgram(vertexShaderSource, fragmentShaderSource);
+    initTriTest();
 
     // Render loop
     bool running = true;
@@ -191,25 +116,14 @@ int main(int argc, char* argv[])
                 running = false;
         }
 
-        // Clear the screen
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // Use shader program
-        glUseProgram(shaderProgram);
-
-        // Draw the triangle
-        glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        updateTriTest();
 
         // Swap buffers
         SDL_GL_SwapWindow(window);
     }
 
     // Cleanup
-    glDeleteVertexArrays(1, &VAO);
-    glDeleteBuffers(1, &VBO);
-    glDeleteProgram(shaderProgram);
+    uninitTriTest();
 
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);
