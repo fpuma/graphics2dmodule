@@ -39,7 +39,7 @@ void initTriTest()
     float vertices[] =
     {
         // Positions        // Colors
-         0.0f,  0.5f, 0.5f,  1.0f, 0.0f, 0.0f,
+         0.0f,  0.5f, 0.0f,  1.0f, 0.0f, 0.0f,
         -0.5f, -0.5f, 0.0f,  0.0f, 1.0f, 0.0f,
          0.5f, -0.5f, 0.0f,  0.0f, 0.0f, 1.0f
     };
@@ -70,10 +70,6 @@ void initTriTest()
 
 void updateTriTest()
 {
-    // Clear the screen
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-
     // Use shader program
     glUseProgram(gTriData.shaderProgram);
 
