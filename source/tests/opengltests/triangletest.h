@@ -47,9 +47,9 @@ void initTriTest()
     // Create a Vertex Buffer Object (VBO) and Vertex Array Object (VAO)
     
     glGenVertexArrays(1, &gTriData.VAO);
-    glGenBuffers(1, &gTriData.VBO);
-
     glBindVertexArray(gTriData.VAO);
+
+    glGenBuffers(1, &gTriData.VBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, gTriData.VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);

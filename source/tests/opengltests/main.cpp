@@ -103,10 +103,10 @@ int main(int argc, char* argv[])
     // Print OpenGL version
     std::cout << "OpenGL Version: " << glGetString(GL_VERSION) << std::endl;
 
-    initTriTest();
+    //initTriTest();
     initCubeTest();
     
-    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_DEPTH_TEST);
     glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
     
     // Render loop
@@ -121,10 +121,9 @@ int main(int argc, char* argv[])
         }
 
         // Clear the screen
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        updateTriTest();
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        
+        //updateTriTest();
         updateCubeTest();
 
         // Swap buffers
@@ -133,7 +132,7 @@ int main(int argc, char* argv[])
 
     // Cleanup
     uninitCubeTest();
-    uninitTriTest();
+    //uninitTriTest();
 
     SDL_GL_DeleteContext(context);
     SDL_DestroyWindow(window);

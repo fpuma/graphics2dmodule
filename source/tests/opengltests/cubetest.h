@@ -60,14 +60,14 @@ void initCubeTest()
 {
     float vertices[] = {
         // Positions          // Normals
-        -0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f, -0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-         0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f,  0.5f, -0.5f,  0.0f,  0.0f, -1.0f,
-        -0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f, -0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-         0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f,
-        -0.5f,  0.5f,  0.5f,  0.0f,  0.0f,  1.0f
+        -0.5f, -0.5f, -0.5f,  -1.0f,  -1.0f, -1.0f,
+         0.5f, -0.5f, -0.5f,   1.0f,  -1.0f, -1.0f,
+         0.5f,  0.5f, -0.5f,   1.0f,   1.0f, -1.0f,
+        -0.5f,  0.5f, -0.5f,  -1.0f,   1.0f, -1.0f,
+        -0.5f, -0.5f,  0.5f,  -1.0f,  -1.0f,  1.0f,
+         0.5f, -0.5f,  0.5f,   1.0f,  -1.0f,  1.0f,
+         0.5f,  0.5f,  0.5f,   1.0f,   1.0f,  1.0f,
+        -0.5f,  0.5f,  0.5f,  -1.0f,   1.0f,  1.0f
     };
 
     unsigned int indices[] = {
@@ -80,14 +80,16 @@ void initCubeTest()
     };
 
     glGenVertexArrays(1, &gCubeData.VAO);
-    glGenBuffers(1, &gCubeData.VBO);
-    glGenBuffers(1, &gCubeData.EBO);
-
     glBindVertexArray(gCubeData.VAO);
-    glBindBuffer(GL_ARRAY_BUFFER, gCubeData.VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &gCubeData.EBO);
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, gCubeData.EBO);
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+    
+    glGenBuffers(1, &gCubeData.VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, gCubeData.VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    
 
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
@@ -101,20 +103,35 @@ void updateCubeTest()
 {
     glUseProgram(gCubeData.shaderProgram);
 
-    glm::mat4 model = glm::rotate(glm::mat4(1.0f), (float)SDL_GetTicks() / 1000.0f, glm::vec3(0.5f, 1.0f, 0.0f));
-    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
-
+    glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(0.0f, 0.0f, 5.0f));
+    model = glm::rotate(model, (float)SDL_GetTicks() / 1000.0f, glm::vec3(0.5f, 1.0f, 0.0f));
     GLuint modelLoc = glGetUniformLocation(gCubeData.shaderProgram, "model");
-    GLuint viewLoc = glGetUniformLocation(gCubeData.shaderProgram, "view");
-    GLuint projLoc = glGetUniformLocation(gCubeData.shaderProgram, "projection");
-
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    
+    glm::mat4 view = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -10.0f));
+    GLuint viewLoc = glGetUniformLocation(gCubeData.shaderProgram, "view");
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), 800.0f / 600.0f, 0.1f, 100.0f);
+    GLuint projLoc = glGetUniformLocation(gCubeData.shaderProgram, "projection");
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+    
+    glm::vec3 lightPos(0.0f, 1.5f, 6.0f);
+    GLuint lightPosLoc = glGetUniformLocation(gCubeData.shaderProgram, "lightPos");
+    glUniform3fv(lightPosLoc, 1, glm::value_ptr(lightPos));
+    
+    glm::vec3 lightColor(1.0f, 1.0f, 1.0f);
+    GLuint lightColLoc = glGetUniformLocation(gCubeData.shaderProgram, "lightColor");
+    glUniform3fv(lightColLoc, 1, glm::value_ptr(lightColor));
+    
+    glm::vec3 objColor(64.0f/255.0f, 224.0f/255.0f, 208.0f/255.0f);
+    GLuint objColLoc = glGetUniformLocation(gCubeData.shaderProgram, "objectColor");
+    glUniform3fv(objColLoc, 1, glm::value_ptr(objColor));
 
     glBindVertexArray(gCubeData.VAO);
     glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
+    
 }
 
 void uninitCubeTest()
